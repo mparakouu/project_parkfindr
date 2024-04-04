@@ -2,10 +2,20 @@
 2η Συνάντηση 12/03/2024: Ολοκλήρωση της ιδέας(2 ώρες)
 3η Συνάντηση 14/03/2024: Τμηματοποίηση έργου(Επιλογή τυπικών υποέργων,Πίνακας Προαπαιτούμενων και Χρονικών Εκτιμήσεων), Logo -Icon , Όνομα App(4 ώρες)
 4η Συνάντηση 21/03/2024: Gantt Chart - Pert Chart - Ανάλυση Κόστους - Ανάθεση σε ανρθώπινο δυναμικό (5 ώρες)
-5η Συνάντηση 22/03/2024: Uses Cases -  Domain Model- Πρώτα Mock Up Screens 
-6η Συνάντηση 02/04/2024: Ολοκλήρωση Domain Model - Uses Cases -	 Μock Up Screens
+5η Συνάντηση 22/03/2024: Uses Cases -  Domain Model- Πρώτα Mock Up Screens (5 ώρες)
+6η Συνάντηση 02/04/2024: Ολοκλήρωση Domain Model - Uses Cases -	 Μock Up Screens (4 ώρες)
+7η Συνάντηση 04/04/2023: Ολοκλήρωση Mock Up Screens - Ολοκλήρωση Παραδοτέον
 
 
+LINKS ΠΟΥ ΕΧΟΥΜΕ ΧΡΗΣΙΜΟΠΟΙΗΣΕΙ
+Pert Chart Diagram:  https://app.smartdraw.com/
+Gantt Chart Diagram: https://www.teamgantt.com/
+Mock Up Screens: https://app.moqups.com/
+Uses Cases: https://www.lucidchart.com/pages/templates/use-case-diagram
+VS-Studio Code and PyCharm για κώδικα
+Domain Model: https://www.visual-paradigm.com/
+GitHub Desktop
+Discord
 
 
 
