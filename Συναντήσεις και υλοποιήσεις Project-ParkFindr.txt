@@ -6,6 +6,8 @@
 6η Συνάντηση 02/04/2024: Ολοκλήρωση Domain Model - Uses Cases -	 Μock Up Screens (4 ώρες)
 7η Συνάντηση 04/04/2024: Ολοκλήρωση Mock Up Screens - Ολοκλήρωση Παραδοτέων (7 ώρες)
 8η Συνάντηση 13/04/2024  Κατασκευή RobustNess, Use Cases (4 ώρες)
+9η Συνάντηση 22/04/2024: Κατασκευή RobustNess, συζήτηση για Sequence (2 ώρες)
+10η Συνάντηση 23/04/2024: Κατασκευή Sequence, αλλαγές RobustNess, Word (6 ώρες)
 
 LINKS ΠΟΥ ΕΧΟΥΜΕ ΧΡΗΣΙΜΟΠΟΙΗΣΕΙ
 Pert Chart Diagram:  https://app.smartdraw.com/
@@ -17,6 +19,7 @@ Domain Model: https://www.visual-paradigm.com/
 GitHub Desktop
 Discord
 RobustNess: https://online.visual-paradigm.com/
+Sequence: https://online.visual-paradigm.com/
 
 
 
