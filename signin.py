@@ -69,7 +69,7 @@ class signInWindow(QMainWindow):
         self.email_input.setStyleSheet('''
             background-color: #FFFFFF;
             border: none;  
-            border-bottom: 2px dashed #ccc;
+            border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
         ''')
@@ -90,7 +90,7 @@ class signInWindow(QMainWindow):
         self.password_input.setStyleSheet('''
             background-color: #FFFFFF;
             border: none;  
-            border-bottom: 2px dashed #ccc;
+            border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
         ''')
