@@ -1,10 +1,12 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap, QCursor, QIcon
-from PyQt5.QtCore import Qt , QSize
-
+from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices
+from PyQt5.QtCore import Qt , QSize, Qt, QUrl
+import MySQLdb as mdb
 from signin import signInWindow
+from PyQt5.QtWidgets import QApplication, QLabel
+
 
 
 class signUpWindow(QMainWindow):
@@ -192,7 +194,7 @@ class signUpWindow(QMainWindow):
         button_next = QPushButton('Next', self)
         button_next.setGeometry(90, 570, 175, 36)
         button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.clicked.connect(self.next_pressed) #prepei na orisoyme poy pane otan kanei click
+        button_next.clicked.connect(self.next_pressed) # εκτελεί την next_pressed και εισάγει τα data, 
         button_next.setStyleSheet('''
 	        padding: 8px 8px 8px 8px;
 	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
@@ -206,7 +208,7 @@ class signUpWindow(QMainWindow):
 	        text-align: center;                    
         ''')
 
-        #Υπάρχει Λογαριασμός θέλει λειτουργία να σε πάει στην Sign In 
+        # σε πάει στο signin.py 
         acc_exists = QLabel('Have an Account? ',self)
         acc_exists.setGeometry(100, 600, 210, 42)
         acc_exists.setStyleSheet('''
@@ -217,6 +219,7 @@ class signUpWindow(QMainWindow):
 	        line-height: 1.5;
 	        text-align: left;
         ''')
+       
 
         button_signin = QPushButton('Sign In',self)
         button_signin.setGeometry(208,600,210,42)
@@ -232,23 +235,55 @@ class signUpWindow(QMainWindow):
             border: none;
         ''')
 
-        
-
-
 
     def signin_pressed(self):
-        print("signin clicked") #edw tha baloyme leitoyrgia 
-        self.close()  # Κλείστε το τρέχον παράθυρο signUpWindow
+        print("signin clicked") 
+        self.close()  
         self.sign_in_window = signInWindow()  
         self.sign_in_window.show()
        
 
-
+    # οταν πατηθεί το "next" , εισάγει τα data στο table 
     def next_pressed(self):
-        print("Next clicked") #edw tha baloyme leitoyrgia 
+        full_name = self.fullname_input.text()
+        phone = self.pnumber_input.text()
+        email = self.email_input.text()
+        password = self.password_input.text()
+
+        try:
+            # Σύνδεση στη βάση δεδομένων
+            db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
+            cursor = db.cursor()
+
+            # insert στο table user
+            sql = "INSERT INTO user (full_name, phone, email, password) VALUES (%s, %s, %s, %s)"
+            data = (full_name, phone, email, password)
+
+            # εκτέλεση του insert
+            cursor.execute(sql, data)
+
+            # commit στην βάση
+            db.commit()
+
+            # exit
+            cursor.close()
+            db.close()
+
+            # κλείνω signup παράθυρο
+            self.close()
+
+            # με πάει στο signin πράθυρο 
+            self.sign_in_window = signInWindow()
+            self.sign_in_window.show()
+
+            print("Data inserted successfully!")
+
+        except Exception as e:
+            # error
+            print("Error:", e)
 
 
-#Εκκίνηση και Λειτουργία
+# Εκκίνηση και λειτουργία
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = signUpWindow()
