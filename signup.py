@@ -188,6 +188,7 @@ class signUpWindow(QMainWindow):
         colored_text = " I agree to the <font color='#3D8AF7'>Terms of Services</font> and <font color='#3D8AF7'>Privacy Policy</font>"
         termsmessage.setText(colored_text)
 
+
         #Button Next
         button_next = QPushButton('Next', self)
         button_next.setGeometry(90, 570, 175, 36)

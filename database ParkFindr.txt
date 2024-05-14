@@ -14,35 +14,31 @@ PRIMARY KEY (id)
 );
 
 
-
-CREATE TABLE IF NOT EXISTS costumer(
-number    int AUTO_INCREMENT,
-id_costumer INT NOT NULL ,
-password varchar(100) NOT NULL,
-reservations_num INT NOT NULL
-payments_num INT NOT NULL,
-PRIMARY KEY (id_costumer),
-FOREIGN KEY (id_costumer) REFERENCES user(id)
+CREATE TABLE IF NOT EXISTS costumer (
+    number INT AUTO_INCREMENT PRIMARY KEY,
+    id_costumer INT NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    reservations_num INT NOT NULL,
+    payments_num INT NOT NULL,
+    FOREIGN KEY (id_costumer) REFERENCES user(id)
 );
 
 
 
 CREATE TABLE IF NOT EXISTS reservations ( 
-reservation_id int AUTO_INCREMENT,
+reservation_id int AUTO_INCREMENT PRIMARY KEY,
 costumer_id INT NOT NULL,    
 date DATETIME,
-PRIMARY KEY(reservation_id),
 FOREIGN KEY (costumer_id) REFERENCES costumer(id_costumer)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS calendar ( 
-numOf int AUTO_INCREMENT,
+numOf int AUTO_INCREMENT PRIMARY KEY,
 cos_id INT NOT NULL, 
 content varchar(100) NOT NULL,
 date DATETIME,
-PRIMARY KEY(numOf),
 FOREIGN KEY (cos_id) REFERENCES costumer(id_costumer)
  );
 
@@ -50,43 +46,39 @@ FOREIGN KEY (cos_id) REFERENCES costumer(id_costumer)
 
 
 CREATE TABLE IF NOT EXISTS chargers ( 
-num int AUTO_INCREMENT,
+num int AUTO_INCREMENT PRIMARY KEY,
 park_id INT NOT NULL,
 includes varchar(100) NOT NULL,            (θα βαζουμε για yes ή no)
 quantity INT NOT NULL,
-PRIMARY KEY(num),
 FOREIGN KEY (park_id ) REFERENCES parking(id_parking)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS AMEA_spots ( 
-num int AUTO_INCREMENT,
+num int AUTO_INCREMENT PRIMARY KEY,
 id_park INT NOT NULL,
 includes ENUM( 'yes' , 'no' ) NOT NULL,    ,            
 quantity INT NOT NULL,
-PRIMARY KEY(num),
 FOREIGN KEY (id_park ) REFERENCES parking(id_parking)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS payments ( 
-number int AUTO_INCREMENT,
+number int AUTO_INCREMENT PRIMARY KEY,
 cos_id INT NOT NULL,    
 quantity INT NOT NULL,
 deadline DATETIME,
-PRIMARY KEY(num),
 FOREIGN KEY (cos_id) REFERENCES costumer(id_costumer)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS reviews ( 
-number int AUTO_INCREMENT,
+number int AUTO_INCREMENT PRIMARY KEY,
 cost_id INT NOT NULL,    
 content varchar(100) NOT NULL,
-PRIMARY KEY(number),
 FOREIGN KEY (cos_id) REFERENCES costumer(id_costumer)
  );
 
@@ -95,64 +87,58 @@ FOREIGN KEY (cos_id) REFERENCES costumer(id_costumer)
 CREATE TABLE IF NOT EXISTS appVersion ( 
 cost_id INT NOT NULL,    
 version ENUM('free' , 'plus' , 'premium') NOT NULL,    
-PRIMARY KEY(number),
 FOREIGN KEY (cos_id) REFERENCES costumer(id_costumer)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS reminders ( 
-numofRem  int AUTO_INCREMENT,
+numofRem  int AUTO_INCREMENT PRIMARY KEY,
 resId INT NOT NULL, 
 duration INT NOT NULL,
-PRIMARY KEY(numofRem),
 FOREIGN KEY (resId) REFERENCES reservation(reservation_id)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS parking ( 
-numOfParking int AUTO_INCREMENT,
+numOfParking int AUTO_INCREMENT PRIMARY KEY,
 id_parking INT NOT NULL,
 address varchar(100) NOT NULL,
 password varchar(100) NOT NULL,
 workHours varchar(100) NOT NULL,
-PRIMARY KEY(numOfParking),
 FOREIGN KEY (id_parking) REFERENCES user(id)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS parkingSpots ( 
-numOfSpots int AUTO_INCREMENT,
+numOfSpots int AUTO_INCREMENT PRIMARY KEY,
 parking_id INT NOT NULL,
 spot INT NOT NULL,
 state varchar(100) NOT NULL,
-PRIMARY KEY(numOfSpots),
 FOREIGN KEY (parking_id ) REFERENCES parking(id_parking)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS reservations ( 
-reservation_id int AUTO_INCREMENT,
+reservation_id int AUTO_INCREMENT PRIMARY KEY,
 costumer_id INT NOT NULL,    
 date DATETIME,
-PRIMARY KEY(reservation_id),
 FOREIGN KEY (costumer_id) REFERENCES costumer(id_costumer)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS reservation_details ( 
-number int AUTO_INCREMENT,
+number int AUTO_INCREMENT PRIMARY KEY,
 id_res INT NOT NULL, 
 parking INT NOT NULL,    
 state ENUM(‘now’ , ‘over’ , ‘canceled’) NOT NULL,    
 date DATETIME,
 duration INT NOT NULL,    (ή εδώ ή στις κρατήσεις , θα δουμε )
 Spot INT NOT NULL,
-PRIMARY KEY(numofRem),
 FOREIGN KEY (id_res) REFERENCES reservations(reservation_id),
 FOREIGN KEY (parking) REFERENCES parkingSpots(parking_id),
 FOREIGN KEY (Spot) REFERENCES parkingSpots(spot)
@@ -161,20 +147,18 @@ FOREIGN KEY (Spot) REFERENCES parkingSpots(spot)
 
 
 CREATE TABLE IF NOT EXISTS QR_code ( 
-num int AUTO_INCREMENT,
+num int AUTO_INCREMENT PRIMARY KEY,
 idRes INT NOT NULL,
-PRIMARY KEY(num),
 FOREIGN KEY (idRes) REFERENCES reservations(reservation_id)
  );
 
 
 
 CREATE TABLE IF NOT EXISTS Inform_parking ( 
-num int AUTO_INCREMENT,
+num int AUTO_INCREMENT PRIMARY KEY,
 idReserv INT NOT NULL,
 numPark INT NOT NULL,
 stateOfRes varchar(100) NOT NULL,
-PRIMARY KEY(num),
 FOREIGN KEY (idReserv) REFERENCES reservations(reservation_id),
 FOREIGN KEY (numPark) REFERENCES parking(id_parking)
  );
