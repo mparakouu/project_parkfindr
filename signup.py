@@ -1,12 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox, QApplication, QLabel
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices
 from PyQt5.QtCore import Qt , QSize, Qt, QUrl
 import MySQLdb as mdb
 from signin import signInWindow
-from PyQt5.QtWidgets import QApplication, QLabel
-
 
 
 class signUpWindow(QMainWindow):
@@ -224,7 +222,7 @@ class signUpWindow(QMainWindow):
         button_signin = QPushButton('Sign In',self)
         button_signin.setGeometry(208,600,210,42)
         button_signin.setCursor(QCursor(Qt.PointingHandCursor))
-        button_signin.clicked.connect(self.signin_pressed) #proorismos??
+        button_signin.clicked.connect(self.signin_pressed) 
         button_signin.setStyleSheet('''
             color: #3D8AF7;
 	        font-family: "Asap";
@@ -249,6 +247,11 @@ class signUpWindow(QMainWindow):
         phone = self.pnumber_input.text()
         email = self.email_input.text()
         password = self.password_input.text()
+
+        # εάν είναι κενά τα πεδία --> σφαλμα
+        if not full_name or not phone or not email or not password:
+            print("Παρακαλώ συμπληρώστε όλα τα πεδία.")
+            return
 
         try:
             # Σύνδεση στη βάση δεδομένων
