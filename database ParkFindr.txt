@@ -4,13 +4,12 @@ create database ParkFindr;
 use ParkFindr;
 
 
-
 CREATE TABLE IF NOT EXISTS user(
 id int AUTO_INCREMENT,
-name varchar(100) NOT NULL,
-lname varchar(100) NOT NULL,
-email varchar(100) NOT NULL,
+full_name varchar(100) NOT NULL,
 phone varchar(10) NOT NULL,
+email varchar(100) NOT NULL,
+password varchar(100) NOT NULL,
 PRIMARY KEY (id)
 );
 
