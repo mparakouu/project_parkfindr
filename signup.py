@@ -151,7 +151,7 @@ class signUpWindow(QMainWindow):
         self.cpassword_input.setEchoMode(QLineEdit.Password)
         self.cpassword_input.setStyleSheet('''
             background-color: #FFFFFF;
-            border: none;  
+            border: none;   
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;

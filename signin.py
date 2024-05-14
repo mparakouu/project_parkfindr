@@ -64,7 +64,7 @@ class signInWindow(QMainWindow):
         self.email_label.setGeometry(70, 270, 200, 20) 
         self.email_label.setStyleSheet('''
             color: #3D8AF7;
-            font-family: "Asap";
+            font-family: "Asap"; 
             font-weight: 600;
             font-size: 14px;
             text-align: left;

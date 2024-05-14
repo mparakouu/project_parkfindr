@@ -14,7 +14,7 @@ class mainWindow(QMainWindow):
 
     def initUI(self):
         self.setWindowTitle('ParkFindr')
-        self.setGeometry(100, 100, 340, 667)
+        self.setGeometry(100, 100, 340, 667) 
 
         # Φόρτωση του περιγράμματος του iPhone
         iphonePixmap = QPixmap('iphoneFrame.png')
