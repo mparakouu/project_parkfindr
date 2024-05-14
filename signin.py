@@ -12,7 +12,7 @@ class signInWindow(QMainWindow):
         super().__init__()
         self.initUI()
 
-    def initUI(self):
+    def initUI(self): 
         self.setWindowTitle('ParkFindr')
         self.setGeometry(100, 100, 340, 667)
 
