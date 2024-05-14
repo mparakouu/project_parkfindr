@@ -10,7 +10,7 @@ from signup import signUpWindow
 class mainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI()
+        self.initUI() 
 
     def initUI(self):
         self.setWindowTitle('ParkFindr')

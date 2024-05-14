@@ -34,7 +34,7 @@ class signInWindow(QMainWindow):
         self.Signin_label.setGeometry(130, 150, 180, 40) 
         self.Signin_label.setStyleSheet('''
             color: #3D8AF7;
-            font-family: "Quicksand";
+            font-family: "Quicksand"; 
             font-weight: bold;
             font-size: 22px;
             text-align: left;
