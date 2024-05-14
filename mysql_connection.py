@@ -3,7 +3,6 @@ import sys
 import MySQLdb as mdb
  
 # εγω ειχα κατεβασμενα : brew install mysql-client (εντολη mac) , pip install mysql-connector-python , να εχετε τα αντιστοιχα 
-
 # τρέχω για να διατηρώ την σύνδεση (ο καθένας στο path του)
 # python /Users/georgiamparakou/Desktop/project_software_technology/project_parkfindr/mysql_connection.py
 # ή
