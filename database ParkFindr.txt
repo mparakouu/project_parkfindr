@@ -16,8 +16,8 @@ PRIMARY KEY (id)
 
 
 CREATE TABLE IF NOT EXISTS customer(
-number INT NOT NULL AUTO_INCREMENT,
-id_customer INT NOT NULL ,
+number INT NOT NULL AUTO_INCREMENT,
+id_customer INT NOT NULL,
 password varchar(100) NOT NULL,
 reservations_num INT NOT NULL,
 payments_num INT NOT NULL,
