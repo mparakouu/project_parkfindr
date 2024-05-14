@@ -1,7 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox, QApplication, QLabel
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices
+from PyQt5.QtCore import Qt , QSize, Qt, QUrl
+import MySQLdb as mdb
+from homepage import homeWindow
 
 
 class signInWindow(QMainWindow):
@@ -9,10 +12,11 @@ class signInWindow(QMainWindow):
         super().__init__()
         self.initUI()
 
-    def initUI(self):
+    def initUI(self): 
         self.setWindowTitle('ParkFindr')
         self.setGeometry(100, 100, 340, 667)
 
+        
         # Φόρτωση του περιγράμματος του iPhone
         iphonePixmap = QPixmap('iphoneFrame.png')
         iPhoneFrame = QFrame(self)
@@ -30,7 +34,7 @@ class signInWindow(QMainWindow):
         self.Signin_label.setGeometry(130, 150, 180, 40) 
         self.Signin_label.setStyleSheet('''
             color: #3D8AF7;
-            font-family: "Quicksand";
+            font-family: "Quicksand"; 
             font-weight: bold;
             font-size: 22px;
             text-align: left;
@@ -54,12 +58,13 @@ class signInWindow(QMainWindow):
         pixmap = QPixmap('logo.png')
         image_label.setPixmap(pixmap.scaled(250, 250, QtCore.Qt.KeepAspectRatio))
 
+
          # Πεδίο για εισαγωγή του email
         self.email_label = QLabel('E-mail:', self)
         self.email_label.setGeometry(70, 270, 200, 20) 
         self.email_label.setStyleSheet('''
             color: #3D8AF7;
-            font-family: "Asap";
+            font-family: "Asap"; 
             font-weight: 600;
             font-size: 14px;
             text-align: left;
@@ -96,10 +101,11 @@ class signInWindow(QMainWindow):
         ''')
 
 
-
         # κουμπί για είσοδος
         submit_button = QPushButton('Είσοδος', self)
         submit_button.setGeometry(70, 480, 200, 30)
+        submit_button.setCursor(QCursor(Qt.PointingHandCursor))
+        submit_button.clicked.connect(self.button_signin_pressed) 
         submit_button.setStyleSheet('''
         padding: 8px 8px 8px 8px;
         box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
@@ -110,50 +116,56 @@ class signInWindow(QMainWindow):
         font-weight: 600;
         font-size: 17px;
         line-height: 1.3;
-        text-align: center;
+        text-align: center; 
         ''')
 
-        # το icon για το password
-        image_label = QLabel(self)
-        image_label.setGeometry(246, 365, 250, 70)
-        pixmap = QPixmap('show.png')
-        image_label.setPixmap(pixmap.scaled(24, 24, QtCore.Qt.KeepAspectRatio))
+        #να βγαλουμε απο τα μοκαπ την συνδεση με google!! δεν υπαρχει λογοσ για εξτρα δουλεια !
 
 
-        self.google_label = QLabel('Sign in with your google acount', self)
-        self.google_label.setGeometry(60, 465, 250, 200) 
-        self.google_label.setStyleSheet('''
-            color: #989EB1;
-            font-family: "Asap";
-            font-weight: 400;
-            font-size: 12px;
-            text-align: left;
-        ''') 
+    def button_signin_pressed(self):
+
+        email = self.email_input.text()
+        password = self.password_input.text()
+
+         # εάν είναι κενά τα πεδία --> σφαλμα
+        if not email or not password:
+            print("Παρακαλώ συμπληρώστε όλα τα πεδία.")
+            return
+
+        try:
+            # Σύνδεση στη βάση δεδομένων
+            db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
+            cursor = db.cursor()
+
+            # ερώτημα SQL
+            cursor.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
+            result = cursor.fetchone()
+
+            if result:
+                # συνδέθηκε
+                print("Successful login!")
 
 
-         # το google icon
-        image_label = QLabel(self)
-        image_label.setGeometry(246, 530, 250, 70)
-        pixmap = QPixmap('google.png')
-        image_label.setPixmap(pixmap.scaled(20, 20, QtCore.Qt.KeepAspectRatio))
+                # κλείνω signup παράθυρο
+                self.close()
+
+                # με πάει στο signin πράθυρο 
+                self.home_page_window = homeWindow()
+                self.home_page_window.show()
 
 
-        self.forpass_label = QLabel('Forgot password?', self)
-        self.forpass_label.setGeometry(60, 518, 250, 200) 
-        self.forpass_label.setStyleSheet('''
-            color: #989EB1;
-            font-family: "Asap";
-            font-weight: 400;
-            font-size: 12px;
-            text-align: left;
-        ''') 
-        
-        self.show()
+            else:
+                # error
+                print("Wrong data, try again!")
 
-        
+        except Exception as e:
+            # error
+            print("Error:", e)
+
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = signInWindow()
+    window.show()
     sys.exit(app.exec_())

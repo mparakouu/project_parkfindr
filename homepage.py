@@ -8,8 +8,8 @@ from PyQt5.QtCore import QProcess
 
 class homeWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
-        self.initUI()
+        super().__init__() 
+        self.initUI()   
 
     def initUI(self):
         self.setWindowTitle('ParkFindr')

@@ -16,7 +16,7 @@ class Window(QDialog):
         # window 
         self.title = "Codeloop.org - PyQt5 Database"
         self.top = 150
-        self.left = 180
+        self.left = 180 
         self.width = 220
         self.height = 100
  

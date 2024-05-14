@@ -151,7 +151,7 @@ class signUpWindow(QMainWindow):
         self.cpassword_input.setEchoMode(QLineEdit.Password)
         self.cpassword_input.setStyleSheet('''
             background-color: #FFFFFF;
-            border: none;  
+            border: none;      
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
@@ -187,6 +187,7 @@ class signUpWindow(QMainWindow):
         termsmessage.setWordWrap(True)
         colored_text = " I agree to the <font color='#3D8AF7'>Terms of Services</font> and <font color='#3D8AF7'>Privacy Policy</font>"
         termsmessage.setText(colored_text)
+
 
         #Button Next
         button_next = QPushButton('Next', self)
