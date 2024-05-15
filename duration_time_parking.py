@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QCursor
 
 
-class homeWindow(QMainWindow):
+class DurationTime(QMainWindow):
     def __init__(self):
         super().__init__() 
         # δεν έχει γίνει επιλογή ώρας ακόμη
@@ -165,6 +165,6 @@ class homeWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = homeWindow()
+    window = DurationTime()
     window.show()
     sys.exit(app.exec_())
