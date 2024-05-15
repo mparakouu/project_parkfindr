@@ -160,6 +160,9 @@ class CheckSpot(QMainWindow):
             margin-left: 20px;  
         ''')
 
+
+# όταν συνδέσουμε με βάση, θα συνδέουμε id πελάτη με θέση, και όταν την κάνει reserve δεν θα είναι πλέον διαθέσιμη 
+
     # έλεγχος για το ποιο κουμπί πατήθηκε, 
     def check_selected_spot(self):
         buttons = [self.button1, self.button2, self.button3, self.button4, self.button5,
