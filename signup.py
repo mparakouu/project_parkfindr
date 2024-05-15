@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices
 from PyQt5.QtCore import Qt , QSize, Qt, QUrl
 import MySQLdb as mdb
 from signin import signInWindow
+from chplan import choosePlanWindow
 
 
 class signUpWindow(QMainWindow):
@@ -277,8 +278,8 @@ class signUpWindow(QMainWindow):
             self.close()
 
             # με πάει στο signin πράθυρο 
-            self.sign_in_window = signInWindow()
-            self.sign_in_window.show()
+            self.choose_plan_window = choosePlanWindow()
+            self.choose_plan_window.show()
 
             print("Data inserted successfully!")
 
