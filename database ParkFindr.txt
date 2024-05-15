@@ -17,7 +17,6 @@ PRIMARY KEY (id)
 CREATE TABLE IF NOT EXISTS costumer (
     number INT AUTO_INCREMENT PRIMARY KEY,
     id_costumer INT NOT NULL,
-    password VARCHAR(100) NOT NULL,
     reservations_num INT NOT NULL,
     payments_num INT NOT NULL,
     FOREIGN KEY (id_costumer) REFERENCES user(id)
@@ -29,6 +28,7 @@ CREATE TABLE IF NOT EXISTS reservations (
 reservation_id int AUTO_INCREMENT PRIMARY KEY,
 costumer_id INT NOT NULL,    
 date DATETIME,
+duration_time INT NOT NULL,
 FOREIGN KEY (costumer_id) REFERENCES costumer(id_costumer)
  );
 
