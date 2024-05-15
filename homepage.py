@@ -12,7 +12,7 @@ class homeWindow(QMainWindow):
         self.initUI()   
 
     def initUI(self):
-        self.setWindowTitle('ParkFindr')
+        self.setWindowTitle('Home Page')
         self.setGeometry(100, 100, 340, 667)
 
         # Φόρτωση του περιγράμματος του iPhone

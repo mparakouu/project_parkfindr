@@ -14,7 +14,7 @@ class signUpWindow(QMainWindow):
        
     
     def initUI(self): 
-        self.setWindowTitle('ParkFindr')
+        self.setWindowTitle('Sign Up')
         self.setGeometry(100, 100, 340, 667)
         
 
