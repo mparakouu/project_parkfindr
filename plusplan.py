@@ -5,14 +5,14 @@ from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt , QSize, Qt
 
 
-class freePlanWindow(QMainWindow):
+class plusPlanWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
 
         
     def initUI(self):
-        self.setWindowTitle('Free Version')
+        self.setWindowTitle('Plus Version')
         self.setGeometry(100, 100, 340, 667)
 
 
@@ -35,24 +35,15 @@ class freePlanWindow(QMainWindow):
         pixmap = QPixmap ('logo.png')
         image_label.setPixmap(pixmap.scaled(250, 250, QtCore.Qt.KeepAspectRatio))
 
-        #Εισαγωγή Label Free Version
-        self.free_label = QLabel ('Free Version', self)
-        self.free_label.setGeometry(95, 165, 287, 74)
-        self.free_label.setStyleSheet('''
+        #Εισαγωγή Label Plus Version
+        self.plus_label = QLabel ('Plus Version', self)
+        self.plus_label.setGeometry(95, 165, 287, 74)
+        self.plus_label.setStyleSheet('''
 	        color: #3D8AF7;
 	        font-family: "Quicksand";
 	        font-weight: bold;
 	        font-size: 24px;
 	        text-align: left;
-        ''')
-
-        #Underline 
-        line = QLabel(self)
-        line.setGeometry(40, 240, 270, 1)
-        line.setStyleSheet('''
-	        background: #FFFFFF;
-	        border-color: #00000000;
-            border-bottom: 2px solid #ccc;
         ''')
 
         #Underline 
@@ -85,7 +76,7 @@ class freePlanWindow(QMainWindow):
         ''')
 
         #Εισαγωγή Label 
-        self.label = QLabel ('30 Minutes Until Your Arrival', self)
+        self.label = QLabel ('Arrange Your Reservation For Another Day', self)
         self.label.setGeometry(45, 290, 287, 74)
         self.label.setStyleSheet('''
 	        color: #000000;
@@ -105,7 +96,7 @@ class freePlanWindow(QMainWindow):
         ''')
         
         #Εισαγωγή Label 
-        self.label = QLabel ('Choose Your Duration Time', self)
+        self.label = QLabel ('No Limit For Arrival Time', self)
         self.label.setGeometry(45, 330, 287, 74)
         self.label.setStyleSheet('''
 	        color: #000000;
@@ -165,7 +156,7 @@ class freePlanWindow(QMainWindow):
         ''')
 
         #Εισαγωγή Label 
-        self.label = QLabel ('Free', self)
+        self.label = QLabel ('4,99\u20ac/Month ', self)
         self.label.setGeometry(45, 440, 287, 74)
         self.label.setStyleSheet('''
 	        color: #000000;
@@ -221,16 +212,12 @@ class freePlanWindow(QMainWindow):
 
     def next_pressed(self):
         print("next clicked") 
-        from payment import paymentWindow
-        self.sign_in_window = paymentWindow()  
-        self.sign_in_window.show()
-        self.close() 
 
 
 
 # Εκκίνηση και λειτουργία
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = freePlanWindow()
+    window = plusPlanWindow()
     window.show()
     sys.exit(app.exec_())

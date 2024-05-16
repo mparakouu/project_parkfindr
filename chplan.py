@@ -157,10 +157,18 @@ class choosePlanWindow(QMainWindow):
     #Λειτουργία Plus Version Button
     def plus_version(self):
         print("plus clicked") 
+        from plusplan import plusPlanWindow
+        self.plus_planwindow = plusPlanWindow()
+        self.plus_planwindow.show()
+        self.close()
 
     #Λειτουργία Premium Version Button
     def premium_version(self):
         print("Premium clicked") 
+        from premiumplan import premiumPlanWindow
+        self.prem_planwindow = premiumPlanWindow()
+        self.prem_planwindow.show()
+        self.close()
 
 
 
