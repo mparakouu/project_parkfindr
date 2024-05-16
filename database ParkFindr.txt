@@ -349,5 +349,12 @@ FOREIGN KEY (numPark) REFERENCES parking(id_parking)
  );
 
 
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    review_text TEXT NOT NULL,
+    rating INT NOT NULL,
+    review_for VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 
