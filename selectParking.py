@@ -1,24 +1,24 @@
 import sys
 import io
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap, QCursor,QIcon
-from PyQt5.QtCore import Qt,QSize
+from PyQt5.QtGui import QPixmap, QCursor, QIcon
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtCore import QProcess
-from signin import signInWindow
-from PyQt5.QtWebEngineWidgets import QWebEngineView # type: ignore #pip install PyQtWebEngine
-import folium # type: ignore #kante pip install folium
+from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore #pip install PyQtWebEngine
+import folium  # type: ignore #kante pip install folium
+
 
 
 class selectParking(QMainWindow):
-  def __init__(self):
+    def __init__(self):
         super().__init__()
         self.initUI()
 
-  def initUI(self):
-        self.setWindowTitle('ParkFindr')
+    def initUI(self):
+        self.setWindowTitle('Select Parking')
         self.setGeometry(100, 100, 340, 667)
-         
-         # Φόρτωση του περιγράμματος του iPhone
+
+        # περίγραμμα του iPhone
         iphonePixmap = QPixmap('iphoneFrame.png')
         iPhoneFrame = QFrame(self)
         iPhoneFrame.setGeometry(5, 5, iphonePixmap.width(), iphonePixmap.height())
@@ -31,10 +31,9 @@ class selectParking(QMainWindow):
             background-color: #FFFFFF; 
         ''')
 
-
-        label_review = QLabel('Select Parking:' , self)
-        label_review.setGeometry(90, 20, 434, 74)
-        label_review.setStyleSheet('''
+        label_park = QLabel('Select Parking:', self)
+        label_park.setGeometry(90, 20, 434, 74)
+        label_park.setStyleSheet('''
             width: 434px;
             height: 74px;
             color: #3D8AF7;
@@ -43,37 +42,24 @@ class selectParking(QMainWindow):
             font-size: 20px;
             text-align: center;
 
-        '''  )
+        ''')
         filtr = QPushButton(self)
         filtr.setIcon(QIcon('filter.png'))
         filtr.setIconSize(QSize(50, 50))
         filtr.setFixedSize(50, 50)
         filtr.setCursor(QCursor(Qt.PointingHandCursor))
-        filtr.setGeometry(270,36,434,74)
+        filtr.setGeometry(270, 36, 434, 74)
         filtr.setStyleSheet('''
                 border: none;
                 padding: 0;
                  color: #3D8AF7;
             ''')
-        
-        coordinate = (38.261656677847824, 21.748691029725343)#συντεταγμενεσ για πατρα
-        m = folium.Map(
-                title='patras',
-        	zoom_start=13,
-        	location=coordinate
-        )
-        data=io.BytesIO()
-        m.save(data,close_file=False)
-        webView = QWebEngineView(self)
-        webView.setHtml(data.getvalue().decode())
-        QLayout.addWidget(webView)
 
-
-        button_next = QPushButton('Back', self)
-        button_next.setGeometry(30, 550, 140, 48)
-        button_next.setObjectName('button-14')
-        button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.setStyleSheet('''
+        button_back = QPushButton('Back', self)
+        button_back.setGeometry(30, 550, 140, 48)
+        button_back.setObjectName('button-14')
+        button_back.setCursor(QCursor(Qt.PointingHandCursor))
+        button_back.setStyleSheet('''
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
@@ -91,11 +77,11 @@ class selectParking(QMainWindow):
                                   
          ''')
 
-        button_contact = QPushButton('Next', self)
-        button_contact.setGeometry(175, 550, 140, 48)
-        button_contact.setObjectName('button-15')
-        button_contact.setCursor(QCursor(Qt.PointingHandCursor))
-        button_contact.setStyleSheet('''
+        button_next = QPushButton('Next', self)
+        button_next.setGeometry(175, 550, 140, 48)
+        button_next.setObjectName('button-15')
+        button_next.setCursor(QCursor(Qt.PointingHandCursor))
+        button_next.setStyleSheet('''
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
@@ -112,11 +98,22 @@ class selectParking(QMainWindow):
             text-align: center;                       
                                      
          ''')
-        
+
+        webView = QWebEngineView(self)
+        webView.setGeometry(20, 100, 300, 450)  
+        coordinate = (38.261656677847824, 21.748691029725343)  # συντεταγμένες για Πάτρα
+        m = folium.Map(
+            title='patras',
+            zoom_start=13,
+            location=coordinate
+        )
+        data = io.BytesIO() 
+        m.save(data, close_file=False)
+        webView.setHtml(data.getvalue().decode())  
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = selectParking()
     window.show()
     sys.exit(app.exec_())
-    

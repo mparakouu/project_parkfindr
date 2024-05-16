@@ -208,11 +208,11 @@ class premiumPlanWindow(QMainWindow):
         ''')
 
         #Button Back
-        button_signin = QPushButton('Back',self)
-        button_signin.setGeometry(50,570,100,37)
-        button_signin.setCursor(QCursor(Qt.PointingHandCursor))
-        button_signin.clicked.connect(self.back_pressed) 
-        button_signin.setStyleSheet('''
+        button_back = QPushButton('Back',self)
+        button_back.setGeometry(50,570,100,37)
+        button_back.setCursor(QCursor(Qt.PointingHandCursor))
+        button_back.clicked.connect(self.back_pressed) 
+        button_back.setStyleSheet('''
             padding: 8px 8px 8px 8px;
             box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
             background: #3D8AF7;                    
@@ -226,11 +226,11 @@ class premiumPlanWindow(QMainWindow):
         ''')
 
         #Button Next
-        button_signin = QPushButton('Next',self)
-        button_signin.setGeometry(195,570,100,37)
-        button_signin.setCursor(QCursor(Qt.PointingHandCursor))
-        button_signin.clicked.connect(self.next_pressed) 
-        button_signin.setStyleSheet('''
+        button_next = QPushButton('Next',self)
+        button_next.setGeometry(195,570,100,37)
+        button_next.setCursor(QCursor(Qt.PointingHandCursor))
+        button_next.clicked.connect(self.next_pressed) 
+        button_next.setStyleSheet('''
             padding: 8px 8px 8px 8px;
             box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);    
             background: #3D8AF7;                    
@@ -246,16 +246,16 @@ class premiumPlanWindow(QMainWindow):
     def back_pressed(self):
         print("back clicked") 
         from chplan import choosePlanWindow
-        self.sign_in_window = choosePlanWindow()  
-        self.sign_in_window.show()
+        self.plan_window = choosePlanWindow()  
+        self.plan_window.show()
         self.close() 
 
 
     def next_pressed(self):
         print("next clicked") 
         from payment import paymentWindow
-        self.sign_in_window = paymentWindow()  
-        self.sign_in_window.show()
+        self.payment_window = paymentWindow()  
+        self.payment_window.show()
         self.close() 
 
 # Εκκίνηση και λειτουργία
