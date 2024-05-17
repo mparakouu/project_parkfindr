@@ -257,7 +257,7 @@ class signUpWindow(QMainWindow):
 
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
             cursor = db.cursor()
 
             # insert στο table user
