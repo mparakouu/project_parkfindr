@@ -43,7 +43,7 @@ class signUpWindow(QMainWindow):
             text-align: left;
             word-wrap: break-word; 
         ''')
-
+ 
         #Εισαγωγή του Logo
         image_label = QLabel(self)
         image_label.setGeometry(50, 70, 250, 70)

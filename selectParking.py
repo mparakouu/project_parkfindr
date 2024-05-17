@@ -109,7 +109,7 @@ class selectParking(QMainWindow):
         )
         data = io.BytesIO() 
         m.save(data, close_file=False)
-        webView.setHtml(data.getvalue().decode())  
+        webView.setHtml(data.getvalue().decode()) 
 
 
 if __name__ == '__main__':

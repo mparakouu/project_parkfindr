@@ -7,7 +7,7 @@ import MySQLdb as mdb
 from homepage import homeWindow
 
 
-class signInWindow(QMainWindow):
+class signInWindow(QMainWindow): 
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -123,45 +123,39 @@ class signInWindow(QMainWindow):
 
 
     def button_signin_pressed(self):
-
         email = self.email_input.text()
         password = self.password_input.text()
 
-         # εάν είναι κενά τα πεδία --> σφαλμα
         if not email or not password:
             print("Παρακαλώ συμπληρώστε όλα τα πεδία.")
             return
 
         try:
-            # Σύνδεση στη βάση δεδομένων
             db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
             cursor = db.cursor()
 
-            # ερώτημα SQL
+
             cursor.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
-            result = cursor.fetchone()
+            result = cursor.fetchone()  # save το 1ο αποτέλεσμα που επιστρέφει η εντολή mysql
 
             if result:
-                # συνδέθηκε
-                print("Successful login!")
+                self.user_id = result[0]  # save το id του χρήστη που συνδέθηκε = user_id
+                self.user_email = email 
+                print("Successful login! User ID:", self.user_id) # για τις κρατήσεις
+                print("Successful login! User email:", self.user_email) # το χρησιμοποιούμε στο homepage
 
-
-                # κλείνω signup παράθυρο
+                # κλείσιμο window
                 self.close()
 
-                # με πάει στο signin πράθυρο 
-                self.home_page_window = homeWindow()
+                # μεταφορά στο μενού
+                self.home_page_window = homeWindow(self.user_email)
                 self.home_page_window.show()
 
-
             else:
-                # error
-                print("Wrong data, try again!")
+                print("Λάθος στοιχεία. Δοκιμάστε ξανά!")
 
         except Exception as e:
-            # error
-            print("Error:", e)
-
+            print("error:", e)
 
 
 if __name__ == '__main__':
