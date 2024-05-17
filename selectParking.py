@@ -9,7 +9,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView # type: ignore #pip install 
 import folium # type: ignore #kante pip install folium
 
 
-class selectParking(QMainWindow):
+class selectParkingWindow(QMainWindow):
   def __init__(self):
         super().__init__()
         self.initUI()
@@ -32,9 +32,9 @@ class selectParking(QMainWindow):
         ''')
 
 
-        label_review = QLabel('Select Parking:' , self)
-        label_review.setGeometry(90, 20, 434, 74)
-        label_review.setStyleSheet('''
+        label_park = QLabel('Select Parking:' , self)
+        label_park.setGeometry(90, 20, 434, 74)
+        label_park.setStyleSheet('''
             width: 434px;
             height: 74px;
             color: #3D8AF7;
@@ -56,7 +56,7 @@ class selectParking(QMainWindow):
                  color: #3D8AF7;
             ''')
         
-        coordinate = (38.261656677847824, 21.748691029725343)#συντεταγμενεσ για πατρα
+        '''coordinate = (38.261656677847824, 21.748691029725343)#συντεταγμενεσ για πατρα
         m = folium.Map(
                 title='patras',
         	zoom_start=13,
@@ -66,14 +66,14 @@ class selectParking(QMainWindow):
         m.save(data,close_file=False)
         webView = QWebEngineView(self)
         webView.setHtml(data.getvalue().decode())
-        QLayout.addWidget(webView)
+        QLayout.addWidget(webView)'''
 
 
-        button_next = QPushButton('Back', self)
-        button_next.setGeometry(30, 550, 140, 48)
-        button_next.setObjectName('button-14')
-        button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.setStyleSheet('''
+        button_back = QPushButton('Back', self)
+        button_back.setGeometry(30, 550, 140, 48)
+        button_back.setObjectName('button-14')
+        button_back.setCursor(QCursor(Qt.PointingHandCursor))
+        button_back.setStyleSheet('''
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
@@ -91,11 +91,11 @@ class selectParking(QMainWindow):
                                   
          ''')
 
-        button_contact = QPushButton('Next', self)
-        button_contact.setGeometry(175, 550, 140, 48)
-        button_contact.setObjectName('button-15')
-        button_contact.setCursor(QCursor(Qt.PointingHandCursor))
-        button_contact.setStyleSheet('''
+        button_next = QPushButton('Next', self)
+        button_next.setGeometry(175, 550, 140, 48)
+        button_next.setObjectName('button-15')
+        button_next.setCursor(QCursor(Qt.PointingHandCursor))
+        button_next.setStyleSheet('''
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
