@@ -152,9 +152,39 @@ class choosePlanWindow(QMainWindow):
     def free_version(self):
         print("free clicked") 
         from freeplan import freePlanWindow
-        self.free_planwindow = freePlanWindow()
-        self.free_planwindow.show()
-        self.close()
+
+        try:
+            # Σύνδεση στη βάση δεδομένων
+            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            cursor = db.cursor()
+
+
+            sql_insert = "INSERT INTO plans (plan_type,user_id) VALUES (%s,%s)"
+            data_insert = "Free Version"
+
+            cursor.execute(sql_insert,(data_insert,self.user_id))
+
+            
+            # commit στην βάση
+            db.commit()
+
+        
+
+            # exit
+            cursor.close()
+            db.close()
+
+            # κλείνω signup παράθυρο
+            self.close()
+            self.free_planwindow = freePlanWindow(self.user_id)
+            self.free_planwindow.show()
+
+
+        except Exception as e:
+            # error
+            print("Error:", e)
+
+       
         
     #Λειτουργία Plus Version Button
     def plus_version(self):
@@ -163,7 +193,7 @@ class choosePlanWindow(QMainWindow):
 
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
             cursor = db.cursor()
 
 
@@ -199,7 +229,7 @@ class choosePlanWindow(QMainWindow):
         
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
             cursor = db.cursor()
 
 
