@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt , QSize, Qt
+import MySQLdb as mdb
 
 
 class premiumPlanWindow(QMainWindow):
@@ -247,10 +248,35 @@ class premiumPlanWindow(QMainWindow):
     def back_pressed(self):
         print("back clicked") 
         from chplan import choosePlanWindow
-        self.plan_window = choosePlanWindow()  
-        self.plan_window.show()
-        self.close() 
 
+        try:
+            # Σύνδεση στη βάση δεδομένων
+            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            cursor = db.cursor()
+
+            # Διαγραφή της εγγραφής "Premium Version" για τον συγκεκριμένο χρήστη
+            sql_delete = "DELETE FROM plans WHERE plan_type = %s AND user_id = %s"
+            data_delete = ("Premium Version", self.user_id)
+            cursor.execute(sql_delete, data_delete)
+            
+            # commit στη βάση
+            db.commit()
+
+            # exit
+            cursor.close()
+            db.close()
+
+            # Κλείσιμο παραθύρου
+            self.close()
+
+
+            self.plan_window = choosePlanWindow(self.user_id)  
+            self.plan_window.show()
+           
+
+        except Exception as e:
+            # Αν υπάρξει σφάλμα, εκτύπωσέ το
+            print("Error:", e)
 
     def next_pressed(self):
         from payment import paymentWindow

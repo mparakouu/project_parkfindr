@@ -26,7 +26,7 @@ class Window(QDialog):
     def DBConnection(self):
         try:
             # Σύνδεση με την βάση
-            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
             
             msg_box = QMessageBox()
             msg_box.setIcon(QMessageBox.Information)
