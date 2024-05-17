@@ -1,10 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QMessageBox
+from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap, QCursor
+from PyQt5.QtGui import QPixmap, QCursor,QIcon
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QProcess
-from selectParking import selectParking
+
 
 class makeReservation(QMainWindow):
     def __init__(self):
@@ -77,10 +77,21 @@ class makeReservation(QMainWindow):
             text-align: center;
         ''')
 
+    def search_pressed(self):
+     print("search clicked")
+    
+     from selectParking import selectParkingWindow
+     self.selectParkingWindow= selectParkingWindow()
+     self.selectParkingWindow.show()
+             
+   
+
+
 
     def open_map(self):
+        from selectParking import selectParkingWindow
         self.close()
-        self.map_window = selectParking()
+        self.map_window = selectParkingWindow()
         self.map_window.show()
     
 
