@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QCheckBox , QBoxLayout , QButtonGroup
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QCheckBox , QBoxLayout , QButtonGroup , QMessageBox 
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor , QIcon 
 from PyQt5.QtCore import Qt , QSize
@@ -10,7 +10,7 @@ class RatingWidget(QLabel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.initUI()
-        self.rating = 0  # Αρχικοποίηση της ιδιότητας rating
+         
 
     def initUI(self):
         self.stars = []
@@ -209,12 +209,12 @@ class ReviewWindow(QMainWindow):
             review_for = "ParkFindr App"
 
         if not review_for:
-            print("Please select who you want to rate.")
+            QMessageBox.warning(self, "Input Error", "Please select who you want to rate.")
             return
         
         self.star_rating = self.rating_widget.rating
         if self.star_rating == 0:
-            print("Please provide a rating.")
+            QMessageBox.warning(self, "Input Error", "Please provide a rating.")
             return
         self.review_submit_window = ReviewSubmitWindow(self.star_rating, review_for) #θα τα χρειαστώ για όταν κάνω sumbit να αποθηκέυονται στην βάση δεδομένων 
         self.review_submit_window.show() 
