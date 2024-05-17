@@ -43,7 +43,7 @@ class signUpWindow(QMainWindow):
             text-align: left;
             word-wrap: break-word; 
         ''')
-
+ 
         #Εισαγωγή του Logo
         image_label = QLabel(self)
         image_label.setGeometry(50, 70, 250, 70)
@@ -261,6 +261,7 @@ class signUpWindow(QMainWindow):
             cursor = db.cursor()
 
             # insert στο table user
+            
             sql = "INSERT INTO user (full_name, phone, email, password) VALUES (%s, %s, %s, %s)"
             data = (full_name, phone, email, password)
 
