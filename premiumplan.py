@@ -6,8 +6,9 @@ from PyQt5.QtCore import Qt , QSize, Qt
 
 
 class premiumPlanWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self,user_id):
         super().__init__()
+        self.user_id = user_id
         self.initUI()
 
         
@@ -252,9 +253,8 @@ class premiumPlanWindow(QMainWindow):
 
 
     def next_pressed(self):
-        print("next clicked") 
         from payment import paymentWindow
-        self.payment_window = paymentWindow()  
+        self.payment_window = paymentWindow(self.user_id)   
         self.payment_window.show()
         self.close() 
 

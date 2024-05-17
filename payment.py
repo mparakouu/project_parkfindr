@@ -3,11 +3,13 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QRegExpValidator
 from PyQt5.QtCore import Qt , QRegExp
+import MySQLdb as mdb
 
 
-class paymentWindow(QMainWindow):
-    def __init__(self):
+class paymentWindow(QMainWindow,):
+    def __init__(self,user_id):
         super().__init__()
+        self.user_id = user_id  # Αποθήκευση του user_id
         self.initUI()
 
         
@@ -153,7 +155,6 @@ class paymentWindow(QMainWindow):
         # Ορισμός ενός QValidator για το φορμάτ ημερομηνίας (MM/YY) με περιορισμό του πρώτου διψήφιου σε τιμές 01-12
         validator_date = QRegExpValidator(QRegExp(r'(0[1-9]|1[0-2])'))  
         self.input_expiry_month.setValidator(validator_date) 
-        self.input_expiry_year.setValidator(validator_date)
 
         # CVV
         self.label_cvv = QLabel("CVV:", self.frame)
@@ -194,26 +195,58 @@ class paymentWindow(QMainWindow):
         ''')
 
     def proceed_pressed(self):
-        print("proceed clicked") 
-        self.close()  
-        from successpay import successpayWindow
-        self.sign_in_window = successpayWindow() 
-        self.sign_in_window.show()
-        self.close() 
+        FName = self.input_fname.text()
+        LName = self.input_lname.text()
+        card_n = self.input_card_no.text()
+        exp_m = self.input_expiry_month.text()
+        exp_y = self.input_expiry_year.text()
+        cvv = self.input_cvv.text()
+        
+        #Εάν είναι κενά τα πεδία να μην μπορεί να πατηθεί το κουμπί
+        if not FName or not LName or not card_n or not exp_m or not exp_y or not cvv:
+            print("Παρακαλώ συμπληρώστε όλα τα πεδία. ")
+            return
 
-    def submit_payment(self):
-        fname = self.input_fname.text()
-        lname = self.input_lname.text()
+        try:
+            #Σύνδεση στη Βάση Δεδομένων
+            db = mdb.connect('localhost','root','giannis','ParkFindr')
+            cursor = db.cursor()
 
+            #Πραγματοποίηση Insert στον πίνακα 
+            sql = "INSERT INTO payments (FName, LName,user_id) VALUES (%s, %s, %s)" 
+            data = (FName, LName,self.user_id)
 
-        print("Όνομα:", fname)
-        print("Όνομα:", lname)
+            #Εκτέλεση
+            cursor.execute(sql, data)
+
+            #Commit
+            db.commit()
+
+            #Exit
+            cursor.close()
+            db.close()
+
+            
+            self.close()  
+
+            #Πάει στο Success Pay Window 
+            from successpay import successpayWindow
+            self.sign_in_window = successpayWindow() 
+            self.sign_in_window.show()
+            
+            print("Data inserted successfully!")
+
+        except Exception as e:
+            #Σφάλμα
+            print("Error",e)
+
 
 
 
 # Εκκίνηση και λειτουργία
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    user_id = 1
     window = paymentWindow()
     window.show()
     sys.exit(app.exec_())

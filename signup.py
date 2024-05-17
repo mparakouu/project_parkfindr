@@ -104,6 +104,7 @@ class signUpWindow(QMainWindow):
         self.email_input = QLineEdit(self)
         self.email_input.setGeometry(70, 350, 200, 30)
         self.email_input.setPlaceholderText("Your email address")
+        self.email_input.textChanged.connect(self.email_changed)
         self.email_input.setStyleSheet('''
             background-color: #FFFFFF;
             color:  #ccc;                         
@@ -114,8 +115,9 @@ class signUpWindow(QMainWindow):
             border-radius: 1px;
             padding: 5px;                           
         ''')
+        self.email = " "
 
-
+    
         # Πεδίο για εισαγωγή του Password
         self.password_label = QLabel('Password', self)
         self.password_label.setGeometry(70, 390, 200, 20) 
@@ -236,6 +238,10 @@ class signUpWindow(QMainWindow):
         ''')
 
 
+    def email_changed(self,text):
+        self.email = text
+        print("Email is: ", self.email)
+    
     def signin_pressed(self):
         print("signin clicked") 
         self.close()  
@@ -257,19 +263,23 @@ class signUpWindow(QMainWindow):
 
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
             cursor = db.cursor()
 
             # insert στο table user
-            
-            sql = "INSERT INTO user (full_name, phone, email, password) VALUES (%s, %s, %s, %s)"
-            data = (full_name, phone, email, password)
+            sql_insert = "INSERT INTO user (full_name, phone, email, password) VALUES (%s, %s, %s, %s)"
+            data_insert = (full_name, phone, email, password)
 
             # εκτέλεση του insert
-            cursor.execute(sql, data)
-
+            cursor.execute(sql_insert, data_insert)
+            
             # commit στην βάση
             db.commit()
+
+            sql_select = "SELECT id FROM user WHERE email = %s"
+            cursor.execute(sql_select,(email,))
+            user_id = cursor.fetchone()[0]
+            print("User ID is: ",user_id)
 
             # exit
             cursor.close()
@@ -279,7 +289,7 @@ class signUpWindow(QMainWindow):
             self.close()
 
             # με πάει στο signin πράθυρο 
-            self.choose_plan_window = choosePlanWindow()
+            self.choose_plan_window = choosePlanWindow(user_id)
             self.choose_plan_window.show()
 
             print("Data inserted successfully!")

@@ -3,11 +3,13 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt , QSize, Qt
+import MySQLdb as mdb
 
 
 class choosePlanWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self,user_id):
         super().__init__()
+        self.user_id = user_id
         self.initUI()
 
         
@@ -158,17 +160,76 @@ class choosePlanWindow(QMainWindow):
     def plus_version(self):
         print("plus clicked") 
         from plusplan import plusPlanWindow
-        self.plus_planwindow = plusPlanWindow()
-        self.plus_planwindow.show()
-        self.close()
+
+        try:
+            # Σύνδεση στη βάση δεδομένων
+            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
+            cursor = db.cursor()
+
+
+            sql_insert = "INSERT INTO plans (plan_type,user_id) VALUES (%s,%s)"
+            data_insert = "Plus Version"
+
+            cursor.execute(sql_insert,(data_insert,self.user_id))
+
+            
+            # commit στην βάση
+            db.commit()
+
+        
+
+            # exit
+            cursor.close()
+            db.close()
+
+            # κλείνω signup παράθυρο
+            self.close()
+            self.plus_planwindow = plusPlanWindow(self.user_id)
+            self.plus_planwindow.show()
+
+        except Exception as e:
+            # error
+            print("Error:", e)
+       
 
     #Λειτουργία Premium Version Button
     def premium_version(self):
         print("Premium clicked") 
         from premiumplan import premiumPlanWindow
-        self.prem_planwindow = premiumPlanWindow()
-        self.prem_planwindow.show()
-        self.close()
+        
+        try:
+            # Σύνδεση στη βάση δεδομένων
+            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
+            cursor = db.cursor()
+
+
+            sql_insert = "INSERT INTO plans (plan_type,user_id) VALUES (%s,%s)"
+            data_insert = "Premium Version"
+
+            cursor.execute(sql_insert,(data_insert,self.user_id))
+
+            
+            # commit στην βάση
+            db.commit()
+
+        
+
+            # exit
+            cursor.close()
+            db.close()
+
+            # κλείνω signup παράθυρο
+            self.close()
+            
+            self.prem_planwindow = premiumPlanWindow(self.user_id)
+            self.prem_planwindow.show()
+
+        except Exception as e:
+            # error
+            print("Error:", e)
+
+
+
 
 
 
