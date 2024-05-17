@@ -221,8 +221,8 @@ class freePlanWindow(QMainWindow):
 
     def next_pressed(self):
         print("next clicked") 
-        from payment import paymentWindow
-        self.payment_window = paymentWindow()  
+        from signin import signInWindow
+        self.payment_window = signInWindow()  
         self.payment_window.show()
         self.close() 
 
