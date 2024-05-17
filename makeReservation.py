@@ -80,8 +80,8 @@ class makeReservation(QMainWindow):
     def search_pressed(self):
      print("search clicked")
     
-     from selectParking import selectParkingWindow
-     self.selectParkingWindow= selectParkingWindow()
+     from selectParking import selectParking
+     self.selectParkingWindow= selectParking()
      self.selectParkingWindow.show()
              
    

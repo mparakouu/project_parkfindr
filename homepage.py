@@ -46,7 +46,19 @@ class homeWindow(QMainWindow):
         self.photo_button = QPushButton('Upload Photo', self)
         self.photo_button.setGeometry(115, 240, 120, 30)
         self.photo_button.clicked.connect(self.uploadPhoto)
-
+        self.photo_button.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 17px;
+            text-align: center;
+''')
         # Ετικέτα καλωσορίσματος
         welcome_label = QLabel('Welcome', self)  
         welcome_label.setGeometry(120, 270, 250, 30)  
@@ -69,32 +81,84 @@ class homeWindow(QMainWindow):
 
         # Δημιουργία κουμπιών για επιλογές μενού
         button1 = QPushButton('Home', self)
-        button1.setGeometry(50, 350, 100, 30)
+        button1.setGeometry(120, 350, 100, 30)
         button1.clicked.connect(self.openPage1)
+        button1.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 17px;
+            text-align: center;
+''')
 
         button2 = QPushButton('Reservations', self)
-        button2.setGeometry(50, 400, 100, 30)
+        button2.setGeometry(120, 400, 100, 30)
         button2.clicked.connect(self.openPage2)
+        button2.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 14px;
+            text-align: center;
+''')
 
         button3 = QPushButton('Calendar', self)
-        button3.setGeometry(50, 450, 100, 30)
+        button3.setGeometry(120, 450, 100, 30)
         button3.clicked.connect(self.openPage3)
+        button3.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 17px;
+            text-align: center;
+''')
 
         button4 = QPushButton('Acount', self)
-        button4.setGeometry(50, 500, 100, 30)
+        button4.setGeometry(120, 500, 100, 30)
         button4.clicked.connect(self.openPage4)
+        button4.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 17px;
+            text-align: center;
+''')
 
     def openPage1(self):
-        print("")
+        print("home clicked")
 
     def openPage2(self):
-        print("")
+        print("reservation")
     
     def openPage3(self):
-        print("")
+        print("calendar")
     
     def openPage4(self):
-        print("")
+        print("account")
 
     def uploadPhoto(self):
         filename, _ = QFileDialog.getOpenFileName(self, "Select Photo", "", "Image Files (*.png *.jpg *.jpeg)")
