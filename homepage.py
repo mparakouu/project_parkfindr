@@ -59,7 +59,7 @@ class homeWindow(QMainWindow):
 
         # Ετικέτα email
         email_label = QLabel(self.user_email, self)
-        email_label.setGeometry(90, 300, 250, 30)  
+        email_label.setGeometry(100, 300, 250, 30)  
         email_label.setStyleSheet('''
             color: #3D8AF7;  
             font-family: "Asap"; 
@@ -69,20 +69,98 @@ class homeWindow(QMainWindow):
 
         # Δημιουργία κουμπιών για επιλογές μενού
         button1 = QPushButton('Home', self)
-        button1.setGeometry(50, 350, 100, 30)
+        button1.setGeometry(125, 350, 100, 30)
         button1.clicked.connect(self.openPage1)
+        button1.setCursor(QCursor(Qt.PointingHandCursor))
+        button1.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 13px;
+            text-align: center;
+        ''')
 
         button2 = QPushButton('Reservations', self)
-        button2.setGeometry(50, 400, 100, 30)
+        button2.setGeometry(125, 400, 100, 30)
         button2.clicked.connect(self.openPage2)
+        button2.setCursor(QCursor(Qt.PointingHandCursor))
+        button2.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 13px;
+            text-align: center;
+        ''')
+
 
         button3 = QPushButton('Calendar', self)
-        button3.setGeometry(50, 450, 100, 30)
+        button3.setGeometry(125, 450, 100, 30)
         button3.clicked.connect(self.openPage3)
+        button3.setCursor(QCursor(Qt.PointingHandCursor))
+        button3.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 13px;
+            text-align: center;
+        ''')
+
+
 
         button4 = QPushButton('Acount', self)
-        button4.setGeometry(50, 500, 100, 30)
+        button4.setGeometry(125, 500, 100, 30)
         button4.clicked.connect(self.openPage4)
+        button4.setCursor(QCursor(Qt.PointingHandCursor))
+        button4.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 13px;
+            text-align: center;
+        ''')
+
+        button5 = QPushButton('logout', self)
+        button5.setGeometry(125, 600, 100, 30)
+        button5.clicked.connect(self.openPage4)
+        button5.clicked.connect(self.logout_window)
+        button5.setCursor(QCursor(Qt.PointingHandCursor))
+        button5.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 20px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 13px;
+            text-align: center;
+        ''')
 
     def openPage1(self):
         print("")
@@ -105,6 +183,14 @@ class homeWindow(QMainWindow):
             self.photo_label.setGeometry(122, 140, 100, 100)
             pixmap = QPixmap(filename)
             self.photo_label.setPixmap(pixmap)
+
+
+    def logout_window(self):
+        from signin import signInWindow
+        self.close()
+        self.logout_window = signInWindow()
+        self.logout_window.show()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
