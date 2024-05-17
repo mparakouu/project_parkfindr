@@ -114,7 +114,7 @@ class ReviewSubmitWindow(QMainWindow):
         review_text = self.review_input.toPlainText()
         #θα κάνω εδώ σύνδεση με την βάση δεδομένων και θα τα βάλω στον πίνακα που έφτιαξα 
         try:
-            db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
             cursor = db.cursor()
 
 
