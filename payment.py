@@ -209,7 +209,7 @@ class paymentWindow(QMainWindow,):
 
         try:
             #Σύνδεση στη Βάση Δεδομένων
-            db = mdb.connect('localhost','root','giannis','ParkFindr')
+            db = mdb.connect('localhost','root','admin','ParkFindr')
             cursor = db.cursor()
 
             #Πραγματοποίηση Insert στον πίνακα 
