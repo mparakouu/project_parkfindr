@@ -3,12 +3,14 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor , QIcon 
 from PyQt5.QtCore import Qt , QSize
+from review_write import ReviewSubmitWindow
 
 #gia thn dhmiourgia toy 5-star rating
 class RatingWidget(QLabel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.initUI()
+        self.rating = 0  # Αρχικοποίηση της ιδιότητας rating
 
     def initUI(self):
         self.stars = []
@@ -38,18 +40,23 @@ class RatingWidget(QLabel):
            
 
     def star_clicked(self):
-        clicked_star = self.sender()  # Πάρε το αστέρι που πατήθηκε
+        clicked_star = self.sender()
+        clicked_index = self.stars.index(clicked_star)
+        self.rating = clicked_index + 1  # Αποθήκευση του αριθμού των αστεριών
         for i, star in enumerate(self.stars):
-            if star == clicked_star:  # Βρες το αστέρι που πατήθηκε στη λίστα
-                star.setIcon(QIcon('star.png'))  # Αλλαγή εικόνας
+            if i <= clicked_index:
+                star.setIcon(QIcon('star.png'))
             else:
                 star.setIcon(QIcon('white-star.png'))
+
+        print(f"You rated {clicked_index + 1} stars")
 
 
 class ReviewWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.star_rating = None
 
     def initUI(self):
         self.setWindowTitle('Customer Review')
@@ -96,11 +103,11 @@ class ReviewWindow(QMainWindow):
 
          ''')
 
-        label_parking = QCheckBox(' Parking Space', self)
-        label_parking.setGeometry(30, 190, 431, 74)
-        label_parking.setObjectName('parking-space-')
-        label_parking.setCursor(QCursor(Qt.PointingHandCursor))
-        label_parking.setStyleSheet('''
+        self.label_parking = QCheckBox(' Parking Space', self)
+        self.label_parking.setGeometry(30, 190, 431, 74)
+        self.label_parking.setObjectName('parking-space-')
+        self.label_parking.setCursor(QCursor(Qt.PointingHandCursor))
+        self.label_parking.setStyleSheet('''
             width: 434px;
             height: 74px;
             color: #000000;
@@ -112,11 +119,11 @@ class ReviewWindow(QMainWindow):
          ''')
         
 
-        label_app = QCheckBox(' ParkFindr App', self)
-        label_app.setGeometry(30, 220, 431, 94)
-        label_app.setObjectName('parkfindr-app-')
-        label_app.setCursor(QCursor(Qt.PointingHandCursor))
-        label_app.setStyleSheet('''
+        self.label_app = QCheckBox(' ParkFindr App', self)
+        self.label_app.setGeometry(30, 220, 431, 94)
+        self.label_app.setObjectName('parkfindr-app-')
+        self.label_app.setCursor(QCursor(Qt.PointingHandCursor))
+        self.label_app.setStyleSheet('''
             width: 434px;
             height: 74px;
             color: #000000;
@@ -141,14 +148,14 @@ class ReviewWindow(QMainWindow):
 
          ''')
         
-        rating_widget = RatingWidget(self)
-        rating_widget.setGeometry(70, 370, 200, 40)
+        self.rating_widget = RatingWidget(self)
+        self.rating_widget.setGeometry(70, 370, 200, 40)
 
         button_next = QPushButton('Next', self)
-        button_next.setGeometry(30, 550, 140, 48)
+        button_next.setGeometry(175, 550, 140, 48)
         button_next.setObjectName('button-14')
         button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.clicked.connect(self.next_clicked) #prepei na orisoyme poy pane otan kanei click
+        button_next.clicked.connect(self.next_clicked) 
         button_next.setStyleSheet('''
             width: 140px;
             height: 48px;
@@ -168,7 +175,7 @@ class ReviewWindow(QMainWindow):
          ''')
 
         button_contact = QPushButton('Contact', self)
-        button_contact.setGeometry(175, 550, 140, 48)
+        button_contact.setGeometry(30, 550, 140, 48)
         button_contact.setObjectName('button-15')
         button_contact.setCursor(QCursor(Qt.PointingHandCursor))
         button_contact.clicked.connect(self.contact_clicked) #prepei na orisoyme poy pane otan kanei click
@@ -193,10 +200,28 @@ class ReviewWindow(QMainWindow):
 
 
     def next_clicked(self):
-        print("Next clicked") #edw tha baloyme leitoyrgia 
+        print("Next clicked") 
+
+        review_for = None
+        if self.label_parking.isChecked():
+            review_for = "Parking Space"
+        elif self.label_app.isChecked():
+            review_for = "ParkFindr App"
+
+        if not review_for:
+            print("Please select who you want to rate.")
+            return
+        
+        self.star_rating = self.rating_widget.rating
+        if self.star_rating == 0:
+            print("Please provide a rating.")
+            return
+        self.review_submit_window = ReviewSubmitWindow(self.star_rating, review_for) #θα τα χρειαστώ για όταν κάνω sumbit να αποθηκέυονται στην βάση δεδομένων 
+        self.review_submit_window.show() 
+        self.close()
 
     def contact_clicked(self):
-        print("Contact clicked") #edw tha baloyme leitoyrgia 
+        print("Contact clicked")  
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

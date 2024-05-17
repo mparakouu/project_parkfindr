@@ -134,7 +134,7 @@ class signInWindow(QMainWindow):
 
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'giannis', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
             cursor = db.cursor()
 
             # ερώτημα SQL
