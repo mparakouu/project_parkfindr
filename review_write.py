@@ -1,9 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QCheckBox , QBoxLayout , QButtonGroup ,QTextEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QMessageBox ,QTextEdit
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor , QIcon 
 from PyQt5.QtCore import Qt , QSize
-
+import MySQLdb as mdb
 
 class ReviewSubmitWindow(QMainWindow):
     def __init__(self, rating, review_for):
@@ -113,6 +113,24 @@ class ReviewSubmitWindow(QMainWindow):
         print("Sumbit clicked") 
         review_text = self.review_input.toPlainText()
         #θα κάνω εδώ σύνδεση με την βάση δεδομένων και θα τα βάλω στον πίνακα που έφτιαξα 
+        try:
+            db = mdb.connect('localhost', 'root', 'garfield', 'ParkFindr')
+            cursor = db.cursor()
+
+
+            sql = "INSERT INTO reviews (review_text, rating, review_for) VALUES (%s, %s, %s)"
+            val = (review_text, self.rating, self.review_for)
+            cursor.execute(sql, val)
+            db.commit()
+            cursor.close()
+            db.close()
+
+            QMessageBox.information(self, "Success", "Your review has been submitted successfully!")
+            self.close()
+
+        except mdb.Error as e:
+            print("Error:", e)
+            QMessageBox.critical(self, "Database Error", f"An error occurred while submitting your review: {e}")
 
     def back_clicked(self):
         print("Back clicked") 
