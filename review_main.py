@@ -103,8 +103,8 @@ class ReviewWindow(QMainWindow):
 
          ''')
 
-        self.label_parking = QCheckBox(' Parking Space', self)
-        self.label_parking.setGeometry(30, 190, 431, 74)
+        self.label_parking = QCheckBox('  Parking Space', self)
+        self.label_parking.setGeometry(30, 180, 431, 74)
         self.label_parking.setObjectName('parking-space-')
         self.label_parking.setCursor(QCursor(Qt.PointingHandCursor))
         self.label_parking.setStyleSheet('''
@@ -119,7 +119,7 @@ class ReviewWindow(QMainWindow):
          ''')
         
 
-        self.label_app = QCheckBox(' ParkFindr App', self)
+        self.label_app = QCheckBox('  ParkFindr App', self)
         self.label_app.setGeometry(30, 220, 431, 94)
         self.label_app.setObjectName('parkfindr-app-')
         self.label_app.setCursor(QCursor(Qt.PointingHandCursor))
