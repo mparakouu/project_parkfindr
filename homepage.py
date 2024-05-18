@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
+from PyQt5.QtWebEngineWidgets import QWebEngineView 
 
 class homeWindow(QMainWindow):
     def __init__(self, user_mail):

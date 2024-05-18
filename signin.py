@@ -139,7 +139,7 @@ class signInWindow(QMainWindow):
             return
 
         try:
-            db = mdb.connect('localhost', 'root', 'dimitrisminog', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
             cursor = db.cursor()
 
             cursor.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
