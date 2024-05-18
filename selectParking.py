@@ -8,7 +8,58 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore #pip install
 import folium  # type: ignore #kante pip install folium
 
 
+#κλαση για το παραθυρο με τα φλτρα
+class FilterOptions(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.initUI()
 
+    def initUI(self):
+        self.setStyleSheet('''
+            background-color: #75A9F9;
+            border: 2px solid #3D8AF7;
+            border-radius: 10px;
+            padding: 5px;
+        ''')
+        layout = QVBoxLayout()
+
+        button1 = QPushButton("Button 1", self)
+        button1.setStyleSheet('''
+            width: 100px;
+            height: 40px;
+            background-color: #3D8AF7;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 10px;
+            font-family: "Helvetica";
+            font-weight: bold;
+            font-size: 16px;
+        ''')
+        layout.addWidget(button1)
+        button1.clicked.connect(self.openFilter1)
+
+        button2 = QPushButton("Button 2", self)
+        button2.setStyleSheet('''
+            width: 120px;
+            height: 40px;
+            background-color: #3D8AF7;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 10px;
+            font-family: "Helvetica";
+            font-weight: bold;
+            font-size: 16px;
+        ''')
+        layout.addWidget(button2)
+        button2.clicked.connect(self.openFilter2)
+
+        self.setLayout(layout)
+    
+    def openFilter1(self):
+        print("button 1 clicked")
+        
+    def openFilter2(self):
+        print("button 2 clicked")
 class selectParking(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -54,6 +105,12 @@ class selectParking(QMainWindow):
                 padding: 0;
                  color: #3D8AF7;
             ''')
+        filtr.clicked.connect(self.showFilterOptions)
+
+        self.filter_options = FilterOptions(self)
+        self.filter_options.setGeometry(200, 86, 120, 80)
+        self.filter_options.hide()
+
 
         button_back = QPushButton('Back', self)
         button_back.setGeometry(30, 550, 140, 48)
@@ -126,7 +183,14 @@ class selectParking(QMainWindow):
         data = io.BytesIO() 
         m.save(data, close_file=False)
         webView.setHtml(data.getvalue().decode()) 
+        
 
+    def showFilterOptions(self):
+        if self.filter_options.isHidden():
+            self.filter_options.show()
+        else:
+            self.filter_options.hide()
+   
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
