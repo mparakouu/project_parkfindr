@@ -4,6 +4,8 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QProcess
+from PyQt5.QtWebEngineWidgets import QWebEngineView  
+
 
 
 class makeReservation(QMainWindow):
