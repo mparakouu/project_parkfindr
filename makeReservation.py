@@ -1,9 +1,11 @@
 import sys
-from PyQt5.QtWidgets import * 
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QWidget
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap, QCursor,QIcon
+from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QProcess
+from PyQt5.QtWebEngineWidgets import QWebEngineView  
+
 
 
 class makeReservation(QMainWindow):
@@ -12,8 +14,11 @@ class makeReservation(QMainWindow):
         self.initUI()
   
     def initUI(self):
-        self.setWindowTitle('make Reservation')
+        self.setWindowTitle('Make Reservation')
         self.setGeometry(100, 100, 340, 667)
+
+
+
   
         # περίγραμμα του iPhone
         iphonePixmap = QPixmap('iphoneFrame.png')
@@ -27,11 +32,21 @@ class makeReservation(QMainWindow):
             background-color: transparent; 
             background-color: #FFFFFF; 
         ''')
+
         
+        #Εισαγωγή του Background
+        self.background_label = QLabel(self)
+        self.background_label.setGeometry(23, 50, 295, 578)
+        pixmap = QPixmap('image.png')
+        self.background_label.setPixmap(pixmap.scaled(self.size(), QtCore.Qt.IgnoreAspectRatio))
+
+
+
+
        
 
         label_res = QLabel('Make your reservation ' , self)
-        label_res.setGeometry(40, 240, 434, 74)
+        label_res.setGeometry(40, 200, 434, 74)
         label_res.setObjectName('reservation')
         label_res.setStyleSheet('''
             width: 287px;
@@ -45,7 +60,7 @@ class makeReservation(QMainWindow):
         '''  )
 
         label_reser = QLabel('  now ' , self)
-        label_reser.setGeometry(120, 270, 434, 74)
+        label_reser.setGeometry(120, 240, 434, 74)
         label_reser.setObjectName('reservation1')
         label_reser.setStyleSheet('''
             width: 287px;
@@ -80,8 +95,8 @@ class makeReservation(QMainWindow):
     def search_pressed(self):
      print("search clicked")
     
-     from selectParking import selectParkingWindow
-     self.selectParkingWindow= selectParkingWindow()
+     from selectParking import selectParking
+     self.selectParkingWindow= selectParking()
      self.selectParkingWindow.show()
              
    
@@ -89,9 +104,10 @@ class makeReservation(QMainWindow):
 
 
     def open_map(self):
-        from selectParking import selectParkingWindow
+        print("ok")
+        from selectParking import selectParking
         self.close()
-        self.map_window = selectParkingWindow()
+        self.map_window = selectParking()
         self.map_window.show()
     
 
