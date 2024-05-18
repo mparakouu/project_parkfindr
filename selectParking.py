@@ -104,9 +104,25 @@ class selectParking(QMainWindow):
         coordinate = (38.261656677847824, 21.748691029725343)  # συντεταγμένες για Πάτρα
         m = folium.Map(
             title='patras',
-            zoom_start=13,
+            zoom_start=15,
             location=coordinate
         )
+
+
+       # parking markers
+        parking_locations = [
+            (38.261656677847824, 21.748691029725343 , "1"),
+            (38.259656677847824, 21.750691029725343 , "2"),
+            (38.263656677847824, 21.746691029725343 , "3"),
+            (38.261556377847824, 21.742691029725343 , "4")
+        ]
+
+        for lat, lon, id in parking_locations:
+            folium.Marker(
+                location=(lat, lon),
+                popup=folium.Popup(f"ID: {id}", parse_html=True)
+            ).add_to(m)
+            
         data = io.BytesIO() 
         m.save(data, close_file=False)
         webView.setHtml(data.getvalue().decode()) 
