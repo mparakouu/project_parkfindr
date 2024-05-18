@@ -223,6 +223,7 @@ class ReviewWindow(QMainWindow):
 
     def contact_clicked(self):
         print("Contact clicked")  
+        
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
