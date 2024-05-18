@@ -10,6 +10,7 @@ class RatingWidget(QLabel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.initUI()
+        self.rating=0
          
 
     def initUI(self):
@@ -207,7 +208,7 @@ class ReviewWindow(QMainWindow):
             review_for = "Parking Space"
         elif self.label_app.isChecked():
             review_for = "ParkFindr App"
-
+        
         if not review_for:
             QMessageBox.warning(self, "Input Error", "Please select who you want to rate.")
             return
