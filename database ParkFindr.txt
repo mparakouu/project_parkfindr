@@ -39,3 +39,16 @@ CREATE TABLE reviews (
 );
 
 
+
+CREATE TABLE reservations(
+    code INT AUTO_INCREMENT,
+    date TEXT NOT NULL,
+    status ENUM('Waiting','Confirmed','Cancelled') NOT NULL,
+    PRIMARY KEY (code)
+);
+
+INSERT INTO reservations (date, status) VALUES
+('Just Now', 'Waiting'),
+('10 minutes ago', 'Confirmed'),
+('2 days ago', 'Cancelled');
+
