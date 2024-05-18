@@ -14,6 +14,38 @@ PRIMARY KEY (id)
 );
 
 
+CREATE TABLE IF NOT EXISTS Parking_owner(
+park_Owner_id int AUTO_INCREMENT PRIMARY KEY,
+full_name varchar(100) NOT NULL,
+phone varchar(10) NOT NULL,
+email varchar(100) NOT NULL,
+password varchar(100) NOT NULL
+);
+
+INSERT INTO Parking_owner VALUES
+('Georgia Barakou','6923541289','mparakou7@gmail.com','1234'),
+('Giannis Balasis','6934901265','balasis123@gmail.com','1234'),
+('Xristiana Mousele','6934769127','mousele4@gmail.com','1234'),
+('Dimitris Mhnogiannhs','6936190426','mhnogiannhs5@gmail.com','1234');
+
+
+CREATE TABLE IF NOT EXISTS parkingData(
+    parking_number int AUTO_INCREMENT PRIMARY KEY,
+    parking_owner_id INT NOT NULL,
+    parking_name varchar(100) NOT NULL,
+    address varchar(100) NOT NULL,
+    open_hours varchar(20) NOT NULL,  
+    spots INT NOT NULL,
+    FOREIGN KEY (parking_owner_id) REFERENCES Parking_owner(park_Owner_id)
+);
+
+INSERT INTO parkingData (parking_owner_id, parking_name, address, open_hours, spots) VALUES
+(1 , 'ParkNow' , 'Bonitsas 14' , '10:00 - 21:00' , 20),
+(4 , 'BestParking' , 'Larnakas 7' , '10:00 - 21:00' , 60),
+(3 , 'PatrasParking' , 'Megistou 10' , '10:00 - 21:00' , 30),
+(2 , 'PatrasKings' , 'Rwmanou 5' , '10:00 - 21:00' , 50);
+
+
 
 
 CREATE TABLE IF NOT EXISTS payments(

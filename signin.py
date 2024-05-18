@@ -130,10 +130,17 @@ class signInWindow(QMainWindow):
             print("Παρακαλώ συμπληρώστε όλα τα πεδία.")
             return
 
+        # τα στοιχεία σύνδεσης των ιδιοκτήτων parking --> στην σελίδα για ειδοποιήσεις κρατήσεων 
+        if (email == "mparakou7@gmail.com" and password == "1234") or (email == "balasis123@gmail.com" and password == "1234") or (email == "mousele4@gmail.com" and password == "1234") or (email == "mhnogiannhs5@gmail.com" and password == "1234"):
+            self.close()
+            from parkingOwnerPage import ParkingWindow
+            self.special_window = ParkingWindow()
+            self.special_window.show()
+            return
+
         try:
             db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
             cursor = db.cursor()
-
 
             cursor.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
             result = cursor.fetchone()  # save το 1ο αποτέλεσμα που επιστρέφει η εντολή mysql

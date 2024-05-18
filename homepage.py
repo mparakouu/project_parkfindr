@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
+from PyQt5.QtWebEngineWidgets import QWebEngineView 
 
 class homeWindow(QMainWindow):
     def __init__(self, user_mail):
@@ -44,12 +45,24 @@ class homeWindow(QMainWindow):
 
         # Κουμπί 
         self.photo_button = QPushButton('Upload Photo', self)
-        self.photo_button.setGeometry(115, 240, 120, 30)
+        self.photo_button.setGeometry(115, 250, 120, 30)
         self.photo_button.clicked.connect(self.uploadPhoto)
-
+        self.photo_button.setStyleSheet('''
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 6px 6px 6px 6px;
+            font-family: "Helvetica";
+            font-weight: 400;
+            font-size: 17px;
+            text-align: center;
+''')
         # Ετικέτα καλωσορίσματος
         welcome_label = QLabel('Welcome', self)  
-        welcome_label.setGeometry(120, 270, 250, 30)  
+        welcome_label.setGeometry(120, 290, 250, 30)  
         welcome_label.setStyleSheet('''
             color: #3D8AF7; 
             font-family: "Asap"; 
@@ -59,7 +72,7 @@ class homeWindow(QMainWindow):
 
         # Ετικέτα email
         email_label = QLabel(self.user_email, self)
-        email_label.setGeometry(100, 300, 250, 30)  
+        email_label.setGeometry(100, 320, 250, 30)  
         email_label.setStyleSheet('''
             color: #3D8AF7;  
             font-family: "Asap"; 
@@ -68,10 +81,9 @@ class homeWindow(QMainWindow):
         ''')
 
         # Δημιουργία κουμπιών για επιλογές μενού
-        button1 = QPushButton('Home', self)
-        button1.setGeometry(125, 350, 100, 30)
+        button1 = QPushButton('Reserve Now', self)
+        button1.setGeometry(120, 370, 100, 30)
         button1.clicked.connect(self.openPage1)
-        button1.setCursor(QCursor(Qt.PointingHandCursor))
         button1.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
@@ -79,17 +91,16 @@ class homeWindow(QMainWindow):
             border-color: #FFFFFF;
             border-width: 1px;
             border-style: solid;
-            border-radius: 20px;
+            border-radius: 6px 6px 6px 6px;
             font-family: "Helvetica";
             font-weight: 400;
             font-size: 13px;
             text-align: center;
-        ''')
+''')
 
         button2 = QPushButton('Reservations', self)
-        button2.setGeometry(125, 400, 100, 30)
+        button2.setGeometry(120, 420, 100, 30)
         button2.clicked.connect(self.openPage2)
-        button2.setCursor(QCursor(Qt.PointingHandCursor))
         button2.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
@@ -97,18 +108,16 @@ class homeWindow(QMainWindow):
             border-color: #FFFFFF;
             border-width: 1px;
             border-style: solid;
-            border-radius: 20px;
+            border-radius: 6px 6px 6px 6px;
             font-family: "Helvetica";
             font-weight: 400;
-            font-size: 13px;
+            font-size: 14px;
             text-align: center;
-        ''')
-
+''')
 
         button3 = QPushButton('Calendar', self)
-        button3.setGeometry(125, 450, 100, 30)
+        button3.setGeometry(120, 470, 100, 30)
         button3.clicked.connect(self.openPage3)
-        button3.setCursor(QCursor(Qt.PointingHandCursor))
         button3.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
@@ -116,19 +125,16 @@ class homeWindow(QMainWindow):
             border-color: #FFFFFF;
             border-width: 1px;
             border-style: solid;
-            border-radius: 20px;
+            border-radius: 6px 6px 6px 6px;
             font-family: "Helvetica";
             font-weight: 400;
-            font-size: 13px;
+            font-size: 17px;
             text-align: center;
-        ''')
-
-
+''')
 
         button4 = QPushButton('Acount', self)
-        button4.setGeometry(125, 500, 100, 30)
+        button4.setGeometry(120, 520, 100, 30)
         button4.clicked.connect(self.openPage4)
-        button4.setCursor(QCursor(Qt.PointingHandCursor))
         button4.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
@@ -136,54 +142,48 @@ class homeWindow(QMainWindow):
             border-color: #FFFFFF;
             border-width: 1px;
             border-style: solid;
-            border-radius: 20px;
+            border-radius: 6px 6px 6px 6px;
             font-family: "Helvetica";
             font-weight: 400;
-            font-size: 13px;
+            font-size: 17px;
             text-align: center;
-        ''')
-
-        button5 = QPushButton('logout', self)
-        button5.setGeometry(125, 600, 100, 30)
-        button5.clicked.connect(self.openPage4)
-        button5.clicked.connect(self.logout_window)
-        button5.setCursor(QCursor(Qt.PointingHandCursor))
-        button5.setStyleSheet('''
-            padding: 0px 10px 0px 10px;
-            background: #75A9F9;
-            color: #FFFFFF;
-            border-color: #FFFFFF;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 20px;
-            font-family: "Helvetica";
-            font-weight: 400;
-            font-size: 13px;
-            text-align: center;
-        ''')
+''')
 
     def openPage1(self):
-        print("")
+        print("home clicked")
+        from makeReservation import makeReservation
+        self.makeReservation_window= makeReservation()
+        self.makeReservation_window.show()
+        self.close()
+
 
     def openPage2(self):
-        print("")
+        print("reservation")
     
     def openPage3(self):
-        print("")
+        print("calendar")
     
     def openPage4(self):
-        print("")
+        print("account")
 
     def uploadPhoto(self):
-        filename, _ = QFileDialog.getOpenFileName(self, "Select Photo", "", "Image Files (*.png *.jpg *.jpeg)")
+        filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', '', 'Image Files (*.png *.jpg *.jpeg)')
         if filename:
             print("photo path:", filename)
             self.photo_button.setHidden(True)
-            self.photo_label = QLabel(self.photo_frame)  #θα την βάλει στο photo_frame
-            self.photo_label.setGeometry(122, 140, 100, 100)
-            pixmap = QPixmap(filename)
-            self.photo_label.setPixmap(pixmap)
-
+            self.photo_label = QLabel(self.photo_frame)
+            self.photo_label.setGeometry(0, 0, 100, 100)
+            self.photo_label.setAlignment(Qt.AlignCenter)
+            self.photo_label.setStyleSheet(f"""
+                QLabel {{
+                    border: 2px solid #d6d6d6;
+                    background-image: url({filename});
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    border-radius: 5px;
+                }}
+            """)
+            self.photo_label.show()
 
     def logout_window(self):
         from signin import signInWindow
