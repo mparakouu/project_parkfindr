@@ -131,7 +131,7 @@ class signInWindow(QMainWindow):
             return
 
         try:
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            db = mdb.connect('localhost', 'root', 'dimitrisminog', 'ParkFindr')
             cursor = db.cursor()
 
 
