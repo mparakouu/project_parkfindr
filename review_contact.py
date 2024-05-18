@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget 
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWidget, QPushButton , QTableWidgetItem
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor , QIcon 
 from PyQt5.QtCore import Qt , QSize
@@ -39,16 +39,73 @@ class ContactWindow(QMainWindow):
             text-align: center;
         ''')
 
-        tableWidget = QTableWidget(self) 
-        table_width=300 
-        table_height=200
+        self.tableWidget = QTableWidget(self) 
+        table_width=260 
+        table_height=300
+        self.tableWidget.verticalHeader().setVisible(False)
+        self.tableWidget.horizontalHeader().setVisible(False)
         table_x = (self.width() - table_width) // 2  
-        tableWidget.setGeometry(table_x, 120, table_width, table_height) 
-
+        self.tableWidget.setGeometry(table_x, 120, table_width, table_height) 
+        self.tableWidget.setStyleSheet('''
+            QTableWidget {
+                border: none;
+            }
+            QTableWidget::item {
+                padding-left: 10px;  # Προσθέστε περιθώρια στα κελιά
+                padding-right: 10px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }                           
+        ''')
         self.fetch_data_from_database()
 
+        button_back = QPushButton('Back', self)
+        button_back.setGeometry(30, 570, 140, 48)
+        button_back.setObjectName('button-back')
+        button_back.setCursor(QCursor(Qt.PointingHandCursor))
+        button_back.clicked.connect(self.back_clicked) 
+        button_back.setStyleSheet('''
+            width: 140px;
+            height: 48px;
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 3px;
+            border-style: solid;
+            border-radius: 20px 20px 20px 20px;
+            font-family: "Shippori Antique B1";
+            font-weight: bold;
+            font-size: 19px;
+            font-style: italic;
+            text-align: center;                       
+                                     
+         ''')
+        
+        button_next = QPushButton('Next', self)
+        button_next.setGeometry(175, 570, 140, 48)
+        button_next.setObjectName('button-14')
+        button_next.setCursor(QCursor(Qt.PointingHandCursor))
+        button_next.clicked.connect(self.next_clicked) 
+        button_next.setStyleSheet('''
+            width: 140px;
+            height: 48px;
+            padding: 0px 10px 0px 10px;
+            background: #75A9F9;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            border-width: 3px;
+            border-style: solid;
+            border-radius: 20px 20px 20px 20px;
+            font-family: "Shippori Antique B1";
+            font-weight: bold;
+            font-size: 19px;
+            font-style: italic;
+            text-align: center;
+                                  
+         ''')
 
-    
+
     def fetch_data_from_database(self):
         try:
             connection = mdb.connect(
@@ -62,24 +119,30 @@ class ContactWindow(QMainWindow):
             cursor.execute("SELECT * FROM reviews")
             rows = cursor.fetchall()
 
-                # Προσθήκη των δεδομένων σε QLabel widgets
             if rows:
+                self.tableWidget.setRowCount(len(rows[0]))
+                self.tableWidget.setColumnCount(len(rows))
+
                 for row_index, row in enumerate(rows):
                     for col_index, col_data in enumerate(row):
-                        data_label = QLabel(str(col_data), self)
-                        data_label.setGeometry(50 + col_index * 120, 200 + row_index * 30, 100, 20)
-                        data_label.setStyleSheet('''
-                            color: #000000;
-                            font-family: Arial;
-                            font-size: 12px;
-                        ''')
+                        item =QTableWidgetItem(str(col_data))
+                        item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                        self.tableWidget.setItem(col_index, row_index, item)
+
                         
         except Exception as e:
             # error
             print("Error:", e)
 
+    def back_clicked(self):
+        print("Back clicked") 
+        from review_main import ReviewWindow 
+        self.review_window = ReviewWindow()
+        self.review_window.show()
+        self.close()
 
-
+    def next_clicked(self):
+        print("Next clicked")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
