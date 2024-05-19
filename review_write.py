@@ -4,6 +4,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor , QIcon 
 from PyQt5.QtCore import Qt , QSize
 import MySQLdb as mdb
+import MySQLconnection as connection
 
 class ReviewSubmitWindow(QMainWindow):
     def __init__(self, rating, review_for):
@@ -114,7 +115,7 @@ class ReviewSubmitWindow(QMainWindow):
         review_text = self.review_input.toPlainText()
         #θα κάνω εδώ σύνδεση με την βάση δεδομένων και θα τα βάλω στον πίνακα που έφτιαξα 
         try:
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
 
 

@@ -4,6 +4,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QRegExpValidator
 from PyQt5.QtCore import Qt , QRegExp
 import MySQLdb as mdb
+import MySQLconnection as connection
 
 
 class paymentWindow(QMainWindow,):
@@ -209,7 +210,7 @@ class paymentWindow(QMainWindow,):
 
         try:
             #Σύνδεση στη Βάση Δεδομένων
-            db = mdb.connect('localhost','root','admin','ParkFindr')
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
 
             #Πραγματοποίηση Insert στον πίνακα 

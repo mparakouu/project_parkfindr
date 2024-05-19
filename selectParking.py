@@ -1,5 +1,6 @@
 import sys
 import io
+import subprocess
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt, QSize
@@ -8,8 +9,9 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore #pip install
 import folium  # type: ignore #kante pip install folium
 
 
+
 #κλαση για το παραθυρο με τα φλτρα
-class FilterOptions(QWidget):
+class FilterOptions(QWidget): 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.initUI()
@@ -60,6 +62,7 @@ class FilterOptions(QWidget):
         
     def openFilter2(self):
         print("button 2 clicked")
+
 class selectParking(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -166,23 +169,63 @@ class selectParking(QMainWindow):
         )
 
 
-       # parking markers
-        parking_locations = [
-            (38.261656677847824, 21.748691029725343 , "1"),
-            (38.259656677847824, 21.750691029725343 , "2"),
-            (38.263656677847824, 21.746691029725343 , "3"),
-            (38.261556377847824, 21.742691029725343 , "4")
+
+       # σύνδεση με το database
+        from MySQLconnection import connection
+
+        db_connection = connection()
+        cursor = db_connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM parkingData")
+        parking_data = cursor.fetchall()
+
+        # lat , lon , owner_id
+        marker_locations = [
+            (38.261656677847824, 21.748691029725343, 1),
+            (38.259656677847824, 21.750691029725343, 2),
+            (38.263656677847824, 21.746691029725343, 3),
+            (38.261556377847824, 21.742691029725343, 4)
         ]
 
-        for lat, lon, id in parking_locations:
-            folium.Marker(
-                location=(lat, lon),
-                popup=folium.Popup(f"ID: {id}", parse_html=True)
-            ).add_to(m)
+        for lat, lon, owner_id in marker_locations:
+            popup_content = ""
+            for loc in parking_data:
+                if loc['parking_owner_id'] == owner_id: 
+                    popup_content += f"""
+                        <strong>ID:</strong> {loc['parking_number']}<br>
+                        <strong>Name:</strong> {loc['parking_name']}<br>
+                        <strong>Address:</strong> {loc['address']}<br>
+                        <strong>Open Hours:</strong> {loc['open_hours']}<br>
+                        <strong>Free spots:</strong> {loc['spots']}<br>
+                        <button style="background-color: #75A9F9; border-radius: 10px; color: white; border: none;" onclick="ButtonPressed()">Reserve now</button><br>
+                    """
+            if popup_content:  
+                html_popup_content = f"""
+                    <div style='width: 160px; background-color: white; padding: 10px; border-radius: 10px;'>  
+                        {popup_content}
+                    </div>
+                    
+                """
+                folium.Marker(
+                    location=(lat, lon),
+                    popup=folium.Popup(html_popup_content, parse_html=False),  # html , css , js
+                    icon=folium.Icon(icon="car", prefix="fa", color="purple", icon_color="white", tooltip="Click me"),
+                    width=200 
+                ).add_to(m)
+                
+
+         
+        cursor.close()
+        db_connection.close()
             
+
         data = io.BytesIO() 
         m.save(data, close_file=False)
-        webView.setHtml(data.getvalue().decode()) 
+        # η javascript --> τι κάνει το button 
+        webView.setHtml(data.getvalue().decode() + """
+        <script>
+            function ButtonPressed() {
+        </script>
+    """)
         
 
     def showFilterOptions(self):
@@ -190,6 +233,10 @@ class selectParking(QMainWindow):
             self.filter_options.show()
         else:
             self.filter_options.hide()
+
+
+
+
    
 
 if __name__ == '__main__':

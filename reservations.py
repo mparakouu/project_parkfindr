@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWid
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import MySQLdb as mdb
+import MySQLconnection as connection
 
 class ReservationsWindow(QMainWindow):
     def __init__(self):
@@ -112,7 +113,7 @@ class ReservationsWindow(QMainWindow):
 
     def loadData(self):
         # Σύνδεση με τη βάση δεδομένων
-        db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+        db = connection.connection()  #σύνδεση με το MySQLconnection.py
         cursor = db.cursor()
 
         # Ανάκτηση δεδομένων από τον πίνακα

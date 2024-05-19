@@ -6,6 +6,7 @@ from PyQt5.QtCore import Qt , QSize, Qt, QUrl
 import MySQLdb as mdb
 from signin import signInWindow
 from chplan import choosePlanWindow
+import MySQLconnection as connection
 
 
 class signUpWindow(QMainWindow):
@@ -262,8 +263,7 @@ class signUpWindow(QMainWindow):
             return
 
         try:
-            # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
 
             # insert στο table user

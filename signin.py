@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices
 from PyQt5.QtCore import Qt , QSize, Qt, QUrl
 import MySQLdb as mdb
 from homepage import homeWindow
+import MySQLconnection as connection
 
 
 class signInWindow(QMainWindow): 
@@ -139,11 +140,11 @@ class signInWindow(QMainWindow):
             return
 
         try:
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
 
             cursor.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
-            result = cursor.fetchone()  # save το 1ο αποτέλεσμα που επιστρέφει η εντολή mysql
+            result = cursor.fetchone()  # save ότι επιστρέφει η εντολή
 
             if result:
                 self.user_id = result[0]  # save το id του χρήστη που συνδέθηκε = user_id
