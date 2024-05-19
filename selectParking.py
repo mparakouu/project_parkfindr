@@ -63,6 +63,8 @@ class FilterOptions(QWidget):
     def openFilter2(self):
         print("button 2 clicked")
 
+        
+
 class selectParking(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -234,7 +236,13 @@ class selectParking(QMainWindow):
         else:
             self.filter_options.hide()
 
+    def showFilterOptions(self):
+        if self.filter_options.isHidden(): # εάν filter hidden
 
+            self.filter_options.raise_()  # φίλτα μπροστά από χάρτη 
+            self.filter_options.show()  # show filter
+        else:
+            self.filter_options.hide()
 
 
    
