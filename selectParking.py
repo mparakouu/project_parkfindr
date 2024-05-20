@@ -254,7 +254,7 @@ class selectParking(QMainWindow):
         self.close()
         import duration_time_parking as DurationTime
         self.time_window = DurationTime.selectParking()
-        self.time_window.show()
+        self.time_window.show() 
 
    
 
