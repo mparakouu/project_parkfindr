@@ -173,6 +173,11 @@ class homeWindow(QMainWindow):
     
     def openPage4(self):
         print("account")
+        from account import AccountWindow
+        self.close()
+        self.acc_window= AccountWindow()
+        self.acc_window.show()
+        
 
     def uploadPhoto(self):
         filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', '', 'Image Files (*.png *.jpg *.jpeg)')
