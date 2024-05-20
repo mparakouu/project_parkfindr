@@ -168,6 +168,7 @@ class selectParking(QMainWindow):
             location=coordinate
         )
 
+        # κανάλι επικοινωνίας 
         channel = QWebChannel()
         channel.registerObject("pywebchannel_ex", self)
         webView.page().setWebChannel(channel)
