@@ -3,11 +3,9 @@ import io
 import subprocess
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtCore import QProcess
-from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore #pip install PyQtWebEngine
+from PyQt5.QtCore import Qt, QSize, QObject, pyqtSlot
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebChannel  # type: ignore #pip install PyQtWebEngine
 import folium  # type: ignore #kante pip install folium
-
 
 
 #κλαση για το παραθυρο με τα φλτρα
@@ -170,6 +168,10 @@ class selectParking(QMainWindow):
             location=coordinate
         )
 
+        channel = QWebChannel()
+        channel.registerObject("pywebchannel_ex", self)
+        webView.page().setWebChannel(channel)
+
 
 
        # σύνδεση με το database
@@ -222,14 +224,22 @@ class selectParking(QMainWindow):
 
         data = io.BytesIO() 
         m.save(data, close_file=False)
-        # η javascript --> τι κάνει το button 
+        
+        #σύνδεση της jv με την python, καλεί την python function
         webView.setHtml(data.getvalue().decode() + """
         <script>
             function ButtonPressed() {
+                if (typeof pywebchannel_ex !== 'undefined') {
+                    window.pywebchannel_ex.reserveNowClicked();
+                } else {
+                    console.error('pywebchannel_ex is not defined');
+                }
+            }
         </script>
     """)
         
 
+    
     def showFilterOptions(self):
         if self.filter_options.isHidden(): # εάν filter hidden
 
@@ -238,6 +248,13 @@ class selectParking(QMainWindow):
         else:
             self.filter_options.hide()
 
+    #σύνδεση της jv με την python, καλείται από την js
+    @pyqtSlot()
+    def reserveNowClicked(self):
+        self.close()
+        import duration_time_parking as DurationTime
+        self.time_window = DurationTime.selectParking()
+        self.time_window.show()
 
    
 
