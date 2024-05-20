@@ -2,10 +2,16 @@ import sys
 import io
 import subprocess
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap, QCursor, QIcon
-from PyQt5.QtCore import Qt, QSize, QObject, pyqtSlot
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebChannel  # type: ignore #pip install PyQtWebEngine
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWebChannel import QWebChannel
+from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore #pip install PyQtWebEngine
 import folium  # type: ignore #kante pip install folium
+
+# μέσω του καναλιού επικοινωνίας QWebChannel, όταν πατηθεί το button id="reserveButton" στην html (σειρά 207),  
+# η javascript (σειρά 234) θα "επικοινωνήσει" (bridge) και καλέσει την python function : def reserveNowClicked (σειρά 271)
+
+
 
 
 #κλαση για το παραθυρο με τα φλτρα
@@ -161,19 +167,22 @@ class selectParking(QMainWindow):
 
         webView = QWebEngineView(self)
         webView.setGeometry(20, 100, 300, 450)  
+
+        # δημιουργία QWebChannel και αντικειμένου bridge
+        channel = QWebChannel()
+        bridge = Bridge()
+        channel.registerObject("pywebchannel", bridge)
+
+        # σύνδεση καναλιού επικοινωνίας με --> QWebEngineView
+        webView.page().setWebChannel(channel)
+
+
         coordinate = (38.261656677847824, 21.748691029725343)  # συντεταγμένες για Πάτρα
         m = folium.Map(
             title='patras',
             zoom_start=15,
             location=coordinate
         )
-
-        # κανάλι επικοινωνίας 
-        channel = QWebChannel()
-        channel.registerObject("pywebchannel_ex", self)
-        webView.page().setWebChannel(channel)
-
-
 
        # σύνδεση με το database
         from MySQLconnection import connection
@@ -201,7 +210,7 @@ class selectParking(QMainWindow):
                         <strong>Address:</strong> {loc['address']}<br>
                         <strong>Open Hours:</strong> {loc['open_hours']}<br>
                         <strong>Free spots:</strong> {loc['spots']}<br>
-                        <button style="background-color: #75A9F9; border-radius: 10px; color: white; border: none;" onclick="ButtonPressed()">Reserve now</button><br>
+                        <button id="reserveButton" style="background-color: #75A9F9; border-radius: 10px; color: white; border: none;">Reserve now</button><br>
                     """
             if popup_content:  
                 html_popup_content = f"""
@@ -228,17 +237,29 @@ class selectParking(QMainWindow):
         
         #σύνδεση της jv με την python, καλεί την python function
         webView.setHtml(data.getvalue().decode() + """
+        <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
         <script>
-            function ButtonPressed() {
-                if (typeof pywebchannel_ex !== 'undefined') {
-                    window.pywebchannel_ex.reserveNowClicked();
+            function addClickListener() {
+                var reserveButton = document.getElementById('reserveButton');
+                if (reserveButton) {
+                    reserveButton.addEventListener('click', function() {
+                        if (typeof pywebchannel !== 'undefined') {
+                            pywebchannel.reserveNowClicked();
+                        } else {
+                            console.error('pywebchannel δεν έχει οριστεί');
+                        }
+                    });
                 } else {
-                    console.error('pywebchannel_ex is not defined');
+                    console.log("waiting");
+                    setTimeout(addClickListener, 100); 
                 }
             }
+
+            addClickListener();
+
         </script>
     """)
-        
+
 
     
     def showFilterOptions(self):
@@ -249,7 +270,12 @@ class selectParking(QMainWindow):
         else:
             self.filter_options.hide()
 
-    #σύνδεση της jv με την python, καλείται από την js
+
+   
+
+# κλάση bridge --> επικοινωνία js με python 
+# δημιουργία κλάσης bridge
+class Bridge(QObject):
     @pyqtSlot()
     def reserveNowClicked(self):
         self.close()
@@ -257,7 +283,6 @@ class selectParking(QMainWindow):
         self.time_window = DurationTime.selectParking()
         self.time_window.show() 
 
-   
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
