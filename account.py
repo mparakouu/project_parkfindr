@@ -61,11 +61,7 @@ class accountWindow(QMainWindow):
             font-weight: 400;
             font-size: 17px;
             text-align: center;
-<<<<<<< HEAD
              ''')
-=======
-        ''')
->>>>>>> ca025501127ce23be3c2666632bd43b0f562cdb8
         l_account = QLabel('Account', self)
         l_account.setGeometry(115, 130, 120, 30)
         l_account.setStyleSheet('''
