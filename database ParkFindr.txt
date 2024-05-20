@@ -47,7 +47,7 @@ INSERT INTO parkingData (parking_owner_id, parking_name, address, open_hours, sp
 
 
 CREATE TABLE IF NOT EXISTS createReservation(
-costumerID INT NOT NUL
+costumerID INT NOT NULL,
 ParkNum varchar(100) NOT NULL,
 DurationTime varchar(100) NOT NULL,
 NumSpot INT NOT NULL
