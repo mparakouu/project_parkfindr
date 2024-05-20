@@ -57,7 +57,7 @@ class AccountWindow(QMainWindow):
             font-weight: 400;
             font-size: 17px;
             text-align: center;
-''')
+        ''')
         l_account = QLabel('Account', self)
         l_account.setGeometry(115, 130, 120, 30)
         l_account.setStyleSheet('''
