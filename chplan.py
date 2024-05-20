@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt , QSize, Qt
-import MySQLdb as mdb
+import MySQLconnection as connection
 
 
 class choosePlanWindow(QMainWindow):
@@ -155,7 +155,7 @@ class choosePlanWindow(QMainWindow):
 
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
 
 
@@ -193,8 +193,9 @@ class choosePlanWindow(QMainWindow):
 
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
+
 
 
             sql_insert = "INSERT INTO plans (plan_type,user_id) VALUES (%s,%s)"
@@ -229,8 +230,9 @@ class choosePlanWindow(QMainWindow):
         
         try:
             # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
+
 
 
             sql_insert = "INSERT INTO plans (plan_type,user_id) VALUES (%s,%s)"

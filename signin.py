@@ -1,8 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox, QApplication, QLabel
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices
-from PyQt5.QtCore import Qt , QSize, Qt, QUrl
+from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices, QRegExpValidator
+from PyQt5.QtCore import Qt , QSize, Qt, QUrl, QRegExp
 import MySQLdb as mdb
 from homepage import homeWindow
 import MySQLconnection as connection
@@ -78,8 +78,11 @@ class signInWindow(QMainWindow):
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
+            font-size: 14px;
         ''')
-
+        email_validator = QRegExpValidator(QRegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'))
+        self.email_input.setValidator(email_validator)
+        
         # Πεδίο για εισαγωγή του κωδικού
         self.password_label = QLabel('Password:', self)
         self.password_label.setGeometry(70, 370, 200, 20)  
@@ -99,7 +102,18 @@ class signInWindow(QMainWindow):
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
+            font-size: 14px;
         ''')
+
+        self.show_password_icon = QLabel(self)
+        self.show_password_icon.setGeometry(245, 388, 30, 30)
+        self.show_password_icon.setPixmap(QPixmap("visible.png"))
+        self.show_password_icon.setScaledContents(True)
+        self.show_password_icon.setCursor(QCursor(Qt.PointingHandCursor))
+        self.show_password_icon.mousePressEvent = self.toggle_password_visibility
+        self.password_input.setEchoMode(QLineEdit.Normal)
+        
+        
 
 
         # κουμπί για είσοδος
@@ -164,6 +178,14 @@ class signInWindow(QMainWindow):
 
         except Exception as e:
             print("error:", e)
+
+    def toggle_password_visibility(self, event):
+        if self.password_input.echoMode() == QLineEdit.Normal:
+            self.password_input.setEchoMode(QLineEdit.Password)
+            self.show_password_icon.setPixmap(QPixmap("visible.png"))
+        else:
+            self.password_input.setEchoMode(QLineEdit.Normal)
+            self.show_password_icon.setPixmap(QPixmap("hide.png"))
 
 
 if __name__ == '__main__':

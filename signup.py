@@ -1,9 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox, QApplication, QLabel
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices
-from PyQt5.QtCore import Qt , QSize, Qt, QUrl
-import MySQLdb as mdb
+from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices, QRegExpValidator
+from PyQt5.QtCore import Qt , QSize, Qt, QUrl, QRegExp,QEvent
 from signin import signInWindow
 from chplan import choosePlanWindow
 import MySQLconnection as connection
@@ -69,6 +68,7 @@ class signUpWindow(QMainWindow):
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
+            font-size: 12px;
         ''')
 
         
@@ -90,6 +90,7 @@ class signUpWindow(QMainWindow):
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
+            font-size: 12px;
         ''')
 
         # Πεδίο για εισαγωγή του email
@@ -109,13 +110,15 @@ class signUpWindow(QMainWindow):
         self.email_input.setStyleSheet('''
             background-color: #FFFFFF;
             color:  #ccc;                         
-            border: none; 
-            font-weight: bold; 
+            border: none;  
             font-size: 13px;
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;                           
         ''')
+        self.email_input.installEventFilter(self)
+        email_validator = QRegExpValidator(QRegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'))
+        self.email_input.setValidator(email_validator)
         self.email = " "
 
     
@@ -138,7 +141,17 @@ class signUpWindow(QMainWindow):
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
+            font-size: 12px;
         ''')
+
+        self.show_password_icon = QLabel(self)
+        self.show_password_icon.setGeometry(245, 408, 30, 30)
+        self.show_password_icon.setPixmap(QPixmap("visible.png"))
+        self.show_password_icon.setScaledContents(True)
+        self.show_password_icon.setCursor(QCursor(Qt.PointingHandCursor))
+        self.show_password_icon.mousePressEvent = self.toggle_password_visibility
+        self.password_input.setEchoMode(QLineEdit.Normal)
+        
 
         # Πεδίο για εισαγωγή του Confirm Password
         self.cpassword_label = QLabel('Confirm Password', self)
@@ -159,14 +172,15 @@ class signUpWindow(QMainWindow):
             border-bottom: 2px solid #ccc;
             border-radius: 1px;
             padding: 5px;
+            font-size: 12px;
         ''')
-
+        self.cpassword_input.setEchoMode(QLineEdit.Normal)
 
         #CheckBox 
-        termsCheck = QCheckBox(self)
-        termsCheck.setGeometry(70, 500, 50, 50)
-        termsCheck.setCursor(QCursor(Qt.PointingHandCursor))
-        termsCheck.setStyleSheet('''
+        self.termsCheck = QCheckBox(self)
+        self.termsCheck.setGeometry(70, 500, 50, 50)
+        self.termsCheck.setCursor(QCursor(Qt.PointingHandCursor))
+        self.termsCheck.setStyleSheet('''
             width: 25px;
 	        height: 23px;
 	        background-color: #FFFFFF;
@@ -176,6 +190,7 @@ class signUpWindow(QMainWindow):
 	        font-size: 14px;
 	        text-align: left;
         ''')
+        self.termsCheck.stateChanged.connect(self.next_button_enable)
 
         #Terms
         termsmessage = QLabel('I agree to the Terms of Service and Privacy Policy', self)
@@ -194,11 +209,11 @@ class signUpWindow(QMainWindow):
 
 
         #Button Next
-        button_next = QPushButton('Next', self)
-        button_next.setGeometry(90, 570, 175, 36)
-        button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.clicked.connect(self.next_pressed) # εκτελεί την next_pressed και εισάγει τα data, 
-        button_next.setStyleSheet('''
+        self.button_next = QPushButton('Next', self)
+        self.button_next.setGeometry(90, 570, 175, 36)
+        self.button_next.setCursor(QCursor(Qt.PointingHandCursor))
+        self.button_next.clicked.connect(self.next_pressed) # εκτελεί την next_pressed και εισάγει τα data, 
+        self.button_next.setStyleSheet('''
 	        padding: 8px 8px 8px 8px;
 	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
 	        background: #3D8AF7;
@@ -210,6 +225,7 @@ class signUpWindow(QMainWindow):
 	        line-height: 1.3;
 	        text-align: center;                    
         ''')
+        self.button_next.setEnabled(False)  # Αρχικά απενεργοποιούμε το κουμπί
 
         # σε πάει στο signin.py 
         acc_exists = QLabel('Have an Account? ',self)
@@ -248,6 +264,30 @@ class signUpWindow(QMainWindow):
         self.close()  
         self.sign_in_window = signInWindow()  
         self.sign_in_window.show()
+
+    def eventFilter(self, obj, event):
+        if obj == self.email_input:
+            if event.type() == QtCore.QEvent.FocusIn:
+                self.email_input.setStyleSheet('''
+                    background-color: #FFFFFF;
+                    color: #000000;
+                    border: none;
+                    font-size: 16px;
+                    border-bottom: 2px solid #ccc;
+                    border-radius: 1px;
+                    padding: 5px;
+                ''')
+            elif event.type() == QtCore.QEvent.FocusOut and not self.email_input.text():
+                self.email_input.setStyleSheet('''
+                    background-color: #FFFFFF;
+                    color:  #ccc;
+                    border: none;
+                    font-size: 16px;
+                    border-bottom: 2px solid #ccc;
+                    border-radius: 1px;
+                    padding: 5px;
+                ''')
+        return super().eventFilter(obj, event)
        
 
     # οταν πατηθεί το "next" , εισάγει τα data στο table 
@@ -256,11 +296,36 @@ class signUpWindow(QMainWindow):
         phone = self.pnumber_input.text()
         email = self.email_input.text()
         password = self.password_input.text()
+        confirm_password = self.cpassword_input.text()
 
         # εάν είναι κενά τα πεδία --> σφαλμα
         if not full_name or not phone or not email or not password:
             print("Παρακαλώ συμπληρώστε όλα τα πεδία.")
             return
+        
+        # Έλεγχος αν οι κωδικοί ταιριάζουν
+        if password != confirm_password:
+            print("Οι κωδικοί δεν ταιριάζουν.")
+            self.password_input.setStyleSheet('''
+                background-color: #FFFFFF;
+                border: none;
+                border-bottom: 2px solid red;
+                border-radius: 1px;
+                padding: 5px;
+                font-size: 16px;
+            ''')
+            self.cpassword_input.setStyleSheet('''
+                background-color: #FFFFFF;
+                border: none;
+                border-bottom: 2px solid red;
+                border-radius: 1px;
+                padding: 5px;
+                font-size: 16px;
+            ''')
+            return
+        
+
+
 
         try:
             db = connection.connection()  #σύνδεση με το MySQLconnection.py
@@ -298,6 +363,22 @@ class signUpWindow(QMainWindow):
             # error
             print("Error:", e)
 
+    def toggle_password_visibility(self, event):
+        if self.password_input.echoMode() == QLineEdit.Normal:
+            self.password_input.setEchoMode(QLineEdit.Password)
+            self.cpassword_input.setEchoMode(QLineEdit.Password)
+            self.show_password_icon.setPixmap(QPixmap("visible.png"))
+        else:
+            self.password_input.setEchoMode(QLineEdit.Normal)
+            self.cpassword_input.setEchoMode(QLineEdit.Normal)
+            self.show_password_icon.setPixmap(QPixmap("hide.png"))
+
+
+    def next_button_enable(self):
+        if self.termsCheck.isChecked():
+            self.button_next.setEnabled(True)
+        else:
+            self.button_next.setEnabled(False)
 
 # Εκκίνηση και λειτουργία
 if __name__ == '__main__':

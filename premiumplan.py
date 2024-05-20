@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt , QSize, Qt
-import MySQLdb as mdb
+import MySQLconnection as connection
 
 
 class premiumPlanWindow(QMainWindow):
@@ -250,9 +250,10 @@ class premiumPlanWindow(QMainWindow):
         from chplan import choosePlanWindow
 
         try:
-            # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            #Σύνδεση στη Βάση Δεδομένων
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
+
 
             # Διαγραφή της εγγραφής "Premium Version" για τον συγκεκριμένο χρήστη
             sql_delete = "DELETE FROM plans WHERE plan_type = %s AND user_id = %s"
