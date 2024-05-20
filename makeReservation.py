@@ -9,14 +9,14 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 
 class makeReservation(QMainWindow):
-    def __init__(self):
+    def __init__(self, user_id):
         super().__init__()
-        self.initUI()
+        self.user_id = user_id
+        self.initUI() 
   
     def initUI(self):
         self.setWindowTitle('Make Reservation')
         self.setGeometry(100, 100, 340, 667)
-
 
 
   
@@ -41,9 +41,6 @@ class makeReservation(QMainWindow):
         self.background_label.setPixmap(pixmap.scaled(self.size(), QtCore.Qt.IgnoreAspectRatio))
 
 
-
-
-       
 
         label_res = QLabel('Make your reservation ' , self)
         label_res.setGeometry(40, 200, 434, 74)
@@ -95,16 +92,13 @@ class makeReservation(QMainWindow):
    
 
 
-
     def open_map(self):
-        print("ok")
         from selectParking import selectParking
         self.close()
-        self.map_window = selectParking()
+        self.map_window = selectParking(self.user_id)
         self.map_window.show()
     
-
-
+    
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)

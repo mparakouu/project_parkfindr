@@ -6,9 +6,10 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWebEngineWidgets import QWebEngineView 
 
 class homeWindow(QMainWindow):
-    def __init__(self, user_mail):
+    def __init__(self, user_mail, user_id):
         super().__init__() 
         self.user_email = user_mail
+        self.user_id = user_id
         self.initUI() 
 
     def initUI(self):
@@ -154,9 +155,11 @@ class homeWindow(QMainWindow):
 ''')
 
     def openPage1(self):
-        print("home clicked")
+
         from makeReservation import makeReservation
-        self.makeReservation_window= makeReservation()
+
+        print("ID χρήστη:", self.user_id)
+        self.makeReservation_window= makeReservation(self.user_id)
         self.makeReservation_window.show()
         self.close()
 

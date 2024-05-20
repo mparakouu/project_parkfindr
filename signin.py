@@ -156,7 +156,7 @@ class signInWindow(QMainWindow):
                 self.close()
 
                 # μεταφορά στο μενού
-                self.home_page_window = homeWindow(self.user_email)
+                self.home_page_window = homeWindow(self.user_email, self.user_id)
                 self.home_page_window.show()
 
             else:

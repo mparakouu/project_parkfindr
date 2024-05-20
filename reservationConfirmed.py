@@ -1,12 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QMessageBox
+from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QProcess
-from duration_time_parking import DurationTime
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtGui import QFontDatabase
+
 
 
 class ResConfirmed(QMainWindow):

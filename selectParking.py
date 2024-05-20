@@ -14,7 +14,7 @@ from branca.element import Template, MacroElement
 
 #κλαση για το παραθυρο με τα φλτρα
 class FilterOptions(QWidget): 
-    def __init__(self, parent=None):
+    def __init__(self,parent=None):
         super().__init__(parent)
         self.initUI()
 
@@ -68,8 +68,9 @@ class FilterOptions(QWidget):
         
 
 class selectParking(QMainWindow):
-    def __init__(self):
+    def __init__(self,user_id):
         super().__init__()
+        self.user_id = user_id
         self.initUI()
 
     def initUI(self):
@@ -286,21 +287,24 @@ class selectParking(QMainWindow):
 # κλάση bridge --> επικοινωνία js με python 
 # δημιουργία κλάσης bridge
 class Bridge(QObject):
-    def __init__(self, parent=None):
+    def __init__(self, user_id, parent=None):
         super().__init__(parent)
+        self.user_id = user_id
         self.parent = parent
 
     @pyqtSlot(str)
     def reserveNowClicked(self, parking_number):
-
-        print("Parking number που επιλέχθηκε:", parking_number)
+        self.parking_number = parking_number
+        print("ID χρήστη:", self.user_id)
+        print("Parking number που επιλέχθηκε:", self.parking_number)
 
         # close this window
-        self.parent.close()
+        if self.parent:
+            self.parent.close()
 
         import duration_time_parking as DurationTime
         # open window --> duration_time_parking
-        self.time_window = DurationTime.DurationTime(parking_number)
+        self.time_window = DurationTime.DurationTime(self.parking_number, self.user_id)
         self.time_window.show() 
 
 

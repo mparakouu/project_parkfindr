@@ -4,14 +4,16 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QProcess
+import MySQLconnection as connection
 
 
 
 class CheckSpot(QMainWindow):
-    def __init__(self, parking_number, selected_duration_time):
+    def __init__(self, user_id, parking_number, selected_duration_time):
         super().__init__() 
         self.parking_number = parking_number
         self.selected_duration_time = selected_duration_time
+        self.user_id = user_id
         self.initUI()   
 
     def initUI(self):
@@ -157,9 +159,37 @@ class CheckSpot(QMainWindow):
     def reserve_button_pressed(self):
         self.check_selected_spot()
         if self.spot_reserved:
+            print("ID χρήστη:", self.user_id)
             print("Κρατήθηκε η θέση:", self.spot_reserved)
             print("Parking number που επιλέχθηκε:", self.parking_number)
             print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
+
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
+            cursor = db.cursor()
+
+            # insert στο table user
+            sql_insert = "INSERT INTO createReservation (costumerID, ParkNum, DurationTime, NumSpot) VALUES (%s, %s, %s, %s)"
+            data_insert = (self.user_id, self.parking_number, self.selected_duration_time, self.spot_reserved)
+
+            # εκτέλεση του insert
+            cursor.execute(sql_insert, data_insert)
+            
+            # commit στην βάση
+            db.commit()
+
+            # exit
+            cursor.close()
+            db.close()
+            print("Η κράτηση πραγματοποιήθηκε!")
+
+
+            from reservationConfirmed import ResConfirmed
+            self.close()
+            # με πάει στο confirmed πράθυρο 
+            self.confirmed_window = ResConfirmed()
+            self.confirmed_window.show()
+
+
         else:
             print("Παρακαλώ επιλέξτε μια θέση!")
 
