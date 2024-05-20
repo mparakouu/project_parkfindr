@@ -1,13 +1,15 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWidget, QTableWidgetItem, QPushButton
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
 import MySQLconnection as connection
+from PyQt5.QtWebEngineWidgets import QWebEngineView 
 
 
 class ReservationsWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, user_email):
         super().__init__()
+        self.user_email = user_email
         self.initUI()
         self.loadData()
 
@@ -101,11 +103,35 @@ class ReservationsWindow(QMainWindow):
         # Kεντράρισμα του πίνακα
         self.centerTable()
 
+        #Button Back
+        button_back = QPushButton('Back',self)
+        button_back.setGeometry(120,570,100,37)
+        button_back.setCursor(QCursor(Qt.PointingHandCursor))
+        button_back.clicked.connect(self.back_pressed) 
+        button_back.setStyleSheet('''
+                padding: 8px 8px 8px 8px;
+                box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+                background: #3D8AF7;                    
+                color: #FFFFFF;
+                border-radius: 6px 6px 6px 6px;
+                font-family: "Asap";
+                font-weight: 600;
+                font-size: 17px;
+                line-height: 1.3;
+                text-align: center;
+            ''')
+        
+    def back_pressed(self):
+        print("Back Pressed")
+        from homepage import homeWindow
+        self.home_win = homeWindow(self.user_email)
+        self.home_win.show()
+
     def centerTable(self):
         # Υπολογισμός και εφαρμογή νέων διαστάσεων και θέσης για τον πίνακα
         table_width = int(self.width() * 0.8)  #
         table_x = int((self.width() - table_width) // 2)
-        self.table.setGeometry(table_x, 150, table_width, 430)
+        self.table.setGeometry(table_x, 150, table_width, 400)
 
     def resizeEvent(self, event):
         # Επανακεντράρισμα του πίνακα όταν αλλάζει το μέγεθος του παραθύρου
@@ -189,6 +215,8 @@ class ReservationsWindow(QMainWindow):
         db.close()
 
         return status[0] if status else None
+
+
 
 
 if __name__ == '__main__':
