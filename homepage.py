@@ -81,10 +81,11 @@ class homeWindow(QMainWindow):
         ''')
 
         # Δημιουργία κουμπιών για επιλογές μενού
-        button1 = QPushButton('Reserve Now', self)
-        button1.setGeometry(120, 370, 100, 30)
-        button1.clicked.connect(self.openPage1)
-        button1.setStyleSheet('''
+        button_reserve = QPushButton('Reserve Now', self)
+        button_reserve.setGeometry(120, 370, 100, 30)
+        button_reserve.setCursor(QCursor(Qt.PointingHandCursor))
+        button_reserve.clicked.connect(self.openPage1)
+        button_reserve.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
             color: #FFFFFF;
@@ -98,10 +99,11 @@ class homeWindow(QMainWindow):
             text-align: center;
 ''')
 
-        button2 = QPushButton('Reservations', self)
-        button2.setGeometry(120, 420, 100, 30)
-        button2.clicked.connect(self.openPage2)
-        button2.setStyleSheet('''
+        button_reservations = QPushButton('Reservations', self)
+        button_reservations.setGeometry(120, 420, 100, 30)
+        button_reservations.setCursor(QCursor(Qt.PointingHandCursor))
+        button_reservations.clicked.connect(self.openPage2)
+        button_reservations.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
             color: #FFFFFF;
@@ -115,10 +117,11 @@ class homeWindow(QMainWindow):
             text-align: center;
 ''')
 
-        button3 = QPushButton('Calendar', self)
-        button3.setGeometry(120, 470, 100, 30)
-        button3.clicked.connect(self.openPage3)
-        button3.setStyleSheet('''
+        button_calendar = QPushButton('Calendar', self)
+        button_calendar.setGeometry(120, 470, 100, 30)
+        button_calendar.setCursor(QCursor(Qt.PointingHandCursor))
+        button_calendar.clicked.connect(self.openPage3)
+        button_calendar.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
             color: #FFFFFF;
@@ -132,10 +135,11 @@ class homeWindow(QMainWindow):
             text-align: center;
 ''')
 
-        button4 = QPushButton('Acount', self)
-        button4.setGeometry(120, 520, 100, 30)
-        button4.clicked.connect(self.openPage4)
-        button4.setStyleSheet('''
+        button_account = QPushButton('Acount', self)
+        button_account.setGeometry(120, 520, 100, 30)
+        button_account.setCursor(QCursor(Qt.PointingHandCursor))
+        button_account.clicked.connect(self.openPage4)
+        button_account.setStyleSheet('''
             padding: 0px 10px 0px 10px;
             background: #75A9F9;
             color: #FFFFFF;
@@ -158,7 +162,11 @@ class homeWindow(QMainWindow):
 
 
     def openPage2(self):
-        print("reservation")
+        from reservations import ReservationsWindow
+        self.Reservations_window= ReservationsWindow()
+        self.Reservations_window.show()
+        self.close()
+       
     
     def openPage3(self):
         print("calendar")
