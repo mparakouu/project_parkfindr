@@ -231,12 +231,6 @@ class selectParking(QMainWindow):
         
 
     def showFilterOptions(self):
-        if self.filter_options.isHidden():
-            self.filter_options.show()
-        else:
-            self.filter_options.hide()
-
-    def showFilterOptions(self):
         if self.filter_options.isHidden(): # εάν filter hidden
 
             self.filter_options.raise_()  # φίλτα μπροστά από χάρτη 
