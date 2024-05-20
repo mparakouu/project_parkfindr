@@ -4,6 +4,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor , QIcon 
 from PyQt5.QtCore import Qt , QSize
 from review_write import ReviewSubmitWindow
+import MySQLconnection as connection
 
 #gia thn dhmiourgia toy 5-star rating
 class RatingWidget(QLabel):
@@ -54,9 +55,10 @@ class RatingWidget(QLabel):
 
 
 class ReviewWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, code):
         super().__init__()
         self.initUI()
+        self.code=code
         self.star_rating = None
 
     def initUI(self):
@@ -223,10 +225,24 @@ class ReviewWindow(QMainWindow):
 
     def contact_clicked(self):
         print("Contact clicked")  
-        from review_contact import ContactWindow
-        self.review_contact_window = ContactWindow()
-        self.review_contact_window.show()
-        self.close()
+        #σύνδεση με το MySQLconnection.py
+        db = connection.connection()  
+        cursor = db.cursor()
+        sql='SELECT parking_name , address  FROM reservationsdetails where id_code=%s'
+        cursor.execute(sql, (self.code,))
+        result = cursor.fetchone()
+        db.commit()
+        if result:
+            parking_name , address = result
+            sql1='SELECT phone_number , open_hours FROM parkingdata WHERE parking_name= %s'
+            cursor.execute(sql1, (parking_name,))
+            result1 = cursor.fetchone()
+            if result1:
+                    phone_number , open_hours =result1
+                    from review_contact import ContactWindow
+                    self.review_contact_window = ContactWindow(parking_name, address ,phone_number , open_hours ,self.code )
+                    self.review_contact_window.show()
+                    self.close()
 
 
 if __name__ == '__main__':
