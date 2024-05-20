@@ -45,7 +45,7 @@ class homeWindow(QMainWindow):
 
         # Κουμπί 
         self.photo_button = QPushButton('Upload Photo', self)
-        self.photo_button.setGeometry(115, 250, 120, 30)
+        self.photo_button.setGeometry(115, 270, 120, 30)
         self.photo_button.clicked.connect(self.uploadPhoto)
         self.photo_button.setStyleSheet('''
             padding: 0px 10px 0px 10px;
@@ -62,7 +62,7 @@ class homeWindow(QMainWindow):
 ''')
         # Ετικέτα καλωσορίσματος
         welcome_label = QLabel('Welcome', self)  
-        welcome_label.setGeometry(120, 290, 250, 30)  
+        welcome_label.setGeometry(120, 310, 250, 30)  
         welcome_label.setStyleSheet('''
             color: #3D8AF7; 
             font-family: "Asap"; 
@@ -72,7 +72,7 @@ class homeWindow(QMainWindow):
 
         # Ετικέτα email
         email_label = QLabel(self.user_email, self)
-        email_label.setGeometry(100, 320, 250, 30)  
+        email_label.setGeometry(120, 340, 250, 30)  
         email_label.setStyleSheet('''
             color: #3D8AF7;  
             font-family: "Asap"; 
@@ -82,7 +82,7 @@ class homeWindow(QMainWindow):
 
         # Δημιουργία κουμπιών για επιλογές μενού
         button_reserve = QPushButton('Reserve Now', self)
-        button_reserve.setGeometry(120, 370, 100, 30)
+        button_reserve.setGeometry(115, 390, 120, 30)
         button_reserve.setCursor(QCursor(Qt.PointingHandCursor))
         button_reserve.clicked.connect(self.openPage1)
         button_reserve.setStyleSheet('''
@@ -95,12 +95,12 @@ class homeWindow(QMainWindow):
             border-radius: 6px 6px 6px 6px;
             font-family: "Helvetica";
             font-weight: 400;
-            font-size: 13px;
+            font-size: 17px;
             text-align: center;
 ''')
 
         button_reservations = QPushButton('Reservations', self)
-        button_reservations.setGeometry(120, 420, 100, 30)
+        button_reservations.setGeometry(115, 440, 120, 30)
         button_reservations.setCursor(QCursor(Qt.PointingHandCursor))
         button_reservations.clicked.connect(self.openPage2)
         button_reservations.setStyleSheet('''
@@ -113,12 +113,12 @@ class homeWindow(QMainWindow):
             border-radius: 6px 6px 6px 6px;
             font-family: "Helvetica";
             font-weight: 400;
-            font-size: 14px;
+            font-size: 17px;
             text-align: center;
 ''')
 
         button_calendar = QPushButton('Calendar', self)
-        button_calendar.setGeometry(120, 470, 100, 30)
+        button_calendar.setGeometry(115, 490, 120, 30)
         button_calendar.setCursor(QCursor(Qt.PointingHandCursor))
         button_calendar.clicked.connect(self.openPage3)
         button_calendar.setStyleSheet('''
@@ -136,7 +136,7 @@ class homeWindow(QMainWindow):
 ''')
 
         button_account = QPushButton('Acount', self)
-        button_account.setGeometry(120, 520, 100, 30)
+        button_account.setGeometry(115, 540, 120, 30)
         button_account.setCursor(QCursor(Qt.PointingHandCursor))
         button_account.clicked.connect(self.openPage4)
         button_account.setStyleSheet('''
