@@ -91,13 +91,6 @@ class makeReservation(QMainWindow):
             font-size: 21px;
             text-align: center;
         ''')
-
-    def search_pressed(self):
-     print("search clicked")
-    
-     from selectParking import selectParking
-     self.selectParkingWindow= selectParking()
-     self.selectParkingWindow.show()
              
    
 
