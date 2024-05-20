@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt , QSize, Qt
-import MySQLdb as mdb
+import MySQLconnection as connection
 
 
 class plusPlanWindow(QMainWindow):
@@ -209,8 +209,8 @@ class plusPlanWindow(QMainWindow):
         from chplan import choosePlanWindow
         
         try:
-            # Σύνδεση στη βάση δεδομένων
-            db = mdb.connect('localhost', 'root', 'admin', 'ParkFindr')
+            #Σύνδεση στη Βάση Δεδομένων
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
             cursor = db.cursor()
 
             # Διαγραφή της εγγραφής "Premium Version" για τον συγκεκριμένο χρήστη
@@ -241,7 +241,7 @@ class plusPlanWindow(QMainWindow):
 
     def next_pressed(self):
         print("next clicked") 
-        user_id = 1
+        
         from payment import paymentWindow
         self.payment_window = paymentWindow(self.user_id)  
         self.payment_window.show()

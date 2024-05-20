@@ -2,8 +2,8 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWidget, QTableWidgetItem, QPushButton
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-import MySQLdb as mdb
 import MySQLconnection as connection
+
 
 class ReservationsWindow(QMainWindow):
     def __init__(self):
@@ -29,9 +29,9 @@ class ReservationsWindow(QMainWindow):
         ''')
 
         # Εισαγωγή Label Reservations
-        self.plus_label = QLabel('Reservations', self)
-        self.plus_label.setGeometry(30, 75, 287, 74)
-        self.plus_label.setStyleSheet('''
+        self.reservations_label = QLabel('Reservations', self)
+        self.reservations_label.setGeometry(30, 75, 287, 74)
+        self.reservations_label.setStyleSheet('''
             color: #3D8AF7;
             font-family: "Quicksand";
             font-weight: bold;
@@ -75,7 +75,8 @@ class ReservationsWindow(QMainWindow):
         # Αλλαγή χρώματος και πάχους των γραμμών πλέγματος
         self.table.setStyleSheet('''
             QTableWidget {
-                background-color: #FFFFFF;  
+                background-color: #FFFFFF; 
+                border: 1px solid #808080;
                 gridline-color: #F0F0F0;  
             }
             QHeaderView::section {
@@ -126,8 +127,11 @@ class ReservationsWindow(QMainWindow):
 
         for row_num, row_data in enumerate(rows):
                 # Αντικατάσταση της πρώτης στήλης με κουμπιά
-                button = QPushButton(str(row_data[0]))
-                button.setStyleSheet('''
+                button_code = QPushButton(str(row_data[0]))
+                status = self.get_status(row_data[0])
+                button_code.clicked.connect(self.create_button_handler(row_data[0], status))
+
+                button_code.setStyleSheet('''
                     QPushButton {
                         background-color: white;
                         border: none;
@@ -143,20 +147,49 @@ class ReservationsWindow(QMainWindow):
                         background-color: #5B97C6;
                     }
                 ''')
-                self.table.setCellWidget(row_num, 0, button)
+                self.table.setCellWidget(row_num, 0, button_code)
 
                 for col_num, col_data in enumerate(row_data):
                     item = QTableWidgetItem(str(col_data))
                     item.setTextAlignment(Qt.AlignCenter)  # Κεντράρισμα του κειμένου
                     item.setFlags(item.flags() & ~Qt.ItemIsEditable)
                     self.table.setItem(row_num, col_num, item)
-        
+
+
         # exit
         cursor.close()
         db.close()
      
         # Κλείσιμο παραθύρου
         self.close()
+
+    #Για να πάρει τον κωδικό στην νέα σελίδα
+    def create_button_handler(self, code, status):
+        def button_handler():
+            print("Code is: ", code)
+            self.go_to(code,status)
+        return button_handler
+
+        #Λειτουργία  Button
+    def go_to(self,code,status):
+        print("button  clicked",code) 
+        from reservations_details import ReservationsDetailsWindow
+        self.res_detwindow = ReservationsDetailsWindow(code, status)
+        self.res_detwindow.show()
+
+    def get_status(self, code):
+        db = connection.connection()
+        cursor = db.cursor()
+
+        sql_select = "SELECT status FROM reservations WHERE code = %s"
+        cursor.execute(sql_select, (code,))
+        status = cursor.fetchone()
+
+        cursor.close()
+        db.close()
+
+        return status[0] if status else None
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

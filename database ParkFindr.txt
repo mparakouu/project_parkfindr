@@ -79,8 +79,39 @@ CREATE TABLE reservations(
     PRIMARY KEY (code)
 );
 
-INSERT INTO reservations (date, status) VALUES
-('Just Now', 'Waiting'),
-('10 minutes ago', 'Confirmed'),
-('2 days ago', 'Cancelled');
 
+INSERT INTO reservations ( date, status) VALUES 
+('2 min ago', 'Waiting'),
+('3 min ago', 'Confirmed'),
+('4 min ago', 'Cancelled'),
+('5 min ago', 'Waiting'),
+('6 min ago', 'Confirmed');
+INSERT INTO reservations ( date, status) VALUES 
+('7 min ago', 'Confirmed'),
+('2 min ago', 'Waiting');
+
+
+CREATE TABLE reservationsdetails(
+    id_code INT,
+    parking_name VARCHAR(255),
+    address VARCHAR(255),
+    state ENUM('Waiting','Confirmed','Cancelled') NOT NULL,
+    date TEXT NOT NULL,
+    duration TEXT NOT NULL,
+    spot INT,
+    FOREIGN KEY (id_code) REFERENCES reservations(code)
+);
+
+
+INSERT INTO reservationsdetails (id_code, parking_name, address, state, date, duration, spot) 
+VALUES 
+(22, 'Central Park Garage', '123 Main St', 'Waiting', '2024-05-20 08:00:00', '2 hours', 101),
+(23, 'Sunset Boulevard Parking', '456 Sunset Blvd', 'Confirmed', '2024-05-20 09:00:00', '3 hours', 102),
+(24, 'Downtown Parking Lot', '789 Downtown Ave', 'Cancelled', '2024-05-20 10:00:00', '1 hour', 103),
+(25, 'City Center Parking', '321 Center St', 'Waiting', '2024-05-20 11:00:00', '2.5 hours', 104),
+(26, 'Riverside Parking', '654 Riverside Rd', 'Confirmed', '2024-05-20 12:00:00', '1.5 hours', 105);
+
+INSERT INTO reservationsdetails (id_code, parking_name, address, state, date, duration, spot) 
+VALUES 
+(27, 'Central Park Garage', '123 Main St', 'Waiting', '2024-05-20 08:00:00', '2 hours', 101),
+(28, 'Sunset Boulevard Parking', '456 Sunset Blvd', 'Confirmed', '2024-05-20 09:00:00', '3 hours', 102);
