@@ -1,15 +1,18 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWidget, QPushButton , QTableWidgetItem
-from PyQt5 import QtCore
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWidget, QPushButton , QTableWidgetItem ,QHeaderView
 from PyQt5.QtGui import QPixmap, QCursor , QIcon 
-from PyQt5.QtCore import Qt , QSize
-from review_write import ReviewSubmitWindow
+from PyQt5.QtCore import Qt 
 import MySQLdb as mdb
 import MySQLconnection as connection
 
 class ContactWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, parking_name, address ,phone_number , open_hours , code):
         super().__init__()
+        self.parking_name = parking_name
+        self.address = address
+        self.phone_number =phone_number
+        self.open_hours= open_hours
+        self.code =code
         self.initUI()
        
 
@@ -41,24 +44,47 @@ class ContactWindow(QMainWindow):
         ''')
 
         self.tableWidget = QTableWidget(self) 
-        table_width=260 
-        table_height=300
+        # Ρύθμιση του μεγέθους των κελιών
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  
+        self.tableWidget.setShowGrid(False)
+        
+        #Aπόκρυψη αρίθμησης στήλης
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.horizontalHeader().setVisible(False)
-        table_x = (self.width() - table_width) // 2  
-        self.tableWidget.setGeometry(table_x, 120, table_width, table_height) 
+
+        # Αλλαγή χρώματος και πάχους των γραμμών πλέγματος
         self.tableWidget.setStyleSheet('''
             QTableWidget {
-                border: none;
+                background-color: #FFFFFF; 
+                border: 1px solid #808080; 
+                gridline-color: #F0F0F0;  
+            }
+            QHeaderView::section {
+                background-color: #3D8AF7;
+                color: white;
+                font-weight: bold;
+                font-size: 14px;
+                height: 30px;  
+                border: 1px solid #FFFFFF; 
             }
             QTableWidget::item {
-                padding-left: 10px;  # Προσθέστε περιθώρια στα κελιά
-                padding-right: 10px;
-                padding-top: 5px;
-                padding-bottom: 5px;
-            }                           
+                border-bottom: 2px solid #3D8AF7;  
+                border-right: none;  
+                border-left: none;  
+                border-top: none;  
+            }
         ''')
-        self.fetch_data_from_database()
+        # Kεντράρισμα του πίνακα
+        self.centerTable()
+        
+        self.tableWidget.setRowCount(4)
+        self.tableWidget.setColumnCount(1)
+        
+        self.tableWidget.setItem(0, 0, QTableWidgetItem(f"Parking Name: {self.parking_name}"))
+        self.tableWidget.setItem(1, 0, QTableWidgetItem(f"Address: {self.address}"))
+        self.tableWidget.setItem(2, 0, QTableWidgetItem(f"Phone Number: {self.phone_number}"))
+        self.tableWidget.setItem(3, 0, QTableWidgetItem(f"Open Hours: {self.open_hours}"))
+
 
         button_back = QPushButton('Back', self)
         button_back.setGeometry(30, 570, 140, 48)
@@ -107,38 +133,28 @@ class ContactWindow(QMainWindow):
          ''')
 
 
-    def fetch_data_from_database(self):
-        try:
-
-            db = connection.connection()  #σύνδεση με το MySQLconnection.py
-            cursor = db.cursor()
-            cursor.execute("SELECT * FROM reviews")
-            rows = cursor.fetchall()
-
-            if rows:
-                self.tableWidget.setRowCount(len(rows[0]))
-                self.tableWidget.setColumnCount(len(rows))
-
-                for row_index, row in enumerate(rows):
-                    for col_index, col_data in enumerate(row):
-                        item =QTableWidgetItem(str(col_data))
-                        item.setFlags(item.flags() & ~Qt.ItemIsEditable)
-                        self.tableWidget.setItem(col_index, row_index, item)
-
-                        
-        except Exception as e:
-            # error
-            print("Error:", e)
-
     def back_clicked(self):
         print("Back clicked") 
         from review_main import ReviewWindow 
-        self.review_window = ReviewWindow()
+        self.review_window = ReviewWindow(self.code)
         self.review_window.show()
         self.close()
 
     def next_clicked(self):
         print("Next clicked")
+    
+    def centerTable(self):
+        # Υπολογισμός και εφαρμογή νέων διαστάσεων και θέσης για τον πίνακα
+        table_width = int(self.width() * 0.8)  #
+        table_x = int((self.width() - table_width) // 2)
+        self.tableWidget.setGeometry(table_x, 200, table_width, 214)
+
+    def resizeEvent(self, event):
+        # Επανακεντράρισμα του πίνακα όταν αλλάζει το μέγεθος του παραθύρου
+        self.centerTable()
+        super().resizeEvent(event)
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
