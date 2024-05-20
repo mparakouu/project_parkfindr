@@ -23,19 +23,11 @@ password varchar(100) NOT NULL,
 PRIMARY KEY (park_Owner_id )
 );
 
-<<<<<<< HEAD
 INSERT INTO Parking_owner (full_name ,phone,email,password) VALUES
 ('Georgia Barakou','6923541289','mparakou7@gmail.com','1234'),
 ('Giannis Balasis','6934901265','balasis123@gmail.com','1234'),
 ('Xristiana Mousele','6934769127','mousele4@gmail.com','1234'),
 ('Dimitris Mhnogiannhs','6936190426','mhnogiannhs5@gmail.com','1234');
-=======
-INSERT INTO Parking_owner VALUES
-(NULL,'Georgia Barakou','6923541289','mparakou7@gmail.com','1234'),
-(NULL,'Giannis Balasis','6934901265','balasis123@gmail.com','1234'),
-(NULL,'Xristiana Mousele','6934769127','mousele4@gmail.com','1234'),
-(NULL,'Dimitris Mhnogiannhs','6936190426','mhnogiannhs5@gmail.com','1234');
->>>>>>> f6177903a75c4d2c1f2ddb7258cb1eb48c08c1d8
 
 
 CREATE TABLE IF NOT EXISTS parkingData(
