@@ -1,15 +1,17 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QMessageBox
+from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QProcess
-from duration_time_parking import DurationTime
+
 
 
 class CheckSpot(QMainWindow):
-    def __init__(self):
+    def __init__(self, parking_number, selected_duration_time):
         super().__init__() 
+        self.parking_number = parking_number
+        self.selected_duration_time = selected_duration_time
         self.initUI()   
 
     def initUI(self):
@@ -50,75 +52,50 @@ class CheckSpot(QMainWindow):
 
 
         # Κουμπιά 
-        self.button1 = QPushButton('', self)
-        self.button1.setGeometry(17, 180, 10, 10)  # θέση και μέγεθος
-        self.button1.setObjectName("1")
-        self.button1.setFixedSize(30, 30)  # τετράγωνο κουμπί
-        self.button1.setCheckable(True) # επιλέγουμε το κουμπί
-        self.button1.setAutoExclusive(True)  # μόνο ένα επιλέξιμο
+        self.checkbox1 = QCheckBox('', self)
+        self.checkbox1.setGeometry(23, 180, 10, 10)  # θέση και μέγεθος
+        self.checkbox1.setObjectName("1")
+        self.checkbox1.setFixedSize(30, 30)  # τετράγωνο κουμπί
         
-        self.button2 = QPushButton('', self)
-        self.button2.setGeometry(60, 180, 10, 10)  
-        self.button2.setObjectName("2")
-        self.button2.setFixedSize(30, 30)  
-        self.button2.setCheckable(True) 
-        self.button2.setAutoExclusive(True)  
+        self.checkbox3 = QCheckBox('', self)
+        self.checkbox3.setGeometry(108, 420, 10, 10)  
+        self.checkbox3.setObjectName("3")
+        self.checkbox3.setFixedSize(30, 30) 
 
-        self.button3 = QPushButton('', self)
-        self.button3.setGeometry(102, 420, 10, 10)  
-        self.button3.setObjectName("3")
-        self.button3.setFixedSize(30, 30) 
-        self.button3.setCheckable(True) 
-        self.button3.setAutoExclusive(True)   
+        self.checkbox4 = QCheckBox('', self)
+        self.checkbox4.setGeometry(172, 180, 10, 10)  
+        self.checkbox4.setObjectName("4")
+        self.checkbox4.setFixedSize(30, 30) 
 
-        self.button4 = QPushButton('', self)
-        self.button4.setGeometry(166, 180, 10, 10)  
-        self.button4.setObjectName("4")
-        self.button4.setFixedSize(30, 30) 
-        self.button4.setCheckable(True) 
-        self.button4.setAutoExclusive(True)   
+        self.checkbox5 = QCheckBox('', self)
+        self.checkbox5.setGeometry(214, 180, 10, 10)  
+        self.checkbox5.setObjectName("5")
+        self.checkbox5.setFixedSize(30, 30)  
 
-        self.button5 = QPushButton('', self)
-        self.button5.setGeometry(208, 180, 10, 10)  
-        self.button5.setObjectName("5")
-        self.button5.setFixedSize(30, 30)  
-        self.button5.setCheckable(True) 
-        self.button5.setAutoExclusive(True)  
+        self.checkbox6 = QCheckBox('', self)
+        self.checkbox6.setGeometry(236, 180, 10, 10)  
+        self.checkbox6.setObjectName("6")
+        self.checkbox6.setFixedSize(30, 30)   
 
-        self.button6 = QPushButton('', self)
-        self.button6.setGeometry(230, 180, 10, 10)  
-        self.button6.setObjectName("6")
-        self.button6.setFixedSize(30, 30) 
-        self.button6.setCheckable(True) 
-        self.button6.setAutoExclusive(True)   
+        self.checkbox7 = QCheckBox('', self)
+        self.checkbox7.setGeometry(278, 420, 10, 10)  
+        self.checkbox7.setObjectName("7")
+        self.checkbox7.setFixedSize(30, 30)   
 
-        self.button7 = QPushButton('', self)
-        self.button7.setGeometry(272, 420, 10, 10)  
-        self.button7.setObjectName("7")
-        self.button7.setFixedSize(30, 30) 
-        self.button7.setCheckable(True) 
-        self.button7.setAutoExclusive(True)   
+        self.checkbox8 = QCheckBox('', self)
+        self.checkbox8.setGeometry(236, 420, 10, 10)  
+        self.checkbox8.setObjectName("8")
+        self.checkbox8.setFixedSize(30, 30)   
 
-        self.button8 = QPushButton('', self)
-        self.button8.setGeometry(230, 420, 10, 10)  
-        self.button8.setObjectName("8")
-        self.button8.setFixedSize(30, 30) 
-        self.button8.setCheckable(True) 
-        self.button8.setAutoExclusive(True)   
+        self.checkbox9 = QCheckBox('', self)
+        self.checkbox9.setGeometry(278, 180, 10, 10)  
+        self.checkbox9.setObjectName("9")
+        self.checkbox9.setFixedSize(30, 30)   
 
-        self.button9 = QPushButton('', self)
-        self.button9.setGeometry(272, 180, 10, 10)  
-        self.button9.setObjectName("9")
-        self.button9.setFixedSize(30, 30) 
-        self.button9.setCheckable(True) 
-        self.button9.setAutoExclusive(True)   
-
-        self.button10 = QPushButton('', self)
-        self.button10.setGeometry(17, 420, 10, 10)  
-        self.button10.setObjectName("10")
-        self.button10.setFixedSize(30, 30)  
-        self.button10.setCheckable(True) 
-        self.button10.setAutoExclusive(True)  
+        self.checkbox10 = QCheckBox('', self)
+        self.checkbox10.setGeometry(23, 420, 10, 10)  
+        self.checkbox10.setObjectName("10")
+        self.checkbox10.setFixedSize(30, 30)  
 
 
         # κουμπί next
@@ -165,8 +142,8 @@ class CheckSpot(QMainWindow):
 
     # έλεγχος για το ποιο κουμπί πατήθηκε, 
     def check_selected_spot(self):
-        buttons = [self.button1, self.button2, self.button3, self.button4, self.button5,
-                   self.button6, self.button7, self.button8, self.button9, self.button10]
+        buttons = [self.checkbox1, self.checkbox3, self.checkbox4, self.checkbox5,
+                   self.checkbox6, self.checkbox7, self.checkbox8, self.checkbox9, self.checkbox10]
 
         # όποιο κουμπί πατήθηκε / isChescked --> το αποθηκεύει (όνομα κουμπιού) στην μεταβλητή self.spot_reserved
         for button in buttons:
@@ -181,11 +158,14 @@ class CheckSpot(QMainWindow):
         self.check_selected_spot()
         if self.spot_reserved:
             print("Κρατήθηκε η θέση:", self.spot_reserved)
+            print("Parking number που επιλέχθηκε:", self.parking_number)
+            print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
         else:
             print("Παρακαλώ επιλέξτε μια θέση!")
 
     # όταν πατήσει το κουμπί back --> duration_time_parking.py
     def back_button_pressed(self):
+        from duration_time_parking import DurationTime
         self.close()
         self.time_window = DurationTime()
         self.time_window.show()
