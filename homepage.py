@@ -30,7 +30,7 @@ class homeWindow(QMainWindow):
 
         # Εισαγωγή του λογότυπου 
         logo_png = QLabel(self)
-        logo_png.setGeometry(50, 70, 250, 70)
+        logo_png.setGeometry(50, 50, 250, 70)
         pixmap = QPixmap('logo.png')
         logo_png.setPixmap(pixmap.scaled(250, 250, QtCore.Qt.KeepAspectRatio))
 
@@ -43,26 +43,11 @@ class homeWindow(QMainWindow):
             border-radius: 5px;
         ''')
 
-        # Κουμπί 
-        self.photo_button = QPushButton('Upload Photo', self)
-        self.photo_button.setGeometry(115, 270, 120, 30)
-        self.photo_button.clicked.connect(self.uploadPhoto)
-        self.photo_button.setStyleSheet('''
-            padding: 0px 10px 0px 10px;
-            background: #75A9F9;
-            color: #FFFFFF;
-            border-color: #FFFFFF;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 6px 6px 6px 6px;
-            font-family: "Helvetica";
-            font-weight: 400;
-            font-size: 17px;
-            text-align: center;
-''')
+
+
         # Ετικέτα καλωσορίσματος
         welcome_label = QLabel('Welcome', self)  
-        welcome_label.setGeometry(120, 310, 250, 30)  
+        welcome_label.setGeometry(120, 270, 250, 30)  
         welcome_label.setStyleSheet('''
             color: #3D8AF7; 
             font-family: "Asap"; 
@@ -72,7 +57,7 @@ class homeWindow(QMainWindow):
 
         # Ετικέτα email
         email_label = QLabel(self.user_email, self)
-        email_label.setGeometry(120, 340, 250, 30)  
+        email_label.setGeometry(120, 300, 250, 30)  
         email_label.setStyleSheet('''
             color: #3D8AF7;  
             font-family: "Asap"; 
@@ -82,7 +67,7 @@ class homeWindow(QMainWindow):
 
         # Δημιουργία κουμπιών για επιλογές μενού
         button_reserve = QPushButton('Reserve Now', self)
-        button_reserve.setGeometry(115, 390, 120, 30)
+        button_reserve.setGeometry(100, 370, 140, 40)
         button_reserve.setCursor(QCursor(Qt.PointingHandCursor))
         button_reserve.clicked.connect(self.openPage1)
         button_reserve.setStyleSheet('''
@@ -100,7 +85,7 @@ class homeWindow(QMainWindow):
 ''')
 
         button_reservations = QPushButton('Reservations', self)
-        button_reservations.setGeometry(115, 440, 120, 30)
+        button_reservations.setGeometry(100, 440, 140, 40)
         button_reservations.setCursor(QCursor(Qt.PointingHandCursor))
         button_reservations.clicked.connect(self.openPage2)
         button_reservations.setStyleSheet('''
@@ -118,7 +103,7 @@ class homeWindow(QMainWindow):
 ''')
 
         button_calendar = QPushButton('Calendar', self)
-        button_calendar.setGeometry(115, 490, 120, 30)
+        button_calendar.setGeometry(100, 510, 140, 40)
         button_calendar.setCursor(QCursor(Qt.PointingHandCursor))
         button_calendar.clicked.connect(self.openPage3)
         button_calendar.setStyleSheet('''
@@ -135,8 +120,8 @@ class homeWindow(QMainWindow):
             text-align: center;
 ''')
 
-        button_account = QPushButton('Acount', self)
-        button_account.setGeometry(115, 540, 120, 30)
+        button_account = QPushButton('Account', self)
+        button_account.setGeometry(100, 580, 140, 40)
         button_account.setCursor(QCursor(Qt.PointingHandCursor))
         button_account.clicked.connect(self.openPage4)
         button_account.setStyleSheet('''
@@ -173,11 +158,10 @@ class homeWindow(QMainWindow):
     
     def openPage4(self):
         print("account")
-        from account import AccountWindow
-        self.close()
-        self.acc_window= AccountWindow()
+        from account import accountWindow
+        self.acc_window= accountWindow(self.user_email)
         self.acc_window.show()
-        
+        self.close()
 
     def uploadPhoto(self):
         filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', '', 'Image Files (*.png *.jpg *.jpeg)')
