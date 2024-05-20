@@ -1,17 +1,15 @@
 import sys
 import io
-import subprocess
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore #pip install PyQtWebEngine
-import folium  # type: ignore #kante pip install folium
+import folium  # type: ignore #pip install folium
+from branca.element import Template, MacroElement
 
 # μέσω του καναλιού επικοινωνίας QWebChannel, όταν πατηθεί το button id="reserveButton" στην html (σειρά 207),  
 # η javascript (σειρά 234) θα "επικοινωνήσει" (bridge) και καλέσει την python function : def reserveNowClicked (σειρά 271)
-
-
 
 
 #κλαση για το παραθυρο με τα φλτρα
@@ -165,16 +163,16 @@ class selectParking(QMainWindow):
                                      
          ''')
 
-        webView = QWebEngineView(self)
-        webView.setGeometry(20, 100, 300, 450)  
+        self.webView = QWebEngineView(self)
+        self.webView.setGeometry(20, 100, 300, 450)  
 
         # δημιουργία QWebChannel και αντικειμένου bridge
-        channel = QWebChannel()
-        bridge = Bridge()
-        channel.registerObject("pywebchannel", bridge)
+        self.channel = QWebChannel()
+        self.bridge = Bridge(self)
+        self.channel.registerObject("pywebchannel", self.bridge)
 
         # σύνδεση καναλιού επικοινωνίας με --> QWebEngineView
-        webView.page().setWebChannel(channel)
+        self.webView.page().setWebChannel(self.channel)
 
 
         coordinate = (38.261656677847824, 21.748691029725343)  # συντεταγμένες για Πάτρα
@@ -205,20 +203,23 @@ class selectParking(QMainWindow):
             for loc in parking_data:
                 if loc['parking_owner_id'] == owner_id: 
                     popup_content += f"""
-                        <strong>ID:</strong> {loc['parking_number']}<br>
+                        <strong>Parking's number:</strong> {loc['parking_number']}<br>
                         <strong>Name:</strong> {loc['parking_name']}<br>
                         <strong>Address:</strong> {loc['address']}<br>
                         <strong>Open Hours:</strong> {loc['open_hours']}<br>
                         <strong>Free spots:</strong> {loc['spots']}<br>
-                        <button id="reserveButton" style="background-color: #75A9F9; border-radius: 10px; color: white; border: none;">Reserve now</button><br>
                     """
             if popup_content:  
+                popup_content += '<button id="reserveButton" style="background-color: #75A9F9; border-radius: 10px; color: white; border: none;">Reserve now</button>'
                 html_popup_content = f"""
                     <div style='width: 160px; background-color: white; padding: 10px; border-radius: 10px;'>  
                         {popup_content}
                     </div>
-                    
                 """
+                template = Template(html_popup_content)
+                macro = MacroElement()
+                macro._template = template
+
                 folium.Marker(
                     location=(lat, lon),
                     popup=folium.Popup(html_popup_content, parse_html=False),  # html , css , js
@@ -236,30 +237,39 @@ class selectParking(QMainWindow):
         m.save(data, close_file=False)
         
         #σύνδεση της jv με την python, καλεί την python function
-        webView.setHtml(data.getvalue().decode() + """
-        <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
-        <script>
-            function addClickListener() {
-                var reserveButton = document.getElementById('reserveButton');
-                if (reserveButton) {
-                    reserveButton.addEventListener('click', function() {
-                        if (typeof pywebchannel !== 'undefined') {
-                            pywebchannel.reserveNowClicked();
-                        } else {
-                            console.error('pywebchannel δεν έχει οριστεί');
-                        }
+        self.webView.setHtml(data.getvalue().decode() + """
+            <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+            <script>
+                function setupChannel() {
+                    new QWebChannel(qt.webChannelTransport, function(channel) {
+                        window.pywebchannel = channel.objects.pywebchannel;
                     });
-                } else {
-                    console.log("waiting");
-                    setTimeout(addClickListener, 100); 
                 }
-            }
 
-            addClickListener();
+                function addClickListener() {
+                    var reserveButton = document.getElementById('reserveButton');
+                    if (reserveButton) {
+                        reserveButton.addEventListener('click', function() {
+                            if (typeof pywebchannel !== 'undefined') {
+                                var reserveButton = this;
+                                //παίρνει το γονέα του reserveButton = το περιεχόμενο του popup που επιλέχθηκε και save στην popupContent
+                                var popupContent = reserveButton.parentElement;
+                                var parkingNumber = popupContent.querySelector('strong').nextSibling.textContent.trim();
+                                pywebchannel.reserveNowClicked(parkingNumber);
+                            } else {
+                                console.error('pywebchannel δεν έχει οριστεί');
+                            }
+                        });
+                    } else {
+                        console.log("waiting");
+                        setTimeout(addClickListener, 100); 
+                    }
+                }
 
-        </script>
-    """)
-
+                setupChannel();
+                setTimeout(addClickListener, 100); 
+            </script>
+            """)
 
     
     def showFilterOptions(self):
@@ -276,11 +286,21 @@ class selectParking(QMainWindow):
 # κλάση bridge --> επικοινωνία js με python 
 # δημιουργία κλάσης bridge
 class Bridge(QObject):
-    @pyqtSlot()
-    def reserveNowClicked(self):
-        self.close()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+
+    @pyqtSlot(str)
+    def reserveNowClicked(self, parking_number):
+
+        print("Parking number που επιλέχθηκε:", parking_number)
+
+        # close this window
+        self.parent.close()
+
         import duration_time_parking as DurationTime
-        self.time_window = DurationTime.selectParking()
+        # open window --> duration_time_parking
+        self.time_window = DurationTime.DurationTime(parking_number)
         self.time_window.show() 
 
 

@@ -6,13 +6,14 @@ from PyQt5.QtGui import QPixmap, QCursor
 
 
 class DurationTime(QMainWindow):
-    def __init__(self):
+    def __init__(self, parking_number):
         super().__init__() 
         # δεν έχει γίνει επιλογή ώρας ακόμη
-        self.selected_duration = None  
+        self.selected_duration = None 
+        self.parking_number = parking_number 
         self.initUI()   
 
-    def initUI(self):
+    def initUI(self): 
         self.setWindowTitle('ParkFindr')
         self.setGeometry(100, 100, 340, 667) 
 
@@ -154,13 +155,17 @@ class DurationTime(QMainWindow):
         if data_button.isChecked():
             self.selected_duration_time = data_button.text()
 
-    # όταν πατηθεί το κουμπί next
+    # όταν πατηθεί το κουμπί next   
     def next_button_pressed(self):
-        if self.selected_duration_time:
-            print("Duration time:", self.selected_duration_time)
-        else:
-            print("Please select a duration time!")
-            
+        print("Parking number που επιλέχθηκε:", self.parking_number)
+        print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
+        # close this window
+        self.close()
+        import check_your_spot as CheckSpot
+        # open window --> check_your_spot
+        self.spot_window = CheckSpot.CheckSpot(self.parking_number, self.selected_duration_time)
+
+        self.spot_window.show() 
 
 
 if __name__ == '__main__':
