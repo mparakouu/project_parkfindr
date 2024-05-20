@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPixmap, QCursor , QIcon
 from PyQt5.QtCore import Qt , QSize
 from review_write import ReviewSubmitWindow
 import MySQLdb as mdb
+import MySQLconnection as connection
 
 class ContactWindow(QMainWindow):
     def __init__(self):
@@ -108,14 +109,9 @@ class ContactWindow(QMainWindow):
 
     def fetch_data_from_database(self):
         try:
-            connection = mdb.connect(
-                host='localhost',
-                user='root',
-                password='admin',
-                database='ParkFindr'
-            )
 
-            cursor = connection.cursor()
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
+            cursor = db.cursor()
             cursor.execute("SELECT * FROM reviews")
             rows = cursor.fetchall()
 
