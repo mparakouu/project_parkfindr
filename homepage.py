@@ -13,6 +13,7 @@ class homeWindow(QMainWindow):
         self.user_email = user_mail
         self.user_id = user_id
         self.initUI() 
+        self.displayPhoto()
 
     def initUI(self):
         self.setWindowTitle('Home Page')
@@ -165,6 +166,7 @@ class homeWindow(QMainWindow):
         print("account")
         from account import accountWindow
         self.acc_window= accountWindow(self.user_email , self.user_id)
+        self.acc_window.photo_uploaded.connect(self.updatePhoto)
         self.acc_window.show()
         self.close()
 
@@ -173,12 +175,12 @@ class homeWindow(QMainWindow):
         cursor = db.cursor()
         cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_email,))
         result = cursor.fetchone()
-        db.close()
+        
         if result:
-            photo_path = result 
+            photo_path = result[0]
             print("photo path:", result)
             self.photo_label = QLabel(self.photo_frame)
-            self.photo_label.setGeometry(122, 140, 100, 100)
+            self.photo_label.setGeometry(0, 0, 100, 100)
             self.photo_label.setAlignment(Qt.AlignCenter)
             self.photo_label.setStyleSheet(f"""
                 QLabel {{
@@ -191,6 +193,20 @@ class homeWindow(QMainWindow):
             """)
             self.photo_label.show()
             self.photo_uploaded.emit(photo_path)
+
+        db.close()
+
+    def updatePhoto(self, photo_path):
+        self.photo_label.setStyleSheet(f"""
+            QLabel {{
+                border: 2px solid #d6d6d6;
+                background-image: url({photo_path});
+                background-repeat: no-repeat;
+                background-position: center;
+                border-radius: 5px;
+            }}
+        """)
+        self.photo_label.show()
 
     def logout_window(self):
         from signin import signInWindow

@@ -10,12 +10,14 @@ from PyQt5.QtCore import pyqtSignal
 
 class accountWindow(QMainWindow):
     photo_uploaded = pyqtSignal(str)
+
     def __init__(self,user_mail , user_id):
         super().__init__() 
         self.user_mail = user_mail
         self.user_id = user_id
         self.initUI() 
         self.loadData()
+        self.displayPhoto()
 
     def initUI(self):
         self.setWindowTitle('Account')
@@ -97,7 +99,7 @@ class accountWindow(QMainWindow):
             font-size: 17px;
             text-align: left;
         ''') 
-        
+
         # Πεδίο για  email
         self.mail_label = QLabel('E-mail:', self)
         self.mail_label.setGeometry(70, 440, 200, 20) 
@@ -109,16 +111,26 @@ class accountWindow(QMainWindow):
             text-align: left;
         ''') 
         label_mail = QLabel(self.user_mail,self)
-        label_mail.setGeometry(70,470,200,20)
+        label_mail.setGeometry(70,466,200,26)
         label_mail.setStyleSheet('''
-            color: #3D8AF7;  
-            font-family: "Asap"; 
-            font-weight: bold; 
-            font-size: 12px; 
+            background-color: #FFFFFF;
+            border: none;  
+            border-radius: 1px;
+            padding: 5px;
+            font-size: 14px; 
         ''')
+        # Underline 
+        line_e = QLabel(self)
+        line_e.setGeometry(70, 490, 200, 1)
+        line_e.setStyleSheet('''
+            background: #FFFFFF;
+            border-color: #00000000;
+            border-bottom: 2px solid #ccc;
+        ''')
+
          # Πεδίο για  Password
         self.pwd_label = QLabel('Password:', self)
-        self.pwd_label.setGeometry(70, 490, 200, 20) 
+        self.pwd_label.setGeometry(70, 500, 200, 20) 
         self.pwd_label.setStyleSheet('''
             color: #3D8AF7;
             font-family: "Asap";
@@ -126,11 +138,11 @@ class accountWindow(QMainWindow):
             font-size: 17px;
             text-align: left;
         ''') 
-        button_next = QPushButton('Back', self)
-        button_next.setGeometry(100, 550, 140, 48)
-        button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.clicked.connect(self.back_clicked) 
-        button_next.setStyleSheet('''
+        button_back = QPushButton('Back', self)
+        button_back.setGeometry(100, 565, 140, 48)
+        button_back.setCursor(QCursor(Qt.PointingHandCursor))
+        button_back.clicked.connect(self.back_clicked) 
+        button_back.setStyleSheet('''
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
@@ -162,31 +174,59 @@ class accountWindow(QMainWindow):
 
 
            self.fullname_data = QLabel(full_name, self)
-           self.fullname_data.setGeometry(70, 350, 200, 20)
+           self.fullname_data.setGeometry(70, 346, 200, 26)
            self.fullname_data.setStyleSheet('''
-            color: #3D8AF7;  
-            font-family: "Asap"; 
-            font-weight: bold; 
-            font-size: 12px; 
+            background-color: #FFFFFF;
+            border: none;  
+            border-radius: 1px;
+            padding: 5px;
+            font-size: 14px; 
+            ''')
+            # Underline 
+           line_fn = QLabel(self)
+           line_fn.setGeometry(70, 370, 200, 1)
+           line_fn.setStyleSheet('''
+            background: #FFFFFF;
+            border-color: #00000000;
+            border-bottom: 2px solid #ccc;
             ''')
 
           # Display phone number
            self.number_data = QLabel(phone, self)
-           self.number_data.setGeometry(70, 410, 200, 20)
+           self.number_data.setGeometry(70, 406, 200, 26)
            self.number_data.setStyleSheet('''
-            color: #3D8AF7;  
-            font-family: "Asap"; 
-            font-weight: bold; 
-            font-size: 12px; 
+            background-color: #FFFFFF;
+            border: none;  
+            border-radius: 1px;
+            padding: 5px;
+            font-size: 14px; 
+            ''')
+            # Underline 
+           line_ph = QLabel(self)
+           line_ph.setGeometry(70, 430, 200, 1)
+           line_ph.setStyleSheet('''
+            background: #FFFFFF;
+            border-color: #00000000;
+            border-bottom: 2px solid #ccc;
             ''')
 
            self.password_data=QLabel(password,self)
-           self.password_data.setGeometry(70, 520, 200, 20)
+           self.password_data.setGeometry(70, 526, 200, 26)
            self.password_data.setStyleSheet('''
-            color: #3D8AF7;  
-            font-family: "Asap"; 
-            font-weight: bold; 
-            font-size: 12px; 
+            background-color: #FFFFFF;
+            border: none;  
+            border-radius: 1px;
+            padding: 5px;
+            font-size: 14px; 
+            ''')
+           
+            # Underline 
+           line_p = QLabel(self)
+           line_p.setGeometry(70, 550, 200, 1)
+           line_p.setStyleSheet('''
+            background: #FFFFFF;
+            border-color: #00000000;
+            border-bottom: 2px solid #ccc;
             ''')
     def uploadPhoto(self) :  
         filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', '', 'Image Files (*.png *.jpg *.jpeg)')
@@ -221,11 +261,11 @@ class accountWindow(QMainWindow):
     def displayPhoto(self):
         db = connection.connection()
         cursor = db.cursor()
-        cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_email,))
+        cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_mail,))
         result = cursor.fetchone()
-        db.close()
+        
         if result:
-            photo_path = result
+            photo_path = result[0]
             self.photo_label = QLabel(self.photo_frame)
             self.photo_label.setGeometry(0, 0, 100, 100)
             self.photo_label.setAlignment(Qt.AlignCenter)
@@ -240,10 +280,13 @@ class accountWindow(QMainWindow):
             """)
             self.photo_label.show()
             self.photo_uploaded.emit(photo_path)
+
+        db.close()
     def back_clicked(self):
         print("back clicked")
         from homepage import homeWindow
         self.homeWindow=homeWindow(self.user_mail , self.user_id)
+        self.photo_uploaded.connect(self.homeWindow.updatePhoto)
         self.homeWindow.show()
         self.close()
 
