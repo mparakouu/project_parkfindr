@@ -11,9 +11,9 @@ import MySQLconnection as connection
 class CheckSpot(QMainWindow):
     def __init__(self, user_id, parking_number, selected_duration_time):
         super().__init__() 
+        self.user_id = user_id
         self.parking_number = parking_number
         self.selected_duration_time = selected_duration_time
-        self.user_id = user_id
         self.initUI()   
 
     def initUI(self):
@@ -140,7 +140,7 @@ class CheckSpot(QMainWindow):
         ''')
 
 
-# όταν συνδέσουμε με βάση, θα συνδέουμε id πελάτη με θέση, και όταν την κάνει reserve δεν θα είναι πλέον διαθέσιμη 
+
 
     # έλεγχος για το ποιο κουμπί πατήθηκε, 
     def check_selected_spot(self):
@@ -156,48 +156,69 @@ class CheckSpot(QMainWindow):
             self.spot_reserved = None
 
     # όταν πατηθεί το κουμπί reserve, θα κρατηθεί η θέση του επέλεξε ο χρήστης
+    # κάνουμε έλεγχο για την διαθεσιμότητα κάποιας θέσης
+    def is_spot_available(self):
+        db = connection.connection()  # Σύνδεση με τη βάση
+        cursor = db.cursor()
+
+        # διαθεσιμότητα θέσης --> select, με βάση θέση παρκινγκ
+        check_spot = "SELECT * FROM createReservation WHERE NumSpot = %s AND ParkNum = %s"
+        cursor.execute(check_spot, (self.spot_reserved, self.parking_number))
+        result = cursor.fetchone()
+
+        cursor.close()
+        db.close()
+
+        # true-->διαθέσιμη 
+        return result is None
+
+    # κουμπί reserve
     def reserve_button_pressed(self):
         self.check_selected_spot()
         if self.spot_reserved:
-            print("ID χρήστη:", self.user_id)
-            print("Κρατήθηκε η θέση:", self.spot_reserved)
-            print("Parking number που επιλέχθηκε:", self.parking_number)
-            print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
+            if self.is_spot_available():
+                # Η θέση είναι διαθέσιμη, οπότε μπορούμε να προχωρήσουμε με την κράτηση
+                print("ID χρήστη:", self.user_id)
+                print("Κρατήθηκε η θέση:", self.spot_reserved)
+                print("Parking number που επιλέχθηκε:", self.parking_number)
+                print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
 
-            db = connection.connection()  #σύνδεση με το MySQLconnection.py
-            cursor = db.cursor()
+                db = connection.connection()  #σύνδεση με το MySQLconnection.py
+                cursor = db.cursor()
 
-            # insert στο table user
-            sql_insert = "INSERT INTO createReservation (costumerID, ParkNum, DurationTime, NumSpot) VALUES (%s, %s, %s, %s)"
-            data_insert = (self.user_id, self.parking_number, self.selected_duration_time, self.spot_reserved)
+                # insert στο table user
+                sql_insert = "INSERT INTO createReservation (costumerID, ParkNum, DurationTime, NumSpot) VALUES (%s, %s, %s, %s)"
+                data_insert = (self.user_id, self.parking_number, self.selected_duration_time, self.spot_reserved)
 
-            # εκτέλεση του insert
-            cursor.execute(sql_insert, data_insert)
-            
-            # commit στην βάση
-            db.commit()
+                # εκτέλεση του insert
+                cursor.execute(sql_insert, data_insert)
+                
+                # commit στην βάση
+                db.commit()
 
-            # exit
-            cursor.close()
-            db.close()
-            print("Η κράτηση πραγματοποιήθηκε!")
+                # exit
+                cursor.close()
+                db.close()
+                print("Η κράτηση πραγματοποιήθηκε!")
 
-
-            from reservationConfirmed import ResConfirmed
-            self.close()
-            # με πάει στο confirmed πράθυρο 
-            self.confirmed_window = ResConfirmed()
-            self.confirmed_window.show()
-
+                from reservationConfirmed import ResConfirmed
+                self.close()
+                # με πάει στο confirmed πράθυρο 
+                self.confirmed_window = ResConfirmed()
+                self.confirmed_window.show()
+            else:
+                # όχι διαθέσιμη θέση 
+                QMessageBox.warning(self, "Occupied Spot", "The spot has already been occupied by another user.")
 
         else:
             print("Παρακαλώ επιλέξτε μια θέση!")
+
 
     # όταν πατήσει το κουμπί back --> duration_time_parking.py
     def back_button_pressed(self):
         from duration_time_parking import DurationTime
         self.close()
-        self.time_window = DurationTime()
+        self.time_window = DurationTime(self.user_id, self.parking_number)
         self.time_window.show()
 
 

@@ -121,9 +121,10 @@ class selectParking(QMainWindow):
 
 
         button_back = QPushButton('Back', self)
-        button_back.setGeometry(30, 550, 140, 48)
+        button_back.setGeometry(95, 550, 140, 48)
         button_back.setObjectName('button-14')
         button_back.setCursor(QCursor(Qt.PointingHandCursor))
+        button_back.clicked.connect(self.go_back)
         button_back.setStyleSheet('''
             width: 140px;
             height: 48px;
@@ -141,28 +142,10 @@ class selectParking(QMainWindow):
             text-align: center;
                                   
          ''')
+        button_back.clicked.connect(self.go_back)
 
-        button_next = QPushButton('Next', self)
-        button_next.setGeometry(175, 550, 140, 48)
-        button_next.setObjectName('button-15')
-        button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.setStyleSheet('''
-            width: 140px;
-            height: 48px;
-            padding: 0px 10px 0px 10px;
-            background: #75A9F9;
-            color: #FFFFFF;
-            border-color: #FFFFFF;
-            border-width: 3px;
-            border-style: solid;
-            border-radius: 20px 20px 20px 20px;
-            font-family: "Shippori Antique B1";
-            font-weight: bold;
-            font-size: 19px;
-            font-style: italic;
-            text-align: center;                       
-                                     
-         ''')
+
+        
 
         self.webView = QWebEngineView(self)
         self.webView.setGeometry(20, 100, 300, 450)  
@@ -281,7 +264,12 @@ class selectParking(QMainWindow):
         else:
             self.filter_options.hide()
 
-
+    # κουμπί back
+    def go_back(self):
+        from makeReservation import makeReservation
+        self.close()
+        self.back = makeReservation(self.user_id)
+        self.back.show()
    
 
 # κλάση bridge --> επικοινωνία js με python 
@@ -307,6 +295,8 @@ class Bridge(QObject):
         self.time_window = DurationTime.DurationTime(self.parking_number, self.user_id)
         self.time_window.show() 
 
+
+    
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
