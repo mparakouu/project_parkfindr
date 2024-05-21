@@ -207,7 +207,29 @@ class accountWindow(QMainWindow):
             """)
             self.photo_label.show()
             self.photo_uploaded.emit(filename)
-        
+
+
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
+            cursor = db.cursor()
+
+            sql = "UPDATE user SET photo_path = %s WHERE email = %s"
+            cursor.execute(sql, (filename, self.user_mail))
+            db.commit()
+            db.close()
+   
+   
+    def displayPhoto(self):
+        db = connection.connection()
+        cursor = db.cursor()
+        cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_email,))
+        result = cursor.fetchone()
+        db.close()
+        if result and result[0]:
+            photo_path = result[0]
+            self.photo_label = QLabel(self.photo_frame)
+            self.photo_label.setGeometry(0, 0, 100, 100)
+            self.photo_label.setPixmap(QPixmap(photo_path).scaled(100, 100, QtCore.Qt.KeepAspectRatio))
+            self.photo_label.show()
     def back_clicked(self):
         print("back clicked")
         from homepage import homeWindow
