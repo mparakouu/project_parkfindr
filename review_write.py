@@ -7,11 +7,12 @@ import MySQLdb as mdb
 import MySQLconnection as connection
 
 class ReviewSubmitWindow(QMainWindow):
-    def __init__(self, rating, review_for):
+    def __init__(self, rating, review_for ,code):
         super().__init__()
         self.initUI()
         self.rating = rating
         self.review_for = review_for
+        self.code = code
         
 
     def initUI(self):
