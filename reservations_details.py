@@ -6,11 +6,12 @@ import MySQLconnection as connection
 
 
 class ReservationsDetailsWindow(QMainWindow):
-    def __init__(self, code, status , user_id):
+    def __init__(self, code, status , user_id , user_email):
         super().__init__()
         self.code = code
         self.status = status
         self.user_id = user_id
+        self.user_email= user_email
         self.initUI()
         self.loadData()
 

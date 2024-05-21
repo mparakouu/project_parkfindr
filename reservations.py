@@ -125,7 +125,7 @@ class ReservationsWindow(QMainWindow):
     def back_pressed(self):
         print("Back Pressed")
         from homepage import homeWindow
-        self.home_win = homeWindow(self.user_email)
+        self.home_win = homeWindow(self.user_email , self.user_id)
         self.home_win.show()
 
     def centerTable(self):
@@ -201,7 +201,7 @@ class ReservationsWindow(QMainWindow):
     def go_to(self,code,status):
         print("button  clicked",code) 
         from reservations_details import ReservationsDetailsWindow
-        self.res_detwindow = ReservationsDetailsWindow(code, status , self.user_id)
+        self.res_detwindow = ReservationsDetailsWindow(code, status , self.user_id , self.user_email)
         self.res_detwindow.show()
 
     def get_status(self, code):
