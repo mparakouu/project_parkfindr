@@ -224,12 +224,22 @@ class accountWindow(QMainWindow):
         cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_email,))
         result = cursor.fetchone()
         db.close()
-        if result and result[0]:
-            photo_path = result[0]
+        if result:
+            photo_path = result
             self.photo_label = QLabel(self.photo_frame)
             self.photo_label.setGeometry(0, 0, 100, 100)
-            self.photo_label.setPixmap(QPixmap(photo_path).scaled(100, 100, QtCore.Qt.KeepAspectRatio))
+            self.photo_label.setAlignment(Qt.AlignCenter)
+            self.photo_label.setStyleSheet(f"""
+                QLabel {{
+                    border: 2px solid #d6d6d6;
+                    background-image: url({photo_path});
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    border-radius: 5px;
+                }}
+            """)
             self.photo_label.show()
+            self.photo_uploaded.emit(photo_path)
     def back_clicked(self):
         print("back clicked")
         from homepage import homeWindow

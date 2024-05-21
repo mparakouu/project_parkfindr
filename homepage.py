@@ -166,34 +166,28 @@ class homeWindow(QMainWindow):
         self.acc_window.show()
         self.close()
 
-    def uploadPhoto(self) :  
-        filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', '', 'Image Files (*.png *.jpg *.jpeg)')
-        if filename:
-            print("photo path:", filename)
-            self.photo_button.setHidden(True)
+    def displayPhoto(self):
+        db = connection.connection()
+        cursor = db.cursor()
+        cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_email,))
+        result = cursor.fetchone()
+        db.close()
+        if result:
+            print("photo path:", result)
             self.photo_label = QLabel(self.photo_frame)
-            self.photo_label.setGeometry(0, 0, 100, 100)
+            self.photo_label.setGeometry(122, 140, 100, 100)
             self.photo_label.setAlignment(Qt.AlignCenter)
             self.photo_label.setStyleSheet(f"""
                 QLabel {{
                     border: 2px solid #d6d6d6;
-                    background-image: url({filename});
+                    background-image: url({result});
                     background-repeat: no-repeat;
                     background-position: center;
                     border-radius: 5px;
                 }}
             """)
             self.photo_label.show()
-            self.photo_uploaded.emit(filename)
-
-
-            db = connection.connection()  #σύνδεση με το MySQLconnection.py
-            cursor = db.cursor()
-
-            sql = "UPDATE user SET photo_path = %s WHERE email = %s"
-            cursor.execute(sql, (filename, self.user_mail))
-            db.commit()
-            db.close()
+            self.photo_label.emit(result)
 
     def logout_window(self):
         from signin import signInWindow
