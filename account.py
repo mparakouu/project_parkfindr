@@ -10,9 +10,10 @@ from PyQt5.QtCore import pyqtSignal
 
 class accountWindow(QMainWindow):
     photo_uploaded = pyqtSignal(str)
-    def __init__(self,user_mail):
+    def __init__(self,user_mail , user_id):
         super().__init__() 
         self.user_mail = user_mail
+        self.user_id = user_id
         self.initUI() 
         self.loadData()
 
@@ -210,7 +211,7 @@ class accountWindow(QMainWindow):
     def back_clicked(self):
         print("back clicked")
         from homepage import homeWindow
-        self.homeWindow=homeWindow(self.user_mail)
+        self.homeWindow=homeWindow(self.user_mail , self.user_id)
         self.homeWindow.show()
         self.close()
 

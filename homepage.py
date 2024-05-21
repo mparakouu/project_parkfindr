@@ -162,7 +162,7 @@ class homeWindow(QMainWindow):
     def openPage4(self):
         print("account")
         from account import accountWindow
-        self.acc_window= accountWindow(self.user_email)
+        self.acc_window= accountWindow(self.user_email , self.user_id)
         self.acc_window.show()
         self.close()
 
