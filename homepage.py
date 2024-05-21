@@ -5,7 +5,9 @@ from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
 from PyQt5.QtWebEngineWidgets import QWebEngineView 
 import MySQLconnection as connection
+from PyQt5.QtCore import pyqtSignal
 class homeWindow(QMainWindow):
+    photo_uploaded = pyqtSignal(str)
     def __init__(self, user_mail, user_id):
         super().__init__() 
         self.user_email = user_mail
@@ -173,6 +175,7 @@ class homeWindow(QMainWindow):
         result = cursor.fetchone()
         db.close()
         if result:
+            photo_path = result 
             print("photo path:", result)
             self.photo_label = QLabel(self.photo_frame)
             self.photo_label.setGeometry(122, 140, 100, 100)
@@ -180,14 +183,14 @@ class homeWindow(QMainWindow):
             self.photo_label.setStyleSheet(f"""
                 QLabel {{
                     border: 2px solid #d6d6d6;
-                    background-image: url({result});
+                    background-image: url({photo_path});
                     background-repeat: no-repeat;
                     background-position: center;
                     border-radius: 5px;
                 }}
             """)
             self.photo_label.show()
-            self.photo_label.emit(result)
+            self.photo_uploaded.emit(photo_path)
 
     def logout_window(self):
         from signin import signInWindow

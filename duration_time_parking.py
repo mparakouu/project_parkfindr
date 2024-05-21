@@ -165,7 +165,7 @@ class DurationTime(QMainWindow):
         self.close()
         import check_your_spot as CheckSpot
         # open window --> check_your_spot
-        self.spot_window = CheckSpot.CheckSpot(self.parking_number, self.parking_number, self.selected_duration_time)
+        self.spot_window = CheckSpot.CheckSpot(self.parking_number, self.user_id,  self.selected_duration_time)
 
         self.spot_window.show() 
 

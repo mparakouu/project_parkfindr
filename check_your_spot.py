@@ -163,7 +163,7 @@ class CheckSpot(QMainWindow):
 
         # διαθεσιμότητα θέσης --> select, με βάση θέση παρκινγκ
         check_spot = "SELECT * FROM createReservation WHERE NumSpot = %s AND ParkNum = %s"
-        cursor.execute(check_spot, (self.spot_reserved, self.parking_number))
+        cursor.execute(check_spot, (self.spot_reserved, self.parking_number,))
         result = cursor.fetchone()
 
         cursor.close()
