@@ -151,7 +151,7 @@ class homeWindow(QMainWindow):
 
     def openPage2(self):
         from reservations import ReservationsWindow
-        self.Reservations_window= ReservationsWindow(self.user_email)
+        self.Reservations_window= ReservationsWindow(self.user_email ,self.user_id )
         self.Reservations_window.show()
         self.close()
        
