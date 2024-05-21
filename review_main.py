@@ -55,10 +55,11 @@ class RatingWidget(QLabel):
 
 
 class ReviewWindow(QMainWindow):
-    def __init__(self, code):
+    def __init__(self, code , user_id):
         super().__init__()
         self.initUI()
         self.code=code
+        self.user_id = user_id
         self.star_rating = None
 
     def initUI(self):
@@ -212,7 +213,8 @@ class ReviewWindow(QMainWindow):
         result = cursor.fetchone()
         db.commit()
         if result :
-            parking_name = result
+            parking_name = result[0]  
+            print("Parking name:", parking_name)
         review_for = None
         if self.label_parking.isChecked():
             review_for = parking_name
@@ -228,7 +230,7 @@ class ReviewWindow(QMainWindow):
         if self.star_rating == 0:
             QMessageBox.warning(self, "Input Error", "Please provide a rating.")
             return
-        self.review_submit_window = ReviewSubmitWindow(self.star_rating, review_for , self.code) #θα τα χρειαστώ για όταν κάνω sumbit να αποθηκέυονται στην βάση δεδομένων 
+        self.review_submit_window = ReviewSubmitWindow(self.star_rating, review_for , self.code , self.user_id) #θα τα χρειαστώ για όταν κάνω sumbit να αποθηκέυονται στην βάση δεδομένων 
         self.review_submit_window.show() 
         self.close()
 
@@ -249,7 +251,7 @@ class ReviewWindow(QMainWindow):
             if result1:
                     phone_number , open_hours =result1
                     from review_contact import ContactWindow
-                    self.review_contact_window = ContactWindow(parking_name, address ,phone_number , open_hours ,self.code )
+                    self.review_contact_window = ContactWindow(parking_name, address ,phone_number , open_hours ,self.code, self.user_id )
                     self.review_contact_window.show()
                     self.close()
 

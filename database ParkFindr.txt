@@ -24,11 +24,6 @@ password varchar(100) NOT NULL,
 PRIMARY KEY (park_Owner_id )
 );
 
-INSERT INTO Parking_owner (full_name ,phone,email,password) VALUES
-('Georgia Barakou','6923541289','mparakou7@gmail.com','1234'),
-('Giannis Balasis','6934901265','balasis123@gmail.com','1234'),
-('Xristiana Mousele','6934769127','mousele4@gmail.com','1234'),
-('Dimitris Mhnogiannhs','6936190426','mhnogiannhs5@gmail.com','1234');
 
 
 CREATE TABLE IF NOT EXISTS parkingData(
@@ -42,19 +37,15 @@ CREATE TABLE IF NOT EXISTS parkingData(
     FOREIGN KEY (parking_owner_id) REFERENCES Parking_owner(park_Owner_id)
 );
 
-INSERT INTO parkingData (parking_owner_id, parking_name, address, open_hours, phone_number, spots) VALUES
-(1 , 'ParkNow' , 'Bonitsas 14' , '10:00 - 21:00' ,2610222222, 20),
-(4 , 'BestParking' , 'Larnakas 7' , '10:00 - 21:00',2610222222 , 60),
-(3 , 'PatrasParking' , 'Megistou 10' , '10:00 - 21:00',2610222222 , 30),
-(2 , 'PatrasKings' , 'Rwmanou 5' , '10:00 - 21:00',2610222222 , 50);
-
 
 CREATE TABLE IF NOT EXISTS createReservation(
 reservationNum int AUTO_INCREMENT PRIMARY KEY,
-costumerID INT NOT NULL,
-ParkNum varchar(100) NOT NULL,
+customerID INT NOT NULL,
+ParkNum int NOT NULL,
 DurationTime varchar(100) NOT NULL,
-NumSpot INT NOT NULL
+NumSpot INT NOT NULL,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+FOREIGN KEY (ParkNum) REFERENCES parkingData(parking_number)
 );
 
 
@@ -86,34 +77,45 @@ CREATE TABLE reviews (
 
 
 CREATE TABLE reservations(
-    code INT AUTO_INCREMENT,
+    code INT NOT NULL,
     date TEXT NOT NULL,
     status ENUM('Waiting','Confirmed','Cancelled') NOT NULL,
-    PRIMARY KEY (code)
+    FOREIGN KEY (code) REFERENCES  createReservation(reservationNum)
 );
 
 
-INSERT INTO reservations ( date, status) VALUES 
-('2 min ago', 'Waiting'),
-('3 min ago', 'Confirmed'),
-('4 min ago', 'Cancelled'),
-('5 min ago', 'Waiting'),
-('6 min ago', 'Confirmed');
-INSERT INTO reservations ( date, status) VALUES 
-('7 min ago', 'Confirmed'),
-('2 min ago', 'Waiting');
 
 
 CREATE TABLE reservationsdetails(
-    id_code INT,
+    id_code INT NOT NULL,
     parking_name VARCHAR(255),
     address VARCHAR(255),
     state ENUM('Waiting','Confirmed','Cancelled') NOT NULL,
     date TEXT NOT NULL,
     duration TEXT NOT NULL,
     spot INT,
-    FOREIGN KEY (id_code) REFERENCES reservations(code)
+    FOREIGN KEY (id_code) REFERENCES reservations(code) 
+    
 );
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------
+INSERT INTO Parking_owner (full_name ,phone,email,password) VALUES
+('Georgia Barakou','6923541289','mparakou7@gmail.com','1234'),
+('Giannis Balasis','6934901265','balasis123@gmail.com','1234'),
+('Xristiana Mousele','6934769127','mousele4@gmail.com','1234'),
+('Dimitris Mhnogiannhs','6936190426','mhnogiannhs5@gmail.com','1234');
+
+
+INSERT INTO parkingData (parking_owner_id, parking_name, address, open_hours, phone_number, spots) VALUES
+(1 , 'ParkNow' , 'Bonitsas 14' , '10:00 - 21:00' ,2610222222, 20),
+(4 , 'BestParking' , 'Larnakas 7' , '10:00 - 21:00',2610222222 , 60),
+(3 , 'PatrasParking' , 'Megistou 10' , '10:00 - 21:00',2610222222 , 30),
+(2 , 'PatrasKings' , 'Rwmanou 5' , '10:00 - 21:00',2610222222 , 50);
+
 
 
 INSERT INTO reservationsdetails (id_code, parking_name, address, state, date, duration, spot) 
@@ -128,3 +130,13 @@ INSERT INTO reservationsdetails (id_code, parking_name, address, state, date, du
 VALUES 
 (27, 'Central Park Garage', '123 Main St', 'Waiting', '2024-05-20 08:00:00', '2 hours', 101),
 (28, 'Sunset Boulevard Parking', '456 Sunset Blvd', 'Confirmed', '2024-05-20 09:00:00', '3 hours', 102);
+
+INSERT INTO reservations ( date, status) VALUES 
+('2 min ago', 'Waiting'),
+('3 min ago', 'Confirmed'),
+('4 min ago', 'Cancelled'),
+('5 min ago', 'Waiting'),
+('6 min ago', 'Confirmed');
+INSERT INTO reservations ( date, status) VALUES 
+('7 min ago', 'Confirmed'),
+('2 min ago', 'Waiting');

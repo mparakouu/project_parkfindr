@@ -7,12 +7,13 @@ import MySQLdb as mdb
 import MySQLconnection as connection
 
 class ReviewSubmitWindow(QMainWindow):
-    def __init__(self, rating, review_for ,code):
+    def __init__(self, rating, review_for ,code , user_id):
         super().__init__()
         self.initUI()
         self.rating = rating
         self.review_for = review_for
         self.code = code
+        self.user_id = user_id
         
 
     def initUI(self):
@@ -120,8 +121,8 @@ class ReviewSubmitWindow(QMainWindow):
             cursor = db.cursor()
 
 
-            sql = "INSERT INTO reviews (review_text, rating, review_for) VALUES (%s, %s, %s)"
-            val = (review_text, self.rating, self.review_for)
+            sql = "INSERT INTO reviews (who_id , review_text, rating, review_for) VALUES (%s, %s, %s , %s)"
+            val = (self.user_id , review_text, self.rating, self.review_for)
             cursor.execute(sql, val)
             db.commit()
             cursor.close()
@@ -137,7 +138,7 @@ class ReviewSubmitWindow(QMainWindow):
     def back_clicked(self):
         print("Back clicked") 
         from review_main import ReviewWindow 
-        self.review_window = ReviewWindow()
+        self.review_window = ReviewWindow(self.code , self.user_id)
         self.review_window.show()
         self.close()
         
