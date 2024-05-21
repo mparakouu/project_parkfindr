@@ -110,7 +110,7 @@ class DurationTime(QMainWindow):
         back_button = QPushButton('Back', self)
         back_button.setGeometry(20, 550, 140, 35)
         back_button.setCursor(QCursor(Qt.PointingHandCursor))
-        #back_button.clicked.connect(self.back_button_pressed) #θα πηγαίνει πίσω στον χάρτη --> select parking
+        back_button.clicked.connect(self.back_button_pressed) #θα πηγαίνει πίσω στον χάρτη --> select parking
         back_button.setStyleSheet('''
             padding: 8px 8px 8px 8px;
             box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
@@ -169,6 +169,13 @@ class DurationTime(QMainWindow):
 
         self.spot_window.show() 
 
+    # όταν πατηθεί το κουμπί back  
+    def back_button_pressed(self):
+        self.close()
+        from selectParking import selectParking
+        self.park_window = selectParking(self.user_id)
+
+        self.park_window.show() 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

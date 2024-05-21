@@ -11,9 +11,9 @@ import MySQLconnection as connection
 class CheckSpot(QMainWindow):
     def __init__(self, user_id, parking_number, selected_duration_time):
         super().__init__() 
+        self.user_id = user_id
         self.parking_number = parking_number
         self.selected_duration_time = selected_duration_time
-        self.user_id = user_id
         self.initUI()   
 
     def initUI(self):
@@ -140,7 +140,7 @@ class CheckSpot(QMainWindow):
         ''')
 
 
-# όταν συνδέσουμε με βάση, θα συνδέουμε id πελάτη με θέση, και όταν την κάνει reserve δεν θα είναι πλέον διαθέσιμη 
+
 
     # έλεγχος για το ποιο κουμπί πατήθηκε, 
     def check_selected_spot(self):
@@ -156,48 +156,115 @@ class CheckSpot(QMainWindow):
             self.spot_reserved = None
 
     # όταν πατηθεί το κουμπί reserve, θα κρατηθεί η θέση του επέλεξε ο χρήστης
+    # κάνουμε έλεγχο για την διαθεσιμότητα κάποιας θέσης
+    def is_spot_available(self):
+        db = connection.connection()  # Σύνδεση με τη βάση
+        cursor = db.cursor()
+
+        # διαθεσιμότητα θέσης --> select, με βάση θέση παρκινγκ
+        check_spot = "SELECT * FROM createReservation WHERE NumSpot = %s AND ParkNum = %s"
+        cursor.execute(check_spot, (self.spot_reserved, self.parking_number))
+        result = cursor.fetchone()
+
+        cursor.close()
+        db.close()
+
+        # true-->διαθέσιμη 
+        return result is None
+
+    # κουμπί reserve
     def reserve_button_pressed(self):
         self.check_selected_spot()
         if self.spot_reserved:
-            print("ID χρήστη:", self.user_id)
-            print("Κρατήθηκε η θέση:", self.spot_reserved)
-            print("Parking number που επιλέχθηκε:", self.parking_number)
-            print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
+            if self.is_spot_available():
+                # Η θέση είναι διαθέσιμη, οπότε μπορούμε να προχωρήσουμε με την κράτηση
+                print("ID χρήστη:", self.user_id)
+                print("Κρατήθηκε η θέση:", self.spot_reserved)
+                print("Parking number που επιλέχθηκε:", self.parking_number)
+                print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
 
-            db = connection.connection()  #σύνδεση με το MySQLconnection.py
-            cursor = db.cursor()
+                db = connection.connection()  #σύνδεση με το MySQLconnection.py
+                cursor = db.cursor()
+                try:
+                    # Εισαγωγή στον πίνακα createReservation
+                    sql_insert_createReservation = "INSERT INTO createReservation (customerID, ParkNum, DurationTime, NumSpot) VALUES (%s, %s, %s, %s)"
+                    data_insert_createReservation = (
+                        self.user_id, 
+                        self.parking_number, 
+                        self.selected_duration_time, 
+                        self.spot_reserved
+                    )
+                    cursor.execute(sql_insert_createReservation, data_insert_createReservation,)
+                    
+                    # Λήψη του τελευταίου εισαχθέντος ID
+                    reservationNum = cursor.lastrowid 
+                    print(reservationNum)
+                    # Ανάκτηση δεδομένων από τον πίνακα parkingData
+                    sql_select_parkingData = "SELECT parking_name, address FROM parkingData WHERE parking_number = %s"
+                    cursor.execute(sql_select_parkingData, (self.parking_number,))
+                    parking_data = cursor.fetchone()
+                    
+                    if not parking_data:
+                        raise ValueError("No parking data found for the given parking number.")
+                    
+                    parking_name, parking_address = parking_data
+                    
+                    # Ανάκτηση του πεδίου date από τον πίνακα createReservation
+                    sql_select_date = " SELECT date FROM createReservation WHERE reservationNum = %s"
+                    cursor.execute(sql_select_date, (reservationNum,))
+                    reservation_date = cursor.fetchone()[0]  # Λαμβάνουμε την ημερομηνία
+                    
+                    # Εισαγωγή στον πίνακα reservations
+                    sql_insert_reservations = "INSERT INTO reservations (code, date, status) VALUES (%s, %s, %s)"
+                    data_insert_reservations = (
+                        reservationNum,
+                        reservation_date,  # Χρησιμοποιούμε την ημερομηνία από τον πίνακα createReservation
+                        'Waiting'           # αρχική κατάσταση
+                    )
+                    cursor.execute(sql_insert_reservations , data_insert_reservations)
+                    
+                    # Λήψη του τελευταίου εισαχθέντος ID για τον πίνακα reservations
+                    #reservation_code = cursor.lastrowid
+                    
+                    # Εισαγωγή στον πίνακα reservationsdetails
+                    sql_insert_reservationsdetails = "INSERT INTO reservationsdetails (id_code, parking_name, address, state, date , duration , spot) VALUES (%s, %s, %s, %s, %s,  %s,  %s)"
+                    data_insert_reservationsdetails = (
+                        reservationNum,
+                        parking_name,  # Από τον πίνακα parkingData
+                        parking_address,  # Από τον πίνακα parkingData
+                        'Waiting',  # αρχική κατάσταση
+                        reservation_date , # Χρησιμοποιούμε την ημερομηνία από τον πίνακα createReservation
+                        self.selected_duration_time, 
+                        self.spot_reserved    
+                    )
+                    cursor.execute(sql_insert_reservationsdetails , data_insert_reservationsdetails)
+                    
+                    # Commit στην βάση
+                    db.commit()
 
-            # insert στο table user
-            sql_insert = "INSERT INTO createReservation (costumerID, ParkNum, DurationTime, NumSpot) VALUES (%s, %s, %s, %s)"
-            data_insert = (self.user_id, self.parking_number, self.selected_duration_time, self.spot_reserved)
+                    print("Η κράτηση πραγματοποιήθηκε!")
 
-            # εκτέλεση του insert
-            cursor.execute(sql_insert, data_insert)
-            
-            # commit στην βάση
-            db.commit()
+                    from reservationConfirmed import ResConfirmed
+                    self.close()
+                    # με πάει στο confirmed πράθυρο 
+                    self.confirmed_window = ResConfirmed()
+                    self.confirmed_window.show()
+                except Exception as e:
+                    db.rollback()
+                    print(f"An error occurred: {e}")
+                finally:
+                    # Κλείσιμο του cursor
+                    cursor.close()
+                    
+                    # Κλείσιμο της σύνδεσης με τη βάση δεδομένων
+                    db.close()
 
-            # exit
-            cursor.close()
-            db.close()
-            print("Η κράτηση πραγματοποιήθηκε!")
-
-
-            from reservationConfirmed import ResConfirmed
-            self.close()
-            # με πάει στο confirmed πράθυρο 
-            self.confirmed_window = ResConfirmed()
-            self.confirmed_window.show()
-
-
-        else:
-            print("Παρακαλώ επιλέξτε μια θέση!")
 
     # όταν πατήσει το κουμπί back --> duration_time_parking.py
     def back_button_pressed(self):
         from duration_time_parking import DurationTime
         self.close()
-        self.time_window = DurationTime()
+        self.time_window = DurationTime(self.user_id, self.parking_number)
         self.time_window.show()
 
 

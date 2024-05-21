@@ -4,7 +4,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtCore import Qt
 from PyQt5.QtWebEngineWidgets import QWebEngineView 
-
+import MySQLconnection as connection
 class homeWindow(QMainWindow):
     def __init__(self, user_mail, user_id):
         super().__init__() 
@@ -151,7 +151,7 @@ class homeWindow(QMainWindow):
 
     def openPage2(self):
         from reservations import ReservationsWindow
-        self.Reservations_window= ReservationsWindow(self.user_email)
+        self.Reservations_window= ReservationsWindow(self.user_email ,self.user_id )
         self.Reservations_window.show()
         self.close()
        
@@ -166,7 +166,7 @@ class homeWindow(QMainWindow):
         self.acc_window.show()
         self.close()
 
-    def uploadPhoto(self):
+    def uploadPhoto(self) :  
         filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', '', 'Image Files (*.png *.jpg *.jpeg)')
         if filename:
             print("photo path:", filename)
@@ -184,6 +184,16 @@ class homeWindow(QMainWindow):
                 }}
             """)
             self.photo_label.show()
+            self.photo_uploaded.emit(filename)
+
+
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
+            cursor = db.cursor()
+
+            sql = "UPDATE user SET photo_path = %s WHERE email = %s"
+            cursor.execute(sql, (filename, self.user_mail))
+            db.commit()
+            db.close()
 
     def logout_window(self):
         from signin import signInWindow

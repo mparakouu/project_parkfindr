@@ -6,13 +6,14 @@ import MySQLdb as mdb
 import MySQLconnection as connection
 
 class ContactWindow(QMainWindow):
-    def __init__(self, parking_name, address ,phone_number , open_hours , code):
+    def __init__(self, parking_name, address ,phone_number , open_hours , code , user_id):
         super().__init__()
         self.parking_name = parking_name
         self.address = address
         self.phone_number =phone_number
         self.open_hours= open_hours
         self.code =code
+        self.user_id= user_id
         self.initUI()
        
 
@@ -136,7 +137,7 @@ class ContactWindow(QMainWindow):
     def back_clicked(self):
         print("Back clicked") 
         from review_main import ReviewWindow 
-        self.review_window = ReviewWindow(self.code)
+        self.review_window = ReviewWindow(self.code ,self.user_id)
         self.review_window.show()
         self.close()
 

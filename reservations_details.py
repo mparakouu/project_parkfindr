@@ -6,10 +6,12 @@ import MySQLconnection as connection
 
 
 class ReservationsDetailsWindow(QMainWindow):
-    def __init__(self, code, status):
+    def __init__(self, code, status , user_id , user_email):
         super().__init__()
         self.code = code
         self.status = status
+        self.user_id = user_id
+        self.user_email= user_email
         self.initUI()
         self.loadData()
 
@@ -146,7 +148,7 @@ class ReservationsDetailsWindow(QMainWindow):
     def review_pressed(self):
         print("review clicked")  
         from review_main import ReviewWindow
-        self.review_contact_window = ReviewWindow(self.code)
+        self.review_contact_window = ReviewWindow(self.code , self.user_id) 
         self.review_contact_window.show()
         self.close()
 
