@@ -216,6 +216,7 @@ class ReviewWindow(QMainWindow):
         review_for = None
         if self.label_parking.isChecked():
             review_for = parking_name
+            print(parking_name)
         elif self.label_app.isChecked():
             review_for = "ParkFindr App"
         
