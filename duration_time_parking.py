@@ -15,7 +15,7 @@ class DurationTime(QMainWindow):
         self.initUI()   
 
     def initUI(self): 
-        self.setWindowTitle('ParkFindr')
+        self.setWindowTitle('Select your duration time')
         self.setGeometry(100, 100, 340, 667) 
 
         # περίγραμμα του iphone 
