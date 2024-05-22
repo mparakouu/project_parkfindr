@@ -10,10 +10,14 @@ import MySQLconnection as connection
 
 class CheckSpot(QMainWindow):
     def __init__(self, user_id, parking_number, selected_duration_time):
-        super().__init__() 
+        super().__init__()
         self.user_id = user_id
+        print("ID χρήστη:", self.user_id)
         self.parking_number = parking_number
         self.selected_duration_time = selected_duration_time
+        
+        #καμία θεση επιλεγμένη στην αρχή
+        self.spot_reserved = None
         self.initUI()   
 
     def initUI(self):
@@ -146,11 +150,13 @@ class CheckSpot(QMainWindow):
     def check_selected_spot(self):
         buttons = [self.checkbox1, self.checkbox3, self.checkbox4, self.checkbox5,
                    self.checkbox6, self.checkbox7, self.checkbox8, self.checkbox9, self.checkbox10]
-
+        
         # όποιο κουμπί πατήθηκε / isChescked --> το αποθηκεύει (όνομα κουμπιού) στην μεταβλητή self.spot_reserved
         for button in buttons:
             if button.isChecked():
+                
                 self.spot_reserved = button.objectName()
+                print("ID χρήστη:", self.user_id)
                 break
         else:
             self.spot_reserved = None
@@ -174,7 +180,7 @@ class CheckSpot(QMainWindow):
 
     # κουμπί reserve
     def reserve_button_pressed(self):
-        self.check_selected_spot()
+        self.check_selected_spot() 
         if self.spot_reserved:
             if self.is_spot_available():
                 # Η θέση είναι διαθέσιμη, οπότε μπορούμε να προχωρήσουμε με την κράτηση
@@ -195,11 +201,13 @@ class CheckSpot(QMainWindow):
                         self.spot_reserved
                     )
                     cursor.execute(sql_insert_createReservation, data_insert_createReservation,)
-                    
+                    print("ID χρήστη:", self.user_id)
+
                     # Λήψη του τελευταίου εισαχθέντος ID
                     reservationNum = cursor.lastrowid 
                     print(reservationNum)
-                    # Ανάκτηση δεδομένων από τον πίνακα parkingData
+
+                    # select από πίνακα parkingData
                     sql_select_parkingData = "SELECT parking_name, address FROM parkingData WHERE parking_number = %s"
                     cursor.execute(sql_select_parkingData, (self.parking_number,))
                     parking_data = cursor.fetchone()
@@ -209,12 +217,12 @@ class CheckSpot(QMainWindow):
                     
                     parking_name, parking_address = parking_data
                     
-                    # Ανάκτηση του πεδίου date από τον πίνακα createReservation
+                    # select date από createReservation
                     sql_select_date = " SELECT date FROM createReservation WHERE reservationNum = %s"
                     cursor.execute(sql_select_date, (reservationNum,))
                     reservation_date = cursor.fetchone()[0]  # Λαμβάνουμε την ημερομηνία
                     
-                    # Εισαγωγή στον πίνακα reservations
+                    # insert ston πίνακα reservations
                     sql_insert_reservations = "INSERT INTO reservations (code, date, status) VALUES (%s, %s, %s)"
                     data_insert_reservations = (
                         reservationNum,
@@ -222,7 +230,7 @@ class CheckSpot(QMainWindow):
                         'Waiting'           # αρχική κατάσταση
                     )
                     cursor.execute(sql_insert_reservations , data_insert_reservations)
-                    
+                    print("ID χρήστη:", self.user_id)
                     # Λήψη του τελευταίου εισαχθέντος ID για τον πίνακα reservations
                     #reservation_code = cursor.lastrowid
                     
@@ -238,7 +246,7 @@ class CheckSpot(QMainWindow):
                         self.spot_reserved    
                     )
                     cursor.execute(sql_insert_reservationsdetails , data_insert_reservationsdetails)
-                    
+                    print("ID χρήστη:", self.user_id)
                     # Commit στην βάση
                     db.commit()
 
