@@ -9,11 +9,12 @@ import MySQLconnection as connection
 
 
 class CheckSpot(QMainWindow):
-    def __init__(self, user_id, parking_number, selected_duration_time):
+    def __init__(self, user_id, parking_number, selected_duration_time, user_email):
         super().__init__()
         self.user_id = user_id
         print("ID χρήστη:", self.user_id)
         self.parking_number = parking_number
+        self.user_email = user_email
         self.selected_duration_time = selected_duration_time
         
         #καμία θεση επιλεγμένη στην αρχή
@@ -250,14 +251,15 @@ class CheckSpot(QMainWindow):
                     print("ID χρήστη:", self.user_id)
                     # Commit στην βάση
                     db.commit()
-
+                    print("email χρήστη:", self.user_email)
                     print("Η κράτηση πραγματοποιήθηκε!")
 
                     from reservationConfirmed import ResConfirmed
                     self.close()
                     # με πάει στο confirmed πράθυρο 
-                    self.confirmed_window = ResConfirmed()
+                    self.confirmed_window = ResConfirmed(self.user_id, self.user_email)
                     self.confirmed_window.show()
+                    
                 except Exception as e:
                     db.rollback()
                     print(f"An error occurred: {e}")
@@ -275,7 +277,7 @@ class CheckSpot(QMainWindow):
     def back_button_pressed(self):
         from duration_time_parking import DurationTime
         self.close()
-        self.time_window = DurationTime(self.user_id, self.parking_number)
+        self.time_window = DurationTime(self.user_id, self.parking_number, self.user_email)
         self.time_window.show()
 
 
