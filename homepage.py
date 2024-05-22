@@ -8,12 +8,12 @@ import MySQLconnection as connection
 from PyQt5.QtCore import pyqtSignal
 class homeWindow(QMainWindow):
     photo_uploaded = pyqtSignal(str)
-    def __init__(self, user_mail, user_id):
+    def __init__(self, user_email, user_id):
         super().__init__() 
-        self.user_email = user_mail
+        self.user_email = user_email
         self.user_id = user_id
         self.initUI() 
-        self.displayPhoto()
+        self.displayPhoto() 
 
     def initUI(self):
         self.setWindowTitle('Home Page')
@@ -147,7 +147,7 @@ class homeWindow(QMainWindow):
         from makeReservation import makeReservation
 
         print("ID χρήστη:", self.user_id)
-        self.makeReservation_window= makeReservation(self.user_id)
+        self.makeReservation_window= makeReservation(self.user_id ,self.user_email)
         self.makeReservation_window.show()
         self.close()
 

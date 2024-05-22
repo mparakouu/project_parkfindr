@@ -11,9 +11,9 @@ from PyQt5.QtCore import pyqtSignal
 class accountWindow(QMainWindow):
     photo_uploaded = pyqtSignal(str)
 
-    def __init__(self,user_mail , user_id):
+    def __init__(self,user_email , user_id):
         super().__init__() 
-        self.user_mail = user_mail
+        self.user_email = user_email
         self.user_id = user_id
         self.initUI() 
         self.loadData()
@@ -110,7 +110,7 @@ class accountWindow(QMainWindow):
             font-size: 17px;
             text-align: left;
         ''') 
-        label_mail = QLabel(self.user_mail,self)
+        label_mail = QLabel(self.user_email,self)
         label_mail.setGeometry(70,466,200,26)
         label_mail.setStyleSheet('''
             background-color: #FFFFFF;
@@ -165,7 +165,7 @@ class accountWindow(QMainWindow):
          cursor = db.cursor()
 
          sql = "SELECT full_name,phone,password from user WHERE email= %s"
-         cursor.execute(sql, (self.user_mail,))  # χρησημοποισω το μειλ σαν παραμετρο
+         cursor.execute(sql, (self.user_email,))  # χρησημοποισω το μειλ σαν παραμετρο
          
          result = cursor.fetchone()
          db.close()
@@ -237,7 +237,7 @@ class accountWindow(QMainWindow):
             self.photo_label.setGeometry(0, 0, 100, 100)
             self.photo_label.setAlignment(Qt.AlignCenter)
             self.photo_label.setStyleSheet(f"""
-                QLabel {{
+                QLabel {{ 
                     border: 2px solid #d6d6d6;
                     background-image: url({filename});
                     background-repeat: no-repeat;
@@ -253,7 +253,7 @@ class accountWindow(QMainWindow):
             cursor = db.cursor()
 
             sql = "UPDATE user SET photo_path = %s WHERE email = %s"
-            cursor.execute(sql, (filename, self.user_mail))
+            cursor.execute(sql, (filename, self.user_email))
             db.commit()
             db.close()
    
@@ -261,10 +261,10 @@ class accountWindow(QMainWindow):
     def displayPhoto(self):
         db = connection.connection()
         cursor = db.cursor()
-        cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_mail,))
+        cursor.execute("SELECT photo_path FROM user WHERE email = %s", (self.user_email,))
         result = cursor.fetchone()
         
-        if result:
+        if result: 
             photo_path = result[0]
             self.photo_label = QLabel(self.photo_frame)
             self.photo_label.setGeometry(0, 0, 100, 100)
@@ -285,7 +285,7 @@ class accountWindow(QMainWindow):
     def back_clicked(self):
         print("back clicked")
         from homepage import homeWindow
-        self.homeWindow=homeWindow(self.user_mail , self.user_id)
+        self.homeWindow=homeWindow(self.user_email , self.user_id)
         self.photo_uploaded.connect(self.homeWindow.updatePhoto)
         self.homeWindow.show()
         self.close()
