@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QApplication,QHeaderView, QMainWindow, QFrame, QLabe
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices, QRegExpValidator
 from PyQt5.QtCore import Qt, QSize, QUrl, QRegExp
-import MySQLdb as mdb
-from homepage import homeWindow
+
+
 import MySQLconnection as connection
 
 
@@ -12,6 +12,7 @@ class ParkingOwnerWindow(QMainWindow):
     def __init__(self,user_id):
         super().__init__()
         self.user_id = user_id
+        print("id:",self.user_id)
         self.initUI()
         self.loadParkingName()
         self.loadData()
@@ -19,7 +20,7 @@ class ParkingOwnerWindow(QMainWindow):
     def initUI(self): 
         self.setWindowTitle('ParkingOwnerPage')
         self.setGeometry(100, 100, 340, 667)
-
+        
         
         # Φόρτωση του περιγράμματος του iPhone
         iphonePixmap = QPixmap('iphoneFrame.png')
@@ -46,14 +47,18 @@ class ParkingOwnerWindow(QMainWindow):
         ''')
         # Δημιουργία πίνακα
         self.table = QTableWidget(self)
+        self.table.setColumnCount(3) 
+        self.table.setHorizontalHeaderLabels([ 'State', 'Duration', 'Spot'])
          
         # Ρύθμιση του μεγέθους των κελιών
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  
+        self.table.verticalHeader().setDefaultSectionSize(30) 
+        self.table.horizontalHeader().setDefaultSectionSize(90)   
         self.table.setShowGrid(False)
+        
         
         #Aπόκρυψη αρίθμησης στήλης
         self.table.verticalHeader().setVisible(False)
-        self.table.horizontalHeader().setVisible(False)
+        
 
         # Αλλαγή χρώματος και πάχους των γραμμών πλέγματος
         self.table.setStyleSheet('''
@@ -80,13 +85,13 @@ class ParkingOwnerWindow(QMainWindow):
 
         # Kεντράρισμα του πίνακα
         self.centerTable()
-        self.table.show()
+
     
     def centerTable(self):
         # Υπολογισμός και εφαρμογή νέων διαστάσεων και θέσης για τον πίνακα
         table_width = int(self.width() * 0.8)  #
         table_x = int((self.width() - table_width) // 2)
-        self.table.setGeometry(table_x, 200, table_width, 214)
+        self.table.setGeometry(table_x, 150, table_width, 400)
     
     def resizeEvent(self, event):
         # Επανακεντράρισμα του πίνακα όταν αλλάζει το μέγεθος του παραθύρου
@@ -101,21 +106,24 @@ class ParkingOwnerWindow(QMainWindow):
         sql_select = "SELECT parking_name FROM parkingData WHERE parking_owner_id= %s "
         cursor.execute(sql_select,(self.user_id,))
         result=cursor.fetchone()
-        self.pname=result
+        self.pname=result[0]
+        print("ID",self.user_id)
+        print("Name",self.pname)
+
+       
 
     def loadData(self):
         # Σύνδεση με τη βάση δεδομένων
         db = connection.connection()  #σύνδεση με το MySQLconnection.py
         cursor = db.cursor()
         # Ανάκτηση δεδομένων από τον πίνακα
-        sql_select = "SELECT * FROM reservationsdetails WHERE id_code = %s "
+        sql_select = "SELECT state, duration, spot FROM reservationsdetails WHERE parking_name= %s "
         cursor.execute(sql_select,(self.pname,))
         rows = cursor.fetchall()
 
          # Ορισμός αριθμού στηλών και τίτλων στηλών
-        column_labels = ['Code', 'Parking Name', 'Address', 'State', 'Date', 'Duration', 'Spot']
-        self.table.setColumnCount(len(column_labels))
-        self.table.setHorizontalHeaderLabels(column_labels)
+        
+
 
         # Ορισμός αριθμού γραμμών
         self.table.setRowCount(len(rows))
@@ -126,6 +134,8 @@ class ParkingOwnerWindow(QMainWindow):
                 item = QTableWidgetItem(str(data))
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
                 self.table.setItem(row_num, col_num, item)
+
+        
 
         # Εκκίνηση και λειτουργία
 if __name__ == '__main__':

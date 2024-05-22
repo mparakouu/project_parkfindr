@@ -11,6 +11,7 @@ import MySQLconnection as connection
 class signInWindow(QMainWindow): 
     def __init__(self):
         super().__init__()
+        self.user_id = None
         self.initUI()
 
     def initUI(self): 
@@ -141,6 +142,8 @@ class signInWindow(QMainWindow):
         email = self.email_input.text()
         password = self.password_input.text()
 
+
+
         if not email or not password:
             print("Παρακαλώ συμπληρώστε όλα τα πεδία.")
             return
@@ -148,10 +151,25 @@ class signInWindow(QMainWindow):
         # τα στοιχεία σύνδεσης των ιδιοκτήτων parking --> στην σελίδα για ειδοποιήσεις κρατήσεων 
         if (email == "mparakou7@gmail.com" and password == "1234") or (email == "balasis123@gmail.com" and password == "1234") or (email == "mousele4@gmail.com" and password == "1234") or (email == "mhnogiannhs5@gmail.com" and password == "1234"):
             self.close()
-            from parkingOwnerPage import ParkingOwnerWindow
-            self.special_window = ParkingOwnerWindow(self.user_id)
-            self.special_window.show()
-            return
+            db = connection.connection()  #σύνδεση με το MySQLconnection.py
+            cursor = db.cursor()
+
+            cursor.execute("SELECT park_Owner_id FROM Parking_owner WHERE email = %s AND password = %s", (email, password))
+            result = cursor.fetchone()  # save ότι επιστρέφει η εντολή
+            print("EMAIL: ",email)
+            print("result: ",result[0])
+            if result:
+                self.user_id = result[0]
+
+
+                from parkingOwnerPage import ParkingOwnerWindow
+                self.special_window = ParkingOwnerWindow(self.user_id)
+                self.special_window.show()
+                print("id:",self.user_id)
+                return
+      
+        
+        
 
         try:
             db = connection.connection()  #σύνδεση με το MySQLconnection.py
