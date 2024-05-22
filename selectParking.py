@@ -281,8 +281,9 @@ class Bridge(QObject):
         self.parent = parent
 
     @pyqtSlot(str)
-    def reserveNowClicked(self, parking_number):
+    def reserveNowClicked(self, parking_number,user_id):
         self.parking_number = parking_number
+        self.user_id = user_id
         print("ID χρήστη:", self.user_id)
         print("Parking number που επιλέχθηκε:", self.parking_number)
 

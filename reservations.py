@@ -127,6 +127,7 @@ class ReservationsWindow(QMainWindow):
         from homepage import homeWindow
         self.home_win = homeWindow(self.user_email , self.user_id)
         self.home_win.show()
+        self.close()
 
     def centerTable(self):
         # Υπολογισμός και εφαρμογή νέων διαστάσεων και θέσης για τον πίνακα
