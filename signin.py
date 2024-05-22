@@ -148,8 +148,8 @@ class signInWindow(QMainWindow):
         # τα στοιχεία σύνδεσης των ιδιοκτήτων parking --> στην σελίδα για ειδοποιήσεις κρατήσεων 
         if (email == "mparakou7@gmail.com" and password == "1234") or (email == "balasis123@gmail.com" and password == "1234") or (email == "mousele4@gmail.com" and password == "1234") or (email == "mhnogiannhs5@gmail.com" and password == "1234"):
             self.close()
-            from parkingOwnerPage import ParkingWindow
-            self.special_window = ParkingWindow()
+            from parkingOwnerPage import ParkingOwnerWindow
+            self.special_window = ParkingOwnerWindow(self.user_id)
             self.special_window.show()
             return
 
