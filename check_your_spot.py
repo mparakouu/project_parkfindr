@@ -168,7 +168,7 @@ class CheckSpot(QMainWindow):
         cursor = db.cursor()
 
         # διαθεσιμότητα θέσης --> select, με βάση θέση παρκινγκ
-        check_spot = "SELECT * FROM createReservation WHERE NumSpot = %s AND ParkNum = %s"
+        check_spot = "SELECT * FROM createReservation WHERE NumSpot = %s AND ParkNum = %s AND status != 'Cancelled'"
         cursor.execute(check_spot, (self.spot_reserved, self.parking_number,))
         result = cursor.fetchone()
 
@@ -193,7 +193,7 @@ class CheckSpot(QMainWindow):
                 cursor = db.cursor()
                 try:
                     # Εισαγωγή στον πίνακα createReservation
-                    sql_insert_createReservation = "INSERT INTO createReservation (customerID, ParkNum, DurationTime, NumSpot) VALUES (%s, %s, %s, %s)"
+                    sql_insert_createReservation = "INSERT INTO createReservation (customerID, ParkNum, DurationTime, NumSpot, status) VALUES (%s, %s, %s, %s, 'Waiting')"
                     data_insert_createReservation = (
                         self.user_id, 
                         self.parking_number, 
@@ -201,6 +201,7 @@ class CheckSpot(QMainWindow):
                         self.spot_reserved
                     )
                     cursor.execute(sql_insert_createReservation, data_insert_createReservation,)
+                    
                     print("ID χρήστη:", self.user_id)
 
                     # Λήψη του τελευταίου εισαχθέντος ID

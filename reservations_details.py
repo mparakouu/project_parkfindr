@@ -160,10 +160,25 @@ class ReservationsDetailsWindow(QMainWindow):
         db = connection.connection()  
         cursor = db.cursor()
 
-        if self.status == "Waiting":
-            sql_update = "UPDATE reservations SET status = 'Cancelled' WHERE code = %s"
-            cursor.execute(sql_update, (self.code,))
-            db.commit()
+        try:
+            if self.status == "Waiting":
+                # Ενημέρωση του πίνακα reservationsdetails
+                sql_update_reservation_details = "UPDATE reservationsdetails SET state = 'Cancelled' WHERE id_code = %s"
+                cursor.execute(sql_update_reservation_details, (self.code,))
+
+                # Ενημέρωση του πίνακα reservations
+                sql_update_reservation = "UPDATE reservations SET status = 'Cancelled' WHERE code = %s"
+                cursor.execute(sql_update_reservation, (self.code,))
+
+                # Ενημέρωση του πίνακα createReservation
+                sql_update_create_reservation = "UPDATE createReservation SET status = 'Cancelled' WHERE reservationNum = %s"
+                cursor.execute(sql_update_create_reservation, (self.code,))
+
+                db.commit()
+
+        except Exception as e:
+            db.rollback()
+            print(f"An error occurred: {e}")
         
         
         
