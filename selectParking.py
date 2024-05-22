@@ -27,7 +27,8 @@ class FilterOptions(QWidget):
         ''')
         layout = QVBoxLayout()
 
-        button1 = QPushButton("Button 1", self)
+        button1 = QPushButton("Most spots", self)
+        button1.setCursor(QCursor(Qt.PointingHandCursor))
         button1.setStyleSheet('''
             width: 100px;
             height: 40px;
@@ -42,28 +43,12 @@ class FilterOptions(QWidget):
         layout.addWidget(button1)
         button1.clicked.connect(self.openFilter1)
 
-        button2 = QPushButton("Button 2", self)
-        button2.setStyleSheet('''
-            width: 120px;
-            height: 40px;
-            background-color: #3D8AF7;
-            color: #FFFFFF;
-            border: none;
-            border-radius: 10px;
-            font-family: "Helvetica";
-            font-weight: bold;
-            font-size: 16px;
-        ''')
-        layout.addWidget(button2)
-        button2.clicked.connect(self.openFilter2)
-
         self.setLayout(layout)
     
     def openFilter1(self):
         print("button 1 clicked")
         
-    def openFilter2(self):
-        print("button 2 clicked")
+    
 
         
 
