@@ -138,7 +138,7 @@ class ReservationsDetailsWindow(QMainWindow):
 	        text-align: center;
         ''')
         
-        if self.status == "Cancelled" or "Confirmed":
+        if self.status == "Cancelled" or self.status == "Confirmed":
             button_cancel.hide()
             button_review.setGeometry(125,500,100,37)
                 
@@ -177,7 +177,7 @@ class ReservationsDetailsWindow(QMainWindow):
         self.close()
 
 
-        self.review_contact_window = ReservationsWindow()
+        self.review_contact_window = ReservationsWindow(self.user_email, self.user_id)
         self.review_contact_window.show()
         self.close()
 

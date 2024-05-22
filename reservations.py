@@ -69,7 +69,7 @@ class ReservationsWindow(QMainWindow):
 
         # Ρύθμιση του μεγέθους των κελιών
         self.table.verticalHeader().setDefaultSectionSize(30) 
-        self.table.horizontalHeader().setDefaultSectionSize(83)  
+        self.table.horizontalHeader().setDefaultSectionSize(90)  
         self.table.setShowGrid(False)
         
         #Aπόκρυψη αρίθμησης στήλης
@@ -146,8 +146,14 @@ class ReservationsWindow(QMainWindow):
         cursor = db.cursor()
 
         # Ανάκτηση δεδομένων από τον πίνακα
-        sql_insert = "SELECT * FROM reservations"
-        cursor.execute(sql_insert)
+        sql_select = """
+            SELECT r.code, r.date, r.status, d.parking_name, d.spot 
+            FROM reservations r
+            JOIN reservationsdetails d ON r.code = d.id_code
+            JOIN createReservation cr ON cr.reservationNum = r.code
+            WHERE cr.customerID = %s
+        """
+        cursor.execute(sql_select,(self.user_id,))
         rows = cursor.fetchall()
 
         # Προσθήκη δεδομένων στον πίνακα
