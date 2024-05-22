@@ -68,9 +68,10 @@ class FilterOptions(QWidget):
         
 
 class selectParking(QMainWindow):
-    def __init__(self,user_id):
+    def __init__(self,user_id, user_email):
         super().__init__()
         self.user_id = user_id
+        self.user_email = user_email
         self.initUI()
 
     def initUI(self):
@@ -268,9 +269,9 @@ class selectParking(QMainWindow):
     def go_back(self):
         from makeReservation import makeReservation
         self.close()
-        self.back = makeReservation(self.user_id)
+        self.back = makeReservation(self.user_id , self.user_email)
         self.back.show()
-   
+     
 
 # κλάση bridge --> επικοινωνία js με python 
 # δημιουργία κλάσης bridge
@@ -283,7 +284,9 @@ class Bridge(QObject):
     @pyqtSlot(str)
     def reserveNowClicked(self, parking_number):
         user_id = self.parent.user_id
+        user_email = self.parent.user_email
         print("ID χρήστη:", user_id)
+        print("mail χρήστη:", user_email)
         print("Parking number που επιλέχθηκε:", parking_number)
 
         # close this window
@@ -292,7 +295,7 @@ class Bridge(QObject):
 
         from duration_time_parking import DurationTime
         # open window --> duration_time_parking
-        self.time_window = DurationTime(parking_number, user_id)
+        self.time_window = DurationTime(parking_number, user_id, user_email)
         self.time_window.show() 
 
 
