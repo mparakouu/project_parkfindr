@@ -266,7 +266,9 @@ class CheckSpot(QMainWindow):
                     
                     # Κλείσιμο της σύνδεσης με τη βάση δεδομένων
                     db.close()
-
+            else:
+                # όχι διαθέσιμη θέση 
+                QMessageBox.warning(self, "Occupied Spot", "The spot has already been occupied by another user.")
 
     # όταν πατήσει το κουμπί back --> duration_time_parking.py
     def back_button_pressed(self):
