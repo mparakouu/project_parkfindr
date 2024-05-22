@@ -7,10 +7,10 @@ from PyQt5.QtGui import QPixmap, QCursor
 
 class DurationTime(QMainWindow):
     def __init__(self, parking_number, user_id):
-        super().__init__() 
-        # δεν έχει γίνει επιλογή ώρας ακόμη
-        self.selected_duration = None 
-        self.parking_number = parking_number 
+        super().__init__()
+        # όχι επιλεγμένη ώρα στην αρχή
+        self.selected_duration = None
+        self.parking_number = parking_number
         self.user_id = user_id
         self.initUI()   
 
@@ -158,16 +158,15 @@ class DurationTime(QMainWindow):
 
     # όταν πατηθεί το κουμπί next   
     def next_button_pressed(self):
+        
         print("ID χρήστη:", self.user_id)
         print("Parking number που επιλέχθηκε:", self.parking_number)
-        print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time )
-        # close this window
+        print("Διάρκεια διαμονής που επιλέχθηκε:", self.selected_duration_time)
         self.close()
-        import check_your_spot as CheckSpot
-        # open window --> check_your_spot
-        self.spot_window = CheckSpot.CheckSpot(self.parking_number, self.user_id,  self.selected_duration_time)
-
-        self.spot_window.show() 
+        
+        from check_your_spot import CheckSpot
+        self.spot_window = CheckSpot(self.user_id, self.parking_number, self.selected_duration_time)
+        self.spot_window.show()
 
     # όταν πατηθεί το κουμπί back  
     def back_button_pressed(self):

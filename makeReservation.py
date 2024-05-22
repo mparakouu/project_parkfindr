@@ -88,7 +88,7 @@ class makeReservation(QMainWindow):
             font-size: 21px;
             text-align: center;
         ''')
-             
+              
    
 
 

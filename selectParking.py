@@ -165,7 +165,7 @@ class selectParking(QMainWindow):
             zoom_start=15,
             location=coordinate
         )
-
+ 
        # σύνδεση με το database
         from MySQLconnection import connection
 
@@ -275,25 +275,24 @@ class selectParking(QMainWindow):
 # κλάση bridge --> επικοινωνία js με python 
 # δημιουργία κλάσης bridge
 class Bridge(QObject):
-    def __init__(self, user_id, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        self.user_id = user_id
+
         self.parent = parent
 
     @pyqtSlot(str)
-    def reserveNowClicked(self, parking_number,user_id):
-        self.parking_number = parking_number
-        self.user_id = user_id
-        print("ID χρήστη:", self.user_id)
-        print("Parking number που επιλέχθηκε:", self.parking_number)
+    def reserveNowClicked(self, parking_number):
+        user_id = self.parent.user_id
+        print("ID χρήστη:", user_id)
+        print("Parking number που επιλέχθηκε:", parking_number)
 
         # close this window
         if self.parent:
             self.parent.close()
 
-        import duration_time_parking as DurationTime
+        from duration_time_parking import DurationTime
         # open window --> duration_time_parking
-        self.time_window = DurationTime.DurationTime(self.parking_number, self.user_id)
+        self.time_window = DurationTime(parking_number, user_id)
         self.time_window.show() 
 
 
