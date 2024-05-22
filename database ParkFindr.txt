@@ -44,9 +44,10 @@ customerID INT NOT NULL,
 ParkNum int NOT NULL,
 DurationTime varchar(100) NOT NULL,
 NumSpot INT NOT NULL,
-date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-FOREIGN KEY (ParkNum) REFERENCES parkingData(parking_number)
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE createReservation ADD COLUMN status VARCHAR(20) DEFAULT 'Waiting'; //VALTE KAI AYTO
 
 
 

@@ -9,9 +9,10 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 
 class makeReservation(QMainWindow):
-    def __init__(self, user_id):
+    def __init__(self, user_id, user_email):
         super().__init__()
         self.user_id = user_id
+        self.user_email = user_email
         self.initUI() 
   
     def initUI(self):
@@ -90,12 +91,12 @@ class makeReservation(QMainWindow):
         ''')
               
    
-
+ 
 
     def open_map(self):
         from selectParking import selectParking
         self.close()
-        self.map_window = selectParking(self.user_id)
+        self.map_window = selectParking(self.user_id, self.user_email)
         self.map_window.show()
     
     

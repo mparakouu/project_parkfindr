@@ -1,17 +1,16 @@
 import sys
-import qrcode  #pip install "qrcode[pil]" 
+import qrcode  # pip install "qrcode[pil]"
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap
 from io import BytesIO
-
+import random
 
 class ResConfirmed(QMainWindow):
-    def __init__(self):
+    def __init__(self, user_id, user_email):
         super().__init__() 
-        
+        self.user_id = user_id
+        self.user_email = user_email
         self.initUI()   
 
     def initUI(self):
@@ -32,22 +31,22 @@ class ResConfirmed(QMainWindow):
         ''')
 
         # Δημιουργία και εμφάνιση του QR code
-        qr_data = "Τα δεδομένα του QR code που θέλετε να εμφανίσετε"
+        qr_data =  str(random.randint(1000, 9999)) # χρήση της random για να έχουμε διαφορετικό qr code κάθε φορά 
         qr_img = qrcode.make(qr_data)
         qr_bytes = BytesIO()
         qr_img.save(qr_bytes, format='PNG')
         qr_pixmap = QPixmap()
         qr_pixmap.loadFromData(qr_bytes.getvalue())
         qr_label = QLabel(self)
-        qr_label.setPixmap(qr_pixmap.scaled(qr_pixmap.width() // 3, qr_pixmap.height() // 3))  # Μείωση του μεγέθους κατά το ήμισυ
-        qr_label.setGeometry(50, 100, qr_pixmap.width() // 3, qr_pixmap.height() // 3)  # Αλλαγή στο μέγεθος
-        qr_label.move(92, 340)  # αλλαγή στη θέση --> x , y 
+        qr_label.setPixmap(qr_pixmap.scaled(qr_pixmap.width() //1, qr_pixmap.height() // 1))  # μέγεθος του qr
+        qr_label.setGeometry(50, 100, qr_pixmap.width() // 1, qr_pixmap.height() // 1)  # μέγεθος του qr
+        qr_label.move(25, 240)  # αλλαγή στη θέση --> x , y 
 
-        # Εισαγωγή του okay logo
+        # okay logo
         image_label = QLabel(self)
         image_label.setGeometry(127, 70, 80, 100)
         pixmap = QPixmap('Okay.png')
-        image_label.setPixmap(pixmap.scaled(80, 80, QtCore.Qt.KeepAspectRatio))
+        image_label.setPixmap(pixmap.scaled(80, 80, Qt.KeepAspectRatio))
 
         self.res_Con = QLabel('Reservation confirmed!', self)
         self.res_Con.setGeometry(50, 130, 250, 200) 
@@ -59,8 +58,8 @@ class ResConfirmed(QMainWindow):
             text-align: left;
         ''')
 
-        button_back = QPushButton('Back', self)
-        button_back.setGeometry(95, 550, 140, 48)
+        button_back = QPushButton('Go to home page', self)
+        button_back.setGeometry(70, 550, 200, 48)
         button_back.setObjectName('button-14')
         button_back.setCursor(QCursor(Qt.PointingHandCursor))
         button_back.setStyleSheet('''
@@ -80,16 +79,15 @@ class ResConfirmed(QMainWindow):
             text-align: center;
                                   
          ''')
-       # button_back.clicked.connect(self.go_back)
+        button_back.clicked.connect(self.go_back)
 
-
-        
-        # κουμπί back
-    #def go_back(self):
-       # from homepage import homeWindow
-       # self.close()
-      #  self.back = homeWindow()
-       # self.back.show()
+    def go_back(self):
+        from homepage import homeWindow
+        self.close()
+        self.back = homeWindow(self.user_email, self.user_id)
+        print("ID χρήστη:", self.user_id)
+        print("email χρήστη:", self.user_email)
+        self.back.show()
 
 
 if __name__ == '__main__':
