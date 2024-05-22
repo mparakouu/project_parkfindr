@@ -1,9 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication,QHeaderView, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox,QTableWidget,QTableWidgetItem
+from PyQt5.QtWidgets import QApplication,QHeaderView, QMessageBox,QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox,QTableWidget,QTableWidgetItem
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices, QRegExpValidator
 from PyQt5.QtCore import Qt, QSize, QUrl, QRegExp
-
 
 import MySQLconnection as connection
 
@@ -47,8 +46,8 @@ class ParkingOwnerWindow(QMainWindow):
         ''')
         # Δημιουργία πίνακα
         self.table = QTableWidget(self)
-        self.table.setColumnCount(3) 
-        self.table.setHorizontalHeaderLabels([ 'State', 'Duration', 'Spot'])
+        self.table.setColumnCount(4) 
+        self.table.setHorizontalHeaderLabels([ 'State', 'Duration', 'Spot','Choose'])
          
         # Ρύθμιση του μεγέθους των κελιών
         self.table.verticalHeader().setDefaultSectionSize(30) 
@@ -134,10 +133,51 @@ class ParkingOwnerWindow(QMainWindow):
                 item = QTableWidgetItem(str(data))
                 item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
                 self.table.setItem(row_num, col_num, item)
+                choose_button = QPushButton("Choose")
+                choose_button.clicked.connect(self.handleButtonClick)  # Συνδέουμε το κουμπί με μια μέθοδο
+                self.table.setCellWidget(row_num, 3, choose_button)
 
-        
 
-        # Εκκίνηση και λειτουργία
+    def handleButtonClick(self):
+        button = self.sender()
+        if button:
+            row = self.table.indexAt(button.pos()).row()
+            state_item = self.table.item(row, 0)
+        if state_item.text() == "Waiting":
+            # Create a message box to ask for the desired action
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Change State")
+            msg_box.setText(f"Choose the new state for the reservation at spot {self.table.item(row, 2).text()}:")
+            cancel_button = msg_box.addButton("Cancelled", QMessageBox.RejectRole)
+            confirm_button = msg_box.addButton("Confirmed", QMessageBox.AcceptRole)
+            msg_box.exec_()
+
+            # Determine which button was clicked
+            if msg_box.clickedButton() == cancel_button:
+                new_state = "Cancelled"
+            elif msg_box.clickedButton() == confirm_button:
+                new_state = "Confirmed"
+            else:
+                return  # No valid button was clicked, do nothing
+
+            # Change the state in the table
+            state_item.setText(new_state)
+            QMessageBox.information(self, "Success", f"Reservation at spot {self.table.item(row, 2).text()} is now {new_state}.")
+
+            # Update the database
+            try:
+                db = connection.connection()
+                cursor = db.cursor()
+                sql_update = "UPDATE reservationsdetails SET state = %s WHERE parking_name = %s AND spot = %s"
+                cursor.execute(sql_update, (new_state, self.pname, self.table.item(row, 2).text(),))
+                db.commit()
+                db.close()
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Failed to update the database: {str(e)}")
+        else:
+            QMessageBox.information(self, "Info", f"The state is {state_item.text()}.")
+
+ # Εκκίνηση και λειτουργία
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = ParkingOwnerWindow()
