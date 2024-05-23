@@ -172,8 +172,13 @@ class ParkingOwnerWindow(QMainWindow):
                  sql_update = "UPDATE reservationsdetails SET state = %s WHERE parking_name = %s AND spot = %s"
                  cursor.execute(sql_update, (new_state, self.pname, self.table.item(row, 2).text(),))
                 else:
-                 sql_update = "UPDATE reservations r INNER JOIN reservationsdetails rd ON r.code = rd.id_code SET r.status = %s ,rd.state = %s WHERE rd.parking_name = %s AND rd.spot = %s"
-                 cursor.execute(sql_update, (new_state,new_state, self.pname, self.table.item(row, 2).text(),))
+                 sql_update = """UPDATE reservations r 
+                 INNER JOIN reservationsdetails rd  ON r.code = rd.id_code  
+                 INNER JOIN createReservation cr ON r.code = cr.reservationNum 
+                 SET r.status = %s ,rd.state = %s, cr.status = %s
+                 WHERE rd.parking_name = %s AND rd.spot = %s
+                 """
+                 cursor.execute(sql_update, (new_state,new_state,new_state, self.pname, self.table.item(row, 2).text(),))
                 db.commit()
                 db.close()
             except Exception as e:
