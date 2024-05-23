@@ -6,6 +6,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWebEngineWidgets import QWebEngineView 
 import MySQLconnection as connection
 from PyQt5.QtCore import pyqtSignal
+
+
 class homeWindow(QMainWindow):
     photo_uploaded = pyqtSignal(str)
     def __init__(self, user_email, user_id):

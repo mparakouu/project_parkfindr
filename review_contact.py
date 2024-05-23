@@ -6,7 +6,7 @@ import MySQLdb as mdb
 import MySQLconnection as connection
 
 class ContactWindow(QMainWindow):
-    def __init__(self, parking_name, address ,phone_number , open_hours , code , user_id):
+    def __init__(self, parking_name, address ,phone_number , open_hours , code , user_id , user_email):
         super().__init__()
         self.parking_name = parking_name
         self.address = address
@@ -14,6 +14,7 @@ class ContactWindow(QMainWindow):
         self.open_hours= open_hours
         self.code =code
         self.user_id= user_id
+        self.user_email =user_email
         self.initUI()
        
 
@@ -143,6 +144,10 @@ class ContactWindow(QMainWindow):
 
     def next_clicked(self):
         print("Next clicked")
+        from homepage import homeWindow
+        self.homepage_window = homeWindow( self.user_email , self.user_id)
+        self.homepage_window.show()
+        self.close()
     
     def centerTable(self):
         # Υπολογισμός και εφαρμογή νέων διαστάσεων και θέσης για τον πίνακα
