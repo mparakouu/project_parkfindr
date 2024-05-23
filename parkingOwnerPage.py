@@ -144,7 +144,7 @@ class ParkingOwnerWindow(QMainWindow):
             row = self.table.indexAt(button.pos()).row()
             state_item = self.table.item(row, 0)
         if state_item.text() == "Waiting":
-            # Create a message box to ask for the desired action
+            #επιλογη με κουμπια
             msg_box = QMessageBox(self)
             msg_box.setWindowTitle("Change State")
             msg_box.setText(f"Choose the new state for the reservation at spot {self.table.item(row, 2).text()}:")
@@ -152,24 +152,28 @@ class ParkingOwnerWindow(QMainWindow):
             confirm_button = msg_box.addButton("Confirmed", QMessageBox.AcceptRole)
             msg_box.exec_()
 
-            # Determine which button was clicked
+            # διαλεξε κουμπι
             if msg_box.clickedButton() == cancel_button:
                 new_state = "Cancelled"
             elif msg_box.clickedButton() == confirm_button:
                 new_state = "Confirmed"
             else:
-                return  # No valid button was clicked, do nothing
-
-            # Change the state in the table
+                return  
+            
+            # αλλαγη καταστασης
             state_item.setText(new_state)
             QMessageBox.information(self, "Success", f"Reservation at spot {self.table.item(row, 2).text()} is now {new_state}.")
 
-            # Update the database
+            # ανανεωση της βασης
             try:
                 db = connection.connection()
                 cursor = db.cursor()
-                sql_update = "UPDATE reservationsdetails SET state = %s WHERE parking_name = %s AND spot = %s"
-                cursor.execute(sql_update, (new_state, self.pname, self.table.item(row, 2).text(),))
+                if new_state == "Confirmed":               
+                 sql_update = "UPDATE reservationsdetails SET state = %s WHERE parking_name = %s AND spot = %s"
+                 cursor.execute(sql_update, (new_state, self.pname, self.table.item(row, 2).text(),))
+                else:
+                 sql_update = "UPDATE reservations r INNER JOIN reservationsdetails rd ON r.code = rd.id_code SET r.status = %s ,rd.state = %s WHERE rd.parking_name = %s AND rd.spot = %s"
+                 cursor.execute(sql_update, (new_state,new_state, self.pname, self.table.item(row, 2).text(),))
                 db.commit()
                 db.close()
             except Exception as e:
