@@ -55,11 +55,12 @@ class RatingWidget(QLabel):
 
 
 class ReviewWindow(QMainWindow):
-    def __init__(self, code , user_id):
+    def __init__(self, code , user_id , user_email):
         super().__init__()
         self.initUI()
         self.code=code
         self.user_id = user_id
+        self.user_email = user_email
         self.star_rating = None
 
     def initUI(self):
@@ -251,7 +252,7 @@ class ReviewWindow(QMainWindow):
             if result1:
                     phone_number , open_hours =result1
                     from review_contact import ContactWindow
-                    self.review_contact_window = ContactWindow(parking_name, address ,phone_number , open_hours ,self.code, self.user_id )
+                    self.review_contact_window = ContactWindow(parking_name, address ,phone_number , open_hours ,self.code, self.user_id , self.user_email )
                     self.review_contact_window.show()
                     self.close()
 
