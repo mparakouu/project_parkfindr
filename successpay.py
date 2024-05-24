@@ -66,7 +66,7 @@ class successpayWindow(QMainWindow):
         button_next = QPushButton('Continue to sign in', self)
         button_next.setGeometry(85, 520, 180, 36)
         button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.clicked.connect(self.go_to_pressed) # εκτελεί την next_pressed και εισάγει τα data, 
+        button_next.clicked.connect(self.go_to_pressed) # εκτελεί την go_to_pressed και εισάγει τα data, 
         button_next.setStyleSheet('''
 	        padding: 8px 8px 8px 8px;
 	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);

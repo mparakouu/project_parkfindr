@@ -181,7 +181,7 @@ class paymentWindow(QMainWindow,):
         button_next = QPushButton('Proceed', self)
         button_next.setGeometry(90, 520, 175, 36)
         button_next.setCursor(QCursor(Qt.PointingHandCursor))
-        button_next.clicked.connect(self.proceed_pressed) # εκτελεί την next_pressed και εισάγει τα data, 
+        button_next.clicked.connect(self.proceed_pressed) # εκτελεί την proceed_pressed και εισάγει τα data, 
         button_next.setStyleSheet('''
 	        padding: 8px 8px 8px 8px;
 	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
