@@ -78,12 +78,12 @@ class makeReservation(QMainWindow):
         search_Button.clicked.connect(self.open_map)
         search_Button.setStyleSheet('''
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 1px;
             border-style: solid;
-            border-radius: 20px;
+            border-radius: 6px 6px 6px 6px;
             font-family: "Helvetica";
             font-weight: 400;
             font-size: 21px;

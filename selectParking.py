@@ -115,12 +115,12 @@ class selectParking(QMainWindow):
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 3px;
             border-style: solid;
-            border-radius: 20px 20px 20px 20px;
+            border-radius: 8px 8px 8px 8px;
             font-family: "Shippori Antique B1";
             font-weight: bold;
             font-size: 19px;

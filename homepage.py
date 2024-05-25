@@ -6,6 +6,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWebEngineWidgets import QWebEngineView 
 import MySQLconnection as connection
 from PyQt5.QtCore import pyqtSignal
+
+
 class homeWindow(QMainWindow):
     photo_uploaded = pyqtSignal(str)
     def __init__(self, user_email, user_id):
@@ -76,7 +78,7 @@ class homeWindow(QMainWindow):
         button_reserve.clicked.connect(self.openPage1)
         button_reserve.setStyleSheet('''
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 1px;
@@ -94,7 +96,7 @@ class homeWindow(QMainWindow):
         button_reservations.clicked.connect(self.openPage2)
         button_reservations.setStyleSheet('''
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 1px;
@@ -112,7 +114,7 @@ class homeWindow(QMainWindow):
         button_calendar.clicked.connect(self.openPage3)
         button_calendar.setStyleSheet('''
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 1px;
@@ -130,7 +132,7 @@ class homeWindow(QMainWindow):
         button_account.clicked.connect(self.openPage4)
         button_account.setStyleSheet('''
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 1px;

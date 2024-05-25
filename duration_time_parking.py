@@ -95,16 +95,15 @@ class DurationTime(QMainWindow):
         next_button.setStyleSheet('''
             padding: 8px 8px 8px 8px;
             box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
-            background: #75A9F9;
+            background: #3D8AF7;
+            border-radius: 6px 6px 6px 6px; 
             color: #FFFFFF;
-            border-radius: 15px;  
             font-family: "Asap";
             font-weight: 600;
             font-size: 17px;
             line-height: 1.3;
             text-align: center;
             margin-left: 20px;  
-            
         ''')
 
          # κουμπί back 
@@ -115,9 +114,9 @@ class DurationTime(QMainWindow):
         back_button.setStyleSheet('''
             padding: 8px 8px 8px 8px;
             box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
-            background: #75A9F9;
+            background: #3D8AF7;
+            border-radius: 6px 6px 6px 6px; 
             color: #FFFFFF;
-            border-radius: 15px;  
             font-family: "Asap";
             font-weight: 600;
             font-size: 17px;

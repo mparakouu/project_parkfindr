@@ -55,11 +55,12 @@ class RatingWidget(QLabel):
 
 
 class ReviewWindow(QMainWindow):
-    def __init__(self, code , user_id):
+    def __init__(self, code , user_id , user_email):
         super().__init__()
         self.initUI()
         self.code=code
         self.user_id = user_id
+        self.user_email = user_email
         self.star_rating = None
 
     def initUI(self):
@@ -164,12 +165,12 @@ class ReviewWindow(QMainWindow):
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 3px;
             border-style: solid;
-            border-radius: 20px 20px 20px 20px;
             font-family: "Shippori Antique B1";
             font-weight: bold;
             font-size: 19px;
@@ -187,12 +188,12 @@ class ReviewWindow(QMainWindow):
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 3px;
             border-style: solid;
-            border-radius: 20px 20px 20px 20px;
             font-family: "Shippori Antique B1";
             font-weight: bold;
             font-size: 19px;
@@ -251,7 +252,7 @@ class ReviewWindow(QMainWindow):
             if result1:
                     phone_number , open_hours =result1
                     from review_contact import ContactWindow
-                    self.review_contact_window = ContactWindow(parking_name, address ,phone_number , open_hours ,self.code, self.user_id )
+                    self.review_contact_window = ContactWindow(parking_name, address ,phone_number , open_hours ,self.code, self.user_id , self.user_email )
                     self.review_contact_window.show()
                     self.close()
 

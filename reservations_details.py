@@ -148,8 +148,8 @@ class ReservationsDetailsWindow(QMainWindow):
     def review_pressed(self):
         print("review clicked")  
         from review_main import ReviewWindow
-        self.review_contact_window = ReviewWindow(self.code , self.user_id) 
-        self.review_contact_window.show()
+        self.review_window = ReviewWindow(self.code , self.user_id , self.user_email) 
+        self.review_window.show()
         self.close()
 
     def cancel_pressed(self):

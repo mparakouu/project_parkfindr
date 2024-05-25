@@ -61,17 +61,16 @@ class mainWindow(QMainWindow):
         Signin_Button.setGeometry(80, 250, 184, 49)
         Signin_Button.setCursor(QCursor(Qt.PointingHandCursor))
         Signin_Button.setStyleSheet('''
-            padding: 0px 10px 0px 10px;
-            background: #75A9F9;
-            color: #FFFFFF;
-            border-color: #FFFFFF;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 20px;
-            font-family: "Helvetica";
-            font-weight: 400;
-            font-size: 21px;
-            text-align: center;
+            padding: 8px 8px 8px 8px;
+	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	        color: #FFFFFF;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
+	        font-family: "Asap";
+	        font-weight: 600;
+	        font-size: 17px; 
+	        line-height: 1.3;
+	        text-align: center;    
         ''')
 
         Signin_Button.clicked.connect(self.open_signin_window)
@@ -83,17 +82,16 @@ class mainWindow(QMainWindow):
         Signup_Button.setGeometry(80, 380, 184, 49)
         Signup_Button.setCursor(QCursor(Qt.PointingHandCursor))
         Signup_Button.setStyleSheet('''
-            padding: 0px 10px 0px 10px;
-            background: #75A9F9;
-            color: #FFFFFF;
-            border-color: #FFFFFF;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 20px;
-            font-family: "Helvetica";
-            font-weight: 400;
-            font-size: 21px;
-            text-align: center;
+            padding: 8px 8px 8px 8px;
+	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	        color: #FFFFFF;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
+	        font-family: "Asap";
+	        font-weight: 600;
+	        font-size: 17px; 
+	        line-height: 1.3;
+	        text-align: center;    
         ''')
 
         Signup_Button.clicked.connect(self.open_signup_window)
