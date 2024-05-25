@@ -115,12 +115,12 @@ class selectParking(QMainWindow):
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 3px;
             border-style: solid;
-            border-radius: 20px 20px 20px 20px;
+            border-radius: 8px 8px 8px 8px;
             font-family: "Shippori Antique B1";
             font-weight: bold;
             font-size: 19px;
@@ -180,7 +180,7 @@ class selectParking(QMainWindow):
                         <strong>Free spots:</strong> {loc['spots']}<br>
                     """
             if popup_content:  
-                popup_content += '<button id="reserveButton" style="background-color: #75A9F9; border-radius: 10px; color: white; border: none;">Reserve now</button>'
+                popup_content += '<button id="reserveButton" style="background-color: #3D8AF7; border-radius: 6px; color: white; border: none;">Reserve now</button>'
                 html_popup_content = f"""
                     <div style='width: 160px; background-color: white; padding: 10px; border-radius: 10px;'>  
                         {popup_content}
