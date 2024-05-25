@@ -138,7 +138,7 @@ class ContactWindow(QMainWindow):
     def back_clicked(self):
         print("Back clicked") 
         from review_main import ReviewWindow 
-        self.review_window = ReviewWindow(self.code ,self.user_id)
+        self.review_window = ReviewWindow(self.code ,self.user_id , self.user_email)
         self.review_window.show()
         self.close()
 
