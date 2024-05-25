@@ -119,20 +119,20 @@ class signInWindow(QMainWindow):
 
         # κουμπί για είσοδος
         submit_button = QPushButton('Είσοδος', self)
-        submit_button.setGeometry(70, 480, 200, 30)
+        submit_button.setGeometry(80, 480, 175, 36)
         submit_button.setCursor(QCursor(Qt.PointingHandCursor))
         submit_button.clicked.connect(self.button_signin_pressed) 
         submit_button.setStyleSheet('''
-        padding: 8px 8px 8px 8px;
-        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
-        background: #3D8AF7;
-        color: #FFFFFF;
-        border-radius: 6px 6px 6px 6px;
-        font-family: "Asap";
-        font-weight: 600;
-        font-size: 17px;
-        line-height: 1.3;
-        text-align: center; 
+            padding: 8px 8px 8px 8px;
+	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	        color: #FFFFFF;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
+	        font-family: "Asap";
+	        font-weight: 600;
+	        font-size: 17px; 
+	        line-height: 1.3;
+	        text-align: center;        
         ''')
 
         #να βγαλουμε απο τα μοκαπ την συνδεση με google!! δεν υπαρχει λογοσ για εξτρα δουλεια !

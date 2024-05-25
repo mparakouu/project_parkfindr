@@ -50,21 +50,21 @@ class accountWindow(QMainWindow):
         logo_png.setPixmap(pixmap.scaled(250, 250, QtCore.Qt.KeepAspectRatio))
         # Κουμπί 
         self.photo_button = QPushButton('Upload Photo', self)
-        self.photo_button.setGeometry(115, 270, 120, 30)
+        self.photo_button.setGeometry(84, 270, 175, 36)
         self.photo_button.clicked.connect(self.uploadPhoto)
         self.photo_button.setStyleSheet('''
-            padding: 0px 10px 0px 10px;
-            background: #75A9F9;
-            color: #FFFFFF;
-            border-color: #FFFFFF;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 6px 6px 6px 6px;
-            font-family: "Helvetica";
-            font-weight: 400;
-            font-size: 17px;
-            text-align: center;
+            padding: 8px 8px 8px 8px;
+	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	        color: #FFFFFF;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
+	        font-family: "Asap";
+	        font-weight: 600;
+	        font-size: 17px; 
+	        line-height: 1.3;
+	        text-align: center;   
              ''')
+        
         l_account = QLabel('Account', self)
         l_account.setGeometry(115, 130, 120, 30)
         l_account.setStyleSheet('''
@@ -139,25 +139,20 @@ class accountWindow(QMainWindow):
             text-align: left;
         ''') 
         button_back = QPushButton('Back', self)
-        button_back.setGeometry(100, 565, 140, 48)
+        button_back.setGeometry(82, 565, 175, 36)
         button_back.setCursor(QCursor(Qt.PointingHandCursor))
         button_back.clicked.connect(self.back_clicked) 
         button_back.setStyleSheet('''
-            width: 140px;
-            height: 48px;
-            padding: 0px 10px 0px 10px;
-            background: #75A9F9;
-            color: #FFFFFF;
-            border-color: #FFFFFF;
-            border-width: 3px;
-            border-style: solid;
-            border-radius: 20px 20px 20px 20px;
-            font-family: "Shippori Antique B1";
-            font-weight: bold;
-            font-size: 19px;
-            font-style: italic;
-            text-align: center;
-                                  
+            padding: 8px 8px 8px 8px;
+	        box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	        color: #FFFFFF;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
+	        font-family: "Asap";
+	        font-weight: 600;
+	        font-size: 17px; 
+	        line-height: 1.3;
+	        text-align: center;                            
          ''')
     def loadData(self):
          # Σύνδεση με τη βάση δεδομένων
