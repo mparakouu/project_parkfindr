@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox, QApplication, QLabel
+from PyQt5.QtWidgets import QApplication,QMessageBox, QMainWindow, QFrame, QLabel, QPushButton, QLineEdit, QWidget, QCheckBox, QApplication, QLabel
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices, QRegExpValidator
 from PyQt5.QtCore import Qt , QSize, Qt, QUrl, QRegExp
@@ -141,11 +141,12 @@ class signInWindow(QMainWindow):
     def button_signin_pressed(self):
         email = self.email_input.text()
         password = self.password_input.text()
-
-
-
         if not email or not password:
             print("Παρακαλώ συμπληρώστε όλα τα πεδία.")
+            msg=QMessageBox(self)
+            msg.setWindowTitle("wrong input")
+            msg.setText(f"wrong input!Please try again!")
+            msg.exec_()
             return
 
         # τα στοιχεία σύνδεσης των ιδιοκτήτων parking --> στην σελίδα για ειδοποιήσεις κρατήσεων 
@@ -193,6 +194,11 @@ class signInWindow(QMainWindow):
 
             else:
                 print("Λάθος στοιχεία. Δοκιμάστε ξανά!")
+                msg=QMessageBox(self)
+                msg.setWindowTitle("wrong input")
+                msg.setText(f"wrong input!Please try again!")
+                msg.exec_()
+                
 
         except Exception as e:
             print("error:", e)
