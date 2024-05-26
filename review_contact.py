@@ -97,17 +97,17 @@ class ContactWindow(QMainWindow):
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 3px;
             border-style: solid;
-            border-radius: 20px 20px 20px 20px;
             font-family: "Shippori Antique B1";
             font-weight: bold;
             font-size: 19px;
             font-style: italic;
-            text-align: center;                       
+            text-align: center;                     
                                      
          ''')
         
@@ -120,17 +120,17 @@ class ContactWindow(QMainWindow):
             width: 140px;
             height: 48px;
             padding: 0px 10px 0px 10px;
-            background: #75A9F9;
+            background: #3D8AF7;
+	        border-radius: 6px 6px 6px 6px;
             color: #FFFFFF;
             border-color: #FFFFFF;
             border-width: 3px;
             border-style: solid;
-            border-radius: 20px 20px 20px 20px;
             font-family: "Shippori Antique B1";
             font-weight: bold;
             font-size: 19px;
             font-style: italic;
-            text-align: center;
+            text-align: center;  
                                   
          ''')
 
