@@ -127,7 +127,7 @@ class DurationTime(QMainWindow):
 
 
 
-        duration_time_list = ['30 minutes', '1 hour', '2 hours', '3 hours', '4 hours', '5 hours', '6 hours', '7 hours', '8 hours', '24 hours']
+        duration_time_list = ['3 minutes','30 minutes', '1 hour', '2 hours', '3 hours', '4 hours', '5 hours', '6 hours', '7 hours', '8 hours', '24 hours']
 
         # όταν επιλέξουμε δεδομένο του πίνακα, ενεργοποιηση 
         self.buttons_with_data = []

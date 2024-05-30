@@ -149,29 +149,21 @@ class ParkingOwnerWindow(QMainWindow):
             msg_box.setWindowTitle("Change State")
             msg_box.setText(f"Choose the new state for the reservation at spot {self.table.item(row, 2).text()}:")
             cancel_button = msg_box.addButton("Cancelled", QMessageBox.RejectRole)
-            confirm_button = msg_box.addButton("Confirmed", QMessageBox.AcceptRole)
             msg_box.exec_()
 
             # διαλεξε κουμπι
             if msg_box.clickedButton() == cancel_button:
                 new_state = "Cancelled"
-            elif msg_box.clickedButton() == confirm_button:
-                new_state = "Confirmed"
             else:
                 return  
             
-            # αλλαγη καταστασης
-            state_item.setText(new_state)
-            QMessageBox.information(self, "Success", f"Reservation at spot {self.table.item(row, 2).text()} is now {new_state}.")
 
             # ανανεωση της βασης
             try:
                 db = connection.connection()
                 cursor = db.cursor()
-                if new_state == "Confirmed":               
-                 sql_update = "UPDATE reservationsdetails SET state = %s WHERE parking_name = %s AND spot = %s"
-                 cursor.execute(sql_update, (new_state, self.pname, self.table.item(row, 2).text(),))
-                else:
+                if new_state == "Cancelled":               
+                
                  sql_update = """UPDATE reservations r 
                  INNER JOIN reservationsdetails rd  ON r.code = rd.id_code  
                  INNER JOIN createReservation cr ON r.code = cr.reservationNum 

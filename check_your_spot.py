@@ -187,6 +187,7 @@ class CheckSpot(QMainWindow):
     # κουμπί reserve
     def reserve_button_pressed(self):
         self.check_selected_spot() 
+        
         if self.spot_reserved:
             if self.is_spot_available():
                 # Η θέση είναι διαθέσιμη, οπότε μπορούμε να προχωρήσουμε με την κράτηση
@@ -258,7 +259,7 @@ class CheckSpot(QMainWindow):
                     db.commit()
                     print("email χρήστη:", self.user_email)
                     print("Η κράτηση πραγματοποιήθηκε!")
-
+                    self.update_parking_spots()
                     from reservationConfirmed import ResConfirmed
                     self.close()
                     # με πάει στο confirmed πράθυρο 
@@ -291,35 +292,34 @@ class CheckSpot(QMainWindow):
         cursor = db.cursor()
         
         try:
-            # παίρνουμε την τρέχουσα ημερομηνία και ώρα 
-            current_time = QDateTime.currentDateTime().toString('yyyy-MM-dd HH:mm:ss')
-
+            
             # ενημέρωση της διαθεσιμότητας για κρατήσεις που έχουν λήξει
             sql_update_spots = """
                 UPDATE createReservation
-                SET status = 'Confirmed'
-                WHERE TIMESTAMPADD(HOUR, DurationTime, date) < %s AND status = 'Waiting'
+                SET status = 'Completed'
+                WHERE TIMESTAMPADD(SECOND, TIME_TO_SEC(DurationTime), date) < NOW() AND status = 'Waiting';
             """
-            cursor.execute(sql_update_spots, (current_time,))
+            cursor.execute(sql_update_spots)
+            db.commit()
+            sql_update_spots2 = """
+                UPDATE reservations r
+                JOIN createReservation cr ON r.code = cr.reservationNum
+                SET r.status = 'Completed'
+                WHERE TIMESTAMPADD(SECOND, TIME_TO_SEC(cr.DurationTime), cr.date) < NOW() AND r.status = 'Waiting';
+
+            """
+            cursor.execute(sql_update_spots2)
+            db.commit()
+            sql_update_spots3 = """
+                UPDATE reservationsdetails rd
+                JOIN reservations r ON rd.id_code = r.code
+                SET rd.state = 'Completed'
+                WHERE r.status = 'Completed' AND rd.state = 'Waiting';
+
+            """
+            cursor.execute(sql_update_spots3)
             db.commit()
             
-            # έλεγχος της διαθεσιμότητας των θέσεων
-            sql_check_spots = """
-                SELECT NumSpot
-                FROM createReservation
-                WHERE ParkNum = %s AND status = 'Waiting'
-            """
-            cursor.execute(sql_check_spots, (self.parking_number,))
-            occupied_spots = cursor.fetchall()
-            occupied_spots = [str(spot[0]) for spot in occupied_spots]
-            
-            # ενημέρωση των κουμπιών (checkboxes) με βάση τη διαθεσιμότητα
-            checkboxes = [
-                self.checkbox1, self.checkbox3, self.checkbox4, self.checkbox5,
-                self.checkbox6, self.checkbox7, self.checkbox8, self.checkbox9, self.checkbox10
-            ]
-            for checkbox in checkboxes:
-                checkbox.setEnabled(checkbox.objectName() not in occupied_spots) # είναι ενεργοποιημένα τα κουμπιά που δεν έχουν κρατηθεί οι θέσεις , τα υπόλοιπα δεν μπορούμε να τα πατήσουμε
         except Exception as e:
             print(f"An error occurred while updating spots: {e}")
         finally:
