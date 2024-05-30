@@ -48,6 +48,7 @@ date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE createReservation ADD COLUMN status VARCHAR(20) DEFAULT 'Waiting';
+ALTER TABLE createReservation MODIFY DurationTime TIME;
 
 
 
@@ -99,6 +100,7 @@ CREATE TABLE reservationsdetails(
     
 );
 
+ALTER TABLE reservationsdetails MODIFY duration TIME;
 
 
 

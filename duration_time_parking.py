@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QVBoxLayo
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QCursor
-
+from datetime import timedelta
 
 class DurationTime(QMainWindow):
     def __init__(self, parking_number, user_id, user_email):
@@ -153,8 +153,18 @@ class DurationTime(QMainWindow):
     # όταν επιλεχθεί το κουμπί με την διάρκεια / duration time 
     def pressed_data_button(self):
         data_button = self.sender()
-        if data_button.isChecked():
-            self.selected_duration_time = data_button.text()
+        if data_button.isChecked():   #παρακάτω γίνεται η μετατροπή του Text έτσι ώστε να αποθηκεύεται σαν time 
+            duration_text = data_button.text()
+            hours=0
+            minutes=0
+            if 'hour' in duration_text or 'hours' in duration_text:
+                # αν περιλαμβάνει τη λέξη "hour" ή "hours", το μετατρέπουμε σε ώρες
+                hours = int(duration_text.split()[0])  # παίρνουμε τον αριθμό των ωρών
+                
+            elif 'minutes' in duration_text:
+                # αν περιλαμβάνει τη λέξη "minute" ή "minutes", το μετατρέπουμε σε λεπτά
+                minutes = int(duration_text.split()[0])  # παίρνουμε τον αριθμό των λεπτών
+        self.selected_duration_time = timedelta(hours=hours) + timedelta(minutes=minutes)
 
     # όταν πατηθεί το κουμπί next   
     def next_button_pressed(self):

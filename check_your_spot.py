@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt , QTimer , QDateTime
 from PyQt5.QtCore import QProcess
 import MySQLconnection as connection
 
@@ -20,6 +20,11 @@ class CheckSpot(QMainWindow):
         #καμία θεση επιλεγμένη στην αρχή
         self.spot_reserved = None
         self.initUI()   
+
+        # Χρονοδιακόπτης για έλεγχο διαθεσιμότητας κάθε λεπτό
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_parking_spots)
+        self.timer.start(60000)  # 60,000 ms = 1 λεπτό
 
     def initUI(self):
         self.setWindowTitle('Check your spot')
@@ -144,7 +149,7 @@ class CheckSpot(QMainWindow):
             margin-left: 20px;  
         ''')
 
-
+        self.update_parking_spots()
 
 
     # έλεγχος για το ποιο κουμπί πατήθηκε, 
@@ -280,6 +285,46 @@ class CheckSpot(QMainWindow):
         self.time_window = DurationTime(self.user_id, self.parking_number, self.user_email)
         self.time_window.show()
 
+    # συνάρτηση για ενημέρωση θέσεων παρκινγκ
+    def update_parking_spots(self):
+        db = connection.connection()
+        cursor = db.cursor()
+        
+        try:
+            # παίρνουμε την τρέχουσα ημερομηνία και ώρα 
+            current_time = QDateTime.currentDateTime().toString('yyyy-MM-dd HH:mm:ss')
+
+            # ενημέρωση της διαθεσιμότητας για κρατήσεις που έχουν λήξει
+            sql_update_spots = """
+                UPDATE createReservation
+                SET status = 'Completed'
+                WHERE TIMESTAMPADD(HOUR, DurationTime, date) < %s AND status = 'Waiting'
+            """
+            cursor.execute(sql_update_spots, (current_time,))
+            db.commit()
+            
+            # έλεγχος της διαθεσιμότητας των θέσεων
+            sql_check_spots = """
+                SELECT NumSpot
+                FROM createReservation
+                WHERE ParkNum = %s AND status = 'Waiting'
+            """
+            cursor.execute(sql_check_spots, (self.parking_number,))
+            occupied_spots = cursor.fetchall()
+            occupied_spots = [str(spot[0]) for spot in occupied_spots]
+            
+            # ενημέρωση των κουμπιών (checkboxes) με βάση τη διαθεσιμότητα
+            checkboxes = [
+                self.checkbox1, self.checkbox3, self.checkbox4, self.checkbox5,
+                self.checkbox6, self.checkbox7, self.checkbox8, self.checkbox9, self.checkbox10
+            ]
+            for checkbox in checkboxes:
+                checkbox.setEnabled(checkbox.objectName() not in occupied_spots) # είναι ενεργοποιημένα τα κουμπιά που δεν έχουν κρατηθεί οι θέσεις , τα υπόλοιπα δεν μπορούμε να τα πατήσουμε
+        except Exception as e:
+            print(f"An error occurred while updating spots: {e}")
+        finally:
+            cursor.close()
+            db.close()
 
    
 
