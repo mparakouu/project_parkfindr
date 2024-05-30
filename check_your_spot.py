@@ -297,7 +297,7 @@ class CheckSpot(QMainWindow):
             # ενημέρωση της διαθεσιμότητας για κρατήσεις που έχουν λήξει
             sql_update_spots = """
                 UPDATE createReservation
-                SET status = 'Completed'
+                SET status = 'Confirmed'
                 WHERE TIMESTAMPADD(HOUR, DurationTime, date) < %s AND status = 'Waiting'
             """
             cursor.execute(sql_update_spots, (current_time,))
