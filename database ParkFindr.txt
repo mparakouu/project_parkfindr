@@ -44,10 +44,11 @@ customerID INT NOT NULL,
 ParkNum int NOT NULL,
 DurationTime varchar(100) NOT NULL,
 NumSpot INT NOT NULL,
+status VARCHAR(20) DEFAULT 'Waiting',
 date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE createReservation ADD COLUMN status VARCHAR(20) DEFAULT 'Waiting';
+ 
 ALTER TABLE createReservation MODIFY DurationTime TIME;
 
 
@@ -81,7 +82,7 @@ CREATE TABLE reviews (
 CREATE TABLE reservations(
     code INT NOT NULL,
     date TEXT NOT NULL,
-    status ENUM('Waiting','Confirmed','Cancelled') NOT NULL,
+    status ENUM('Waiting','Confirmed','Cancelled','Completed') NOT NULL,
     FOREIGN KEY (code) REFERENCES  createReservation(reservationNum)
 );
 
@@ -92,7 +93,7 @@ CREATE TABLE reservationsdetails(
     id_code INT NOT NULL,
     parking_name VARCHAR(255),
     address VARCHAR(255),
-    state ENUM('Waiting','Confirmed','Cancelled') NOT NULL,
+    state ENUM('Waiting','Confirmed','Cancelled','Completed') NOT NULL,
     date TEXT NOT NULL,
     duration TEXT NOT NULL,
     spot INT,
