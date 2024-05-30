@@ -1,6 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame, QLabel, QTableWidget, QTableWidgetItem, QPushButton,QHeaderView
 from PyQt5.QtGui import QPixmap,QCursor
+from PyQt5 import QtCore
+from PyQt5.QtGui import QPixmap, QCursor, QIcon
 from PyQt5.QtCore import Qt
 import MySQLconnection as connection
 
@@ -44,6 +46,16 @@ class ReservationsDetailsWindow(QMainWindow):
             font-weight: bold;
             font-size: 24px;
             text-align: left;
+        ''')
+        top_left_button = QPushButton(self)
+        top_left_button.setGeometry(30, 40, 30, 30)  # Συντεταγμένες και διαστάσεις του κουμπιού
+        top_left_button.setCursor(QCursor(Qt.PointingHandCursor))
+        top_left_button.clicked.connect(self.back_button_pressed)
+        top_left_button.setIcon(QIcon('back.png'))
+        top_left_button.setIconSize(QtCore.QSize(30, 30))
+        top_left_button.setStyleSheet('''
+            background-color: transparent;
+            border: none;
         ''')
 
         # Underline 
@@ -207,6 +219,14 @@ class ReservationsDetailsWindow(QMainWindow):
         # Επανακεντράρισμα του πίνακα όταν αλλάζει το μέγεθος του παραθύρου
         self.centerTable()
         super().resizeEvent(event)
+    
+    
+    def back_button_pressed(self):
+        print("back pressed")
+        from reservations import ReservationsWindow
+        self.resWindow = ReservationsWindow(self.user_email,self.user_id)
+        self.resWindow.show()
+        self.close()
 
     def loadData(self):
         # Σύνδεση με τη βάση δεδομένων
