@@ -231,7 +231,7 @@ class ReviewWindow(QMainWindow):
         if self.star_rating == 0:
             QMessageBox.warning(self, "Input Error", "Please provide a rating.")
             return
-        self.review_submit_window = ReviewSubmitWindow(self.star_rating, review_for , self.code , self.user_id) #θα τα χρειαστώ για όταν κάνω sumbit να αποθηκέυονται στην βάση δεδομένων 
+        self.review_submit_window = ReviewSubmitWindow(self.star_rating, review_for , self.code , self.user_id, self.user_email) #θα τα χρειαστώ για όταν κάνω sumbit να αποθηκέυονται στην βάση δεδομένων 
         self.review_submit_window.show() 
         self.close()
 

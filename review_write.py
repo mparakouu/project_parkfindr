@@ -7,13 +7,14 @@ import MySQLdb as mdb
 import MySQLconnection as connection
 
 class ReviewSubmitWindow(QMainWindow):
-    def __init__(self, rating, review_for ,code , user_id):
+    def __init__(self, rating, review_for ,code , user_id, user_email):
         super().__init__()
         self.initUI()
         self.rating = rating
         self.review_for = review_for
         self.code = code
         self.user_id = user_id
+        self.user_email = user_email
         
 
     def initUI(self):
@@ -130,6 +131,10 @@ class ReviewSubmitWindow(QMainWindow):
 
             QMessageBox.information(self, "Success", "Your review has been submitted successfully!")
             self.close()
+            from homepage import homeWindow
+            self.home_win = homeWindow(self.user_email , self.user_id)
+            self.home_win.show()
+            
 
         except mdb.Error as e:
             print("Error:", e)

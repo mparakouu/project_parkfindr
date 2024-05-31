@@ -47,8 +47,6 @@ NumSpot INT NOT NULL,
 status VARCHAR(20) DEFAULT 'Waiting',
 date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
- 
 ALTER TABLE createReservation MODIFY DurationTime TIME;
 
 
@@ -100,7 +98,6 @@ CREATE TABLE reservationsdetails(
     FOREIGN KEY (id_code) REFERENCES reservations(code) 
     
 );
-
 ALTER TABLE reservationsdetails MODIFY duration TIME;
 
 
