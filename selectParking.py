@@ -177,7 +177,7 @@ class selectParking(QMainWindow):
                         <strong>Name:</strong> {loc['parking_name']}<br>
                         <strong>Address:</strong> {loc['address']}<br>
                         <strong>Open Hours:</strong> {loc['open_hours']}<br>
-                        <strong>Free spots:</strong> {loc['spots']}<br>
+                        <strong>Total spots:</strong> {loc['spots']}<br>
                     """
             if popup_content:  
                 popup_content += '<button id="reserveButton" style="background-color: #3D8AF7; border-radius: 6px; color: white; border: none;">Reserve now</button>'
