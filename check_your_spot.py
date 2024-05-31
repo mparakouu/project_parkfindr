@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor
-from PyQt5.QtCore import Qt , QTimer , QDateTime
+from PyQt5.QtCore import Qt 
 from PyQt5.QtCore import QProcess
 import MySQLconnection as connection
 
@@ -21,10 +21,7 @@ class CheckSpot(QMainWindow):
         self.spot_reserved = None
         self.initUI()   
 
-        # Χρονοδιακόπτης για έλεγχο διαθεσιμότητας κάθε λεπτό
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_parking_spots)
-        self.timer.start(60000)  # 60,000 ms = 1 λεπτό
+        
 
     def initUI(self):
         self.setWindowTitle('Check your spot')
@@ -149,7 +146,7 @@ class CheckSpot(QMainWindow):
             margin-left: 20px;  
         ''')
 
-        self.update_parking_spots()
+        
 
 
     # έλεγχος για το ποιο κουμπί πατήθηκε, 
@@ -259,7 +256,6 @@ class CheckSpot(QMainWindow):
                     db.commit()
                     print("email χρήστη:", self.user_email)
                     print("Η κράτηση πραγματοποιήθηκε!")
-                    self.update_parking_spots()
                     from reservationConfirmed import ResConfirmed
                     self.close()
                     # με πάει στο confirmed πράθυρο 
@@ -286,47 +282,7 @@ class CheckSpot(QMainWindow):
         self.time_window = DurationTime(self.user_id, self.parking_number, self.user_email)
         self.time_window.show()
 
-    # συνάρτηση για ενημέρωση θέσεων παρκινγκ
-    def update_parking_spots(self):
-        db = connection.connection()
-        cursor = db.cursor()
-        
-        try:
-            
-            # ενημέρωση της διαθεσιμότητας για κρατήσεις που έχουν λήξει
-            sql_update_spots = """
-                UPDATE createReservation
-                SET status = 'Completed'
-                WHERE TIMESTAMPADD(SECOND, TIME_TO_SEC(DurationTime), date) < NOW() AND status = 'Waiting';
-            """
-            cursor.execute(sql_update_spots)
-            db.commit()
-            sql_update_spots2 = """
-                UPDATE reservations r
-                JOIN createReservation cr ON r.code = cr.reservationNum
-                SET r.status = 'Completed'
-                WHERE TIMESTAMPADD(SECOND, TIME_TO_SEC(cr.DurationTime), cr.date) < NOW() AND r.status = 'Waiting';
-
-            """
-            cursor.execute(sql_update_spots2)
-            db.commit()
-            sql_update_spots3 = """
-                UPDATE reservationsdetails rd
-                JOIN reservations r ON rd.id_code = r.code
-                SET rd.state = 'Completed'
-                WHERE r.status = 'Completed' AND rd.state = 'Waiting';
-
-            """
-            cursor.execute(sql_update_spots3)
-            db.commit()
-            
-        except Exception as e:
-            print(f"An error occurred while updating spots: {e}")
-        finally:
-            cursor.close()
-            db.close()
-
-   
+      
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
