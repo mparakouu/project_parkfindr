@@ -210,6 +210,7 @@ class ReservationsWindow(QMainWindow):
         from reservations_details import ReservationsDetailsWindow
         self.res_detwindow = ReservationsDetailsWindow(code, status , self.user_id , self.user_email)
         self.res_detwindow.show()
+        self.close()
 
     def get_status(self, code):
         db = connection.connection()
