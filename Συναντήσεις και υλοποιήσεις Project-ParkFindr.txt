@@ -15,6 +15,8 @@
 15η Συνάντηση 20/05/2024: Σχεδιασμός Κώδικα και συζήτηση(2 ώρες)
 16η Συνάντηση 21/05/2024: Ολοκλήρωση κώδικα και συζήτηση(2 ώρες)
 17η Συνάντηση 23/05/2024: 'Ελεγχος και αλλαγές σε Domain-Sequence και δημιουργία Class Diagram(4 ώρες)
+18η Συνάντηση 27/05/2024: Τελευταίες Αλλαγές (2 ώρες)
+19η Συνάντηση 31/05/2024: Υποβολή Εργασίας
 
 LINKS ΠΟΥ ΕΧΟΥΜΕ ΧΡΗΣΙΜΟΠΟΙΗΣΕΙ
 Pert Chart Diagram:  https://app.smartdraw.com/
@@ -27,6 +29,7 @@ GitHub Desktop
 Discord
 RobustNess: https://online.visual-paradigm.com/
 Sequence: https://online.visual-paradigm.com/
+Class Diagram: https://online.visual-paradigm.com/
 
 
 
