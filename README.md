@@ -1,4 +1,4 @@
-![ParkFindr logo](ParkFindr-Logo.png)
+![ParkFindr logo](ParkFindr_logo.png)
 
 install dependencies : 
  - pip install PyQt5
