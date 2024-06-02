@@ -1,4 +1,4 @@
-Τεχνολογία Λογισμικού Project ParkFindr
+![ParkFindr logo](ParkFindr-Logo.png)
 
 install dependencies : 
  - pip install PyQt5
