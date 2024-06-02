@@ -3,10 +3,13 @@ show databases;
 create database ParkFindr;
 use ParkFindr;
 
+code --> MySQLconnection.py
+
 host='localhost',
 user='root',  
 password='admin',  
 database='ParkFindr'
+
 
 ---------------------------------------------------------------------------------------------
 
