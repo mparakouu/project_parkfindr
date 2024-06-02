@@ -5,12 +5,6 @@ use ParkFindr;
 
 code --> MySQLconnection.py
 
-host='localhost',
-user='root',  
-password='admin',  
-database='ParkFindr'
-
-
 ---------------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS user(
