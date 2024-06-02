@@ -3,6 +3,7 @@
 install dependencies : 
  - pip install PyQt5
  - pip install pyqt5-tools
+ - pip install mysql-connector-python
  - pip install PyQtWebEngine
  - pip install folium
  - pip install qrcode[pil]
