@@ -6,6 +6,11 @@ pip install pyqt5-tools
 pip install PyQtWebEngine
 pip install folium
 
+
+mysql code : 
+database ParkFindr.txt
+
+
 How to run :
 1) git clone
 2) cd code
