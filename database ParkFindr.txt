@@ -3,6 +3,12 @@ show databases;
 create database ParkFindr;
 use ParkFindr;
 
+host='localhost',
+user='root',  
+password='admin',  
+database='ParkFindr'
+
+---------------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS user(
 id int AUTO_INCREMENT,
