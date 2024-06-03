@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QApplication,QMessageBox, QMainWindow, QFrame, QLabe
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QCursor, QIcon, QDesktopServices, QRegExpValidator
 from PyQt5.QtCore import Qt , QSize, Qt, QUrl, QRegExp
-import MySQLdb as mdb
 from homepage import homeWindow
 import MySQLconnection as connection
 

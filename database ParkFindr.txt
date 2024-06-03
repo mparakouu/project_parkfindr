@@ -3,6 +3,9 @@ show databases;
 create database ParkFindr;
 use ParkFindr;
 
+code --> MySQLconnection.py
+
+---------------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS user(
 id int AUTO_INCREMENT,
